@@ -1,0 +1,43 @@
+.title {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-blue-light);
+}
+
+.review {
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.reviewInfo {
+  padding-top: 1rem;
+  border-color: var(--color-border-subtle);
+  border-top: 1px solid;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.author {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dimmed);
+}
+
+.rating {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dimmed);
+  gap: 4px;
+}
+
+.ratingGroup {
+  display: flex;
+  gap: 4px;
+}

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 72">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;display=swap');
+      .logo-font { font-family: 'Bebas Neue', Impact, 'Arial Black', sans-serif; font-size: 68px; letter-spacing: 2px; }
+    </style>
+
+    <filter id="glow-text" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Subtle glow behind VEO -->
+  <text class="logo-font" fill="#e50914" filter="url(#glow-text)" opacity="0.35">
+    <tspan x="5" y="60" fill="transparent">DONDE</tspan><tspan fill="#e50914">VEO</tspan>
+  </text>
+
+  <!-- Full text: DONDE white + VEO red, positioned as one block -->
+  <text class="logo-font" y="60" x="5">
+    <tspan fill="#ffffff">DONDE</tspan><tspan fill="#e50914">VEO</tspan>
+  </text>
+</svg>

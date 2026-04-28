@@ -1,0 +1,14 @@
+.synopsis {
+  margin-top: 3rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.synopsis p {
+  margin-top: 1rem;
+}

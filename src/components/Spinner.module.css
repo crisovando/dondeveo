@@ -1,0 +1,52 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  top: var(--header-height);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(var(--color-bg) / 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadeIn 0.2s ease;
+}
+
+.ring {
+  position: relative;
+  width: 52px;
+  height: 52px;
+}
+
+.ring::before,
+.ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.ring::before {
+  border: 3px solid oklch(100% 0 0 / 0.08);
+}
+
+.ring::after {
+  border: 3px solid transparent;
+  border-top-color: var(--color-primary);
+  animation: spin 0.75s linear infinite;
+}

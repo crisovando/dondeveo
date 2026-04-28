@@ -1,0 +1,27 @@
+.heroFavorites {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.backgroundBlur {
+  position: absolute;
+  top: -3rem;
+  left: -3rem;
+  width: 16rem;
+  height: 16rem;
+  background: radial-gradient(circle, var(--color-primary) 0%, transparent 50%);
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: var(--letter-space-tighter);
+  color: var(--color-text-bright);
+
+  span {
+    color: var(--color-primary);
+    font-style: italic;
+  }
+}

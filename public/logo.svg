@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff1a1a" />
+      <stop offset="50%" stop-color="#e50914" />
+      <stop offset="100%" stop-color="#b91c1c" />
+    </linearGradient>
+
+    <filter id="glow-ambient" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14" />
+    </filter>
+    <filter id="glow-core" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" />
+    </filter>
+
+    <!-- Eye only -->
+    <g id="eye-shape">
+      <path d="M 30 200 Q 200 50 370 200 Q 200 350 30 200" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Magnifier + play button -->
+    <g id="magnifier-shapes">
+      <path d="
+        M 259 238
+        A 68 68 0 1 0 238 259
+        L 282 310
+        Q 292 328 308 320
+        Q 322 310 310 292
+        L 259 238
+        Z
+      " fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="200" cy="200" r="45" fill="none" />
+      <path d="M 183 170 L 228 200 L 183 230 Z" fill="none" stroke-linejoin="round" />
+    </g>
+
+    <!-- Mask: hide eye where the handle is -->
+    <mask id="hide-handle-area">
+      <rect width="400" height="400" fill="white"/>
+      <!-- Black shape tightly covering just the handle corridor -->
+      <polygon points="245,252 238,259 280,310 308,320 322,310 310,292 259,238 252,245" fill="black"/>
+    </mask>
+  </defs>
+
+
+  <!-- Eye layers (masked — hidden where handle crosses) -->
+  <use href="#eye-shape" stroke="url(#neonGradient)" stroke-width="20" filter="url(#glow-ambient)" opacity="0.45" mask="url(#hide-handle-area)"/>
+  <use href="#eye-shape" stroke="url(#neonGradient)" stroke-width="12" filter="url(#glow-core)" opacity="0.8" mask="url(#hide-handle-area)"/>
+  <use href="#eye-shape" stroke="url(#neonGradient)" stroke-width="5" mask="url(#hide-handle-area)"/>
+  <use href="#eye-shape" stroke="#ffffff" stroke-width="1.5" opacity="0.75" mask="url(#hide-handle-area)"/>
+
+  <!-- Magnifier layers (on top, no mask) -->
+  <use href="#magnifier-shapes" stroke="url(#neonGradient)" stroke-width="20" filter="url(#glow-ambient)" opacity="0.45"/>
+  <use href="#magnifier-shapes" stroke="url(#neonGradient)" stroke-width="12" filter="url(#glow-core)" opacity="0.8"/>
+  <use href="#magnifier-shapes" stroke="url(#neonGradient)" stroke-width="5"/>
+  <use href="#magnifier-shapes" stroke="#ffffff" stroke-width="1.5" opacity="0.75"/>
+</svg>

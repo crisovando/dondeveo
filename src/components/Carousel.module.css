@@ -1,0 +1,60 @@
+.wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.carousel {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  scrollbar-width: none;
+}
+
+.track {
+  display: flex;
+  height: 100%;
+}
+
+.track > * {
+  flex: 0 0 80%;
+  margin-right: 12px;
+  scroll-snap-align: start;
+}
+
+.full .track > * {
+  flex: 0 0 100%;
+  margin-right: 0;
+  scroll-snap-align: center;
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .prev {
+    left: 10px;
+  }
+  .next {
+    right: 10px;
+  }
+}

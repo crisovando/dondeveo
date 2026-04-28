@@ -1,0 +1,46 @@
+.containerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+}
+
+.wrapperTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xxs);
+}
+
+.title {
+  font-weight: 800;
+  letter-spacing: var(--letter-space-tighter);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.description {
+  letter-spacing: var(--letter-space-tight);
+  color: var(--color-blue-light);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.clearButton {
+  padding: var(--space-xxs) var(--space-sm);
+  color: var(--color-gray-4);
+  letter-spacing: var(--letter-space-widest);
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-surface-container-low);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  border-style: none;
+
+  &:hover {
+    background-color: var(--color-surface-container-low-hover);
+  }
+}
