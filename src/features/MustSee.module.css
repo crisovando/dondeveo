@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.group {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.group:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 50px rgba(229, 9, 20, 0.15);
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to top,
+    oklch(from var(--color-bg) l c h / 0.7),
+    transparent,
+    transparent
+  );
+}
+
+.buttonContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.button {
+  background-color: var(--color-gray-3);
+  padding: var(--space-sm);
+  border-radius: var(--radius-lg);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-style: none;
+
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover {
+    background-color: var(--color-primary);
+
+    svg {
+      color: var(--color-white);
+    }
+  }
+
+  svg {
+    color: var(--color-primary);
+  }
+}
+
+.genre {
+  text-transform: uppercase;
+  letter-spacing: var(--letter-space-widest);
+  font-size: 0.625rem;
+  color: var(--color-blue-light);
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+  padding: var(--space-md);
+}
+
+.title {
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.buttonVerDetalles {
+  background-color: var(--color-white);
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-gray-1);
+  letter-spacing: var(--letter-space-tighter);
+  text-transform: uppercase;
+  font-weight: 700;
+  padding-block: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xxs);
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border-style: none;
+  cursor: pointer;
+
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}

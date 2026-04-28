@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  border-left: 2px solid var(--color-primary);
+  padding-left: var(--space-xl);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-bright);
+  margin-bottom: 0.5rem;
+  letter-spacing: var(--letter-space-tight);
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-bright);
+}

@@ -1,0 +1,130 @@
+import { useState } from "preact/hooks";
+import { AudioVisualDto, FavoriteEntry } from "@/shared/types";
+import { addToFavorites } from "@/signals/favorites";
+import styles from "./AddFavoriteModal.module.css";
+
+interface Props {
+  movie: AudioVisualDto;
+  onClose: () => void;
+}
+
+export function AddFavoriteModal({ movie, onClose }: Props) {
+  const [wantsNotification, setWantsNotification] = useState(false);
+  const [scheduledAt, setScheduledAt] = useState("");
+  const [comment, setComment] = useState("");
+  const [dateError, setDateError] = useState("");
+
+  const isScheduledAtValid = (value: string): boolean => {
+    if (!value) return false;
+    const date = new Date(value);
+    return !isNaN(date.getTime()) && date.getTime() > Date.now();
+  };
+
+  const isSaveDisabled = wantsNotification && !isScheduledAtValid(scheduledAt);
+
+  const minDatetime = () => {
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return (
+      `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}` +
+      `T${pad(now.getHours())}:${pad(now.getMinutes())}`
+    );
+  };
+
+  const handleScheduledAtChange = (value: string) => {
+    setScheduledAt(value);
+    if (value && !isScheduledAtValid(value)) {
+      setDateError("La fecha debe ser en el futuro.");
+    } else {
+      setDateError("");
+    }
+  };
+
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    if (wantsNotification && !isScheduledAtValid(scheduledAt)) return;
+
+    const entry: FavoriteEntry = {
+      ...movie,
+      ...(wantsNotification && scheduledAt
+        ? { notification: { scheduledAt, comment, sent: false } }
+        : {}),
+    };
+
+    addToFavorites(entry);
+
+    // Acá iría logica de notificación
+    // Guardar en algun cron job de back, puede ser supabase, a evaluar.
+
+    onClose();
+  };
+
+  const handleBackdropClick = (e: MouseEvent) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  return (
+    <div class={styles.backdrop} onClick={handleBackdropClick}>
+      <div class={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <header class={styles.header}>
+          <h2 id="modal-title" class={styles.title}>
+            Agregar a favoritos
+          </h2>
+          <p class={styles.movieTitle}>{movie.title}</p>
+        </header>
+
+        <hr class={styles.divider} />
+
+        <form onSubmit={handleSubmit} noValidate>
+          <label class={styles.checkRow}>
+            <input
+              type="checkbox"
+              class={styles.checkbox}
+              checked={wantsNotification}
+              onChange={(e) => setWantsNotification((e.target as HTMLInputElement).checked)}
+            />
+            <span class={styles.checkLabel}>Quiero agendar la cita</span>
+          </label>
+
+          {wantsNotification && (
+            <div class={styles.fields}>
+              <div>
+                <span class={styles.fieldLabel}>Fecha y hora</span>
+                <input
+                  type="datetime-local"
+                  class={`${styles.input} ${dateError ? styles.inputError : ""}`}
+                  value={scheduledAt}
+                  min={minDatetime()}
+                  onInput={(e) => handleScheduledAtChange((e.target as HTMLInputElement).value)}
+                />
+                {dateError && <p class={styles.fieldError}>{dateError}</p>}
+              </div>
+              <div>
+                <span class={styles.fieldLabel}>Comentario (opcional)</span>
+                <textarea
+                  class={styles.textarea}
+                  placeholder="Ej: Ver con Laura el sábado a la noche"
+                  value={comment}
+                  onInput={(e) => setComment((e.target as HTMLTextAreaElement).value)}
+                  maxLength={140}
+                />
+                {!scheduledAt && (
+                  <p class={styles.hint}>Seleccioná una fecha y hora para agendar la cita.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div class={styles.actions}>
+            <button type="button" class={styles.btnCancel} onClick={onClose}>
+              Cancelar
+            </button>
+            <button type="submit" class={styles.btnSave} disabled={isSaveDisabled}>
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,232 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: oklch(0% 0 0 / 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 24px 64px oklch(0% 0 0 / 0.5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-bright);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.movieTitle {
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border-subtle);
+  border: none;
+  margin: 0;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  appearance: none;
+  background-color: #fff;
+  margin: 0;
+  font: inherit;
+  color: var(--color-primary);
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid var(--color-primary);
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+.checkbox::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--color-primary);
+}
+
+.checkbox:checked::before {
+  transform: scale(1);
+}
+
+.checkLabel {
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  animation: slideUp 0.2s ease;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: var(--letter-space-widest);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xxs);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--color-text-bright);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  padding: var(--space-sm) var(--space-md);
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--color-primary);
+}
+
+.input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+.textarea {
+  resize: none;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: calc(var(--space-xxs) * -1);
+}
+
+.inputError {
+  border-color: oklch(55% 0.2 25) !important;
+}
+
+.fieldError {
+  font-size: 0.75rem;
+  color: oklch(65% 0.2 25);
+  margin-top: var(--space-xxs);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.btnCancel {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.btnCancel:hover {
+  background: oklch(100% 0 0 / 0.06);
+  color: var(--color-text);
+}
+
+.btnSave {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--color-primary);
+  color: oklch(100% 0 0);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+}
+
+.btnSave:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.btnSave:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
