@@ -4,6 +4,7 @@ import { Popular } from "@/features/Popular";
 import { FavoritesCarousel } from "@/features/FavoritesCarousel";
 import { HistoryCarousel } from "@/features/HistoryCarousel";
 import { Spinner } from "@/components/Spinner";
+import { TopAnime } from "@/features/TopAnime";
 
 export function Home() {
   const { data } = useHomeData();
@@ -15,6 +16,7 @@ export function Home() {
       <Popular movies={data?.trending ?? []} />
       <FavoritesCarousel />
       <HistoryCarousel />
+      <TopAnime animes={data?.topAnime ?? []} />
     </div>
   );
 }

@@ -23,8 +23,9 @@ export interface FavoriteEntry extends AudioVisualDto {
 
 export interface HomeData {
   trending: AudioVisualDto[];
-  topRated: AudioVisualDto[];
-  popular: AudioVisualDto[];
+  topRatedMovies: AudioVisualDto[];
+  topRatedTv: AudioVisualDto[];
+  topAnime: AudioVisualDto[];
 }
 
 export interface Genres {

@@ -1,22 +1,18 @@
 import { DetailItem } from "@/shared/types";
-import { signal } from "@preact/signals";
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { transitionData } from "@/signals/transitionData";
 
 const URL_API = "/api/detail/{type}/{id}";
 
-const detailDataSignal = signal<DetailItem | null>(null);
-
 export const useDetailData = (type: string, id: string) => {
+  const [detailItem, setDetailItem] = useState<DetailItem | null>(null);
   useEffect(() => {
-    if (detailDataSignal.value && String(detailDataSignal.value.id) === String(id)) return;
-
-    detailDataSignal.value = null;
+    if (detailItem && String(detailItem.id) === String(id)) return;
 
     fetch(URL_API.replace("{type}", type).replace("{id}", id.toString()))
       .then((res) => res.json())
       .then((json) => {
-        detailDataSignal.value = json;
+        setDetailItem(json);
       });
 
     return () => {
@@ -24,5 +20,5 @@ export const useDetailData = (type: string, id: string) => {
     };
   }, [type, id]);
 
-  return { data: detailDataSignal.value };
+  return { data: detailItem };
 };
