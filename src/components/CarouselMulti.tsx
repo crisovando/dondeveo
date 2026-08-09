@@ -1,6 +1,9 @@
 import { useRef } from "preact/hooks";
+import { ChevronLeft, ChevronRight } from "lucide-preact";
 import styles from "./CarouselMulti.module.css";
 import type { AudioVisualDto } from "@/shared/types";
+import { useProvidersMap } from "@/hooks/useProvidersMap";
+import { CardProviders } from "@/features/CardProviders";
 
 interface CarouselMultiProps {
   title: string;
@@ -20,6 +23,7 @@ export function CarouselMulti({
   onSeeAll,
 }: CarouselMultiProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const providersMap = useProvidersMap(movies);
 
   if (movies.length === 0) return null;
 
@@ -53,7 +57,7 @@ export function CarouselMulti({
           onClick={() => scrollByTrack("prev")}
           aria-label={`Ver anteriores de ${title}`}
         >
-          ‹
+          <ChevronLeft size={22} strokeWidth={2.5} aria-hidden="true" />
         </button>
 
         <div className={styles.carousel} ref={trackRef}>
@@ -89,6 +93,7 @@ export function CarouselMulti({
                 <span className={styles.dot}></span>
                 <span>{movie.releaseDate?.split("-")[0]}</span>
               </div>
+              <CardProviders providers={providersMap[`${movie.mediaType}:${movie.id}`] ?? []} />
             </a>
           ))}
         </div>
@@ -99,7 +104,7 @@ export function CarouselMulti({
           onClick={() => scrollByTrack("next")}
           aria-label={`Ver siguientes de ${title}`}
         >
-          ›
+          <ChevronRight size={22} strokeWidth={2.5} aria-hidden="true" />
         </button>
       </div>
     </section>
