@@ -79,5 +79,14 @@ export const useSearchData = () => {
     setError(false);
   };
 
-  return { data, loading, error, fetchData, loadMore, retry, reset };
+  const restore = (query: string, json: SearchData) => {
+    seq.current += 1;
+    currentQuery.current = query.trim();
+    currentPage.current = json.page || 1;
+    setData(json);
+    setLoading(false);
+    setError(false);
+  };
+
+  return { data, loading, error, fetchData, loadMore, retry, reset, restore };
 };

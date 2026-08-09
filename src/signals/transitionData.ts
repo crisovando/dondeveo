@@ -5,4 +5,5 @@ export const transitionData = signal<{
   title: string;
   poster: string;
   backdrop: string;
+  from: string;
 } | null>(null);

@@ -1,5 +1,6 @@
 import { useEffect } from "preact/hooks";
 import { Cast } from "@/features/Cast";
+import { BackButton } from "@/features/BackButton";
 import { HeroDetail } from "@/features/HeroDetail";
 import { InfoItem } from "@/features/InfoItem";
 import { Review } from "@/features/Review";
@@ -34,6 +35,7 @@ export function Detail({ type, id }: DetailProps) {
 
   return (
     <div class="details">
+      <BackButton />
       {hasData ? <HeroDetail movie={finalData} /> : <HeroDetailSkeleton />}
       <article class="content-detail">
         <div class="left-column">

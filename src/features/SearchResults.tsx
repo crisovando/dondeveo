@@ -1,9 +1,7 @@
 import { AudioVisualDto } from "@/shared/types";
 import styles from "./SearchResults.module.css";
 import { ImgTmdb } from "@/components/ImgTmdb";
-import { useLocation } from "preact-iso";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { navigateToDetail } from "@/helpers/navigation";
 import { MediaGrid } from "@/components/MediaGrid";
 import { Star } from "lucide-preact";
 
@@ -13,6 +11,7 @@ interface SearchResultsProps {
   loading: boolean;
   error: boolean;
   fethMore: () => Promise<void>;
+  onItemClick?: (item: AudioVisualDto) => void;
 }
 
 const MEDIA_TYPE_LABEL: Record<string, string> = {
@@ -29,14 +28,20 @@ function SkeletonCard() {
   );
 }
 
-export function SearchResults({ items, total, loading, error, fethMore }: SearchResultsProps) {
-  const { route } = useLocation();
+export function SearchResults({
+  items,
+  total,
+  loading,
+  error,
+  fethMore,
+  onItemClick,
+}: SearchResultsProps) {
   const hasMore = !!(items && items.length < total);
   const { loadMoreRef } = useInfiniteScroll(fethMore, hasMore);
 
   const handleClickItem = (item: AudioVisualDto) => {
-    if (item.mediaType !== "people") {
-      navigateToDetail(item, route);
+    if (item.mediaType !== "people" && onItemClick) {
+      onItemClick(item);
     }
   };
 
