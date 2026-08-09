@@ -15,6 +15,7 @@ import "./styles/base.css";
 import "./styles/header.css";
 import { loadHistory } from "./signals/history";
 import { Historical } from "./pages/Historical";
+import { UpdateToast } from "./components/UpdateToast";
 
 export function App() {
   useEffect(() => {
@@ -37,6 +38,7 @@ export function App() {
           <Route default component={NotFound} />
         </Router>
       </main>
+      <UpdateToast />
     </LocationProvider>
   );
 }
