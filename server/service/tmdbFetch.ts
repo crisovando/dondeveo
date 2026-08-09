@@ -15,6 +15,11 @@ export async function fetchTMDB<T>(path: string, params?: URLSearchParams): Prom
       },
     });
 
+    if (!response.ok) {
+      console.error(`TMDb error: ${response.status} for ${path}`);
+      throw new Error(`TMDb responded with ${response.status}`);
+    }
+
     const res = await response.json();
 
     return res;

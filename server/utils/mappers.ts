@@ -30,7 +30,7 @@ export function mapWatchProviders(
 ): ProviderWithType[] {
   if (!providersResponse) return [];
 
-  const providers = providersResponse.results[region];
+  const providers = providersResponse.results?.[region] ?? [];
   if (!providers) return [];
 
   return Object.entries(providers).flatMap(([key, value]) => {
