@@ -52,9 +52,33 @@ export default defineConfig({
             purpose: "any maskable",
           },
         ],
+        screenshots: [
+          {
+            src: "/screenshots/home-wide.png",
+            sizes: "1280x800",
+            type: "image/png",
+            form_factor: "wide",
+            label: "Explorá qué ver",
+          },
+          {
+            src: "/screenshots/home-mobile.png",
+            sizes: "750x1334",
+            type: "image/png",
+            form_factor: "narrow",
+            label: "Explorá qué ver",
+          },
+          {
+            src: "/screenshots/detail-mobile.png",
+            sizes: "750x1334",
+            type: "image/png",
+            form_factor: "narrow",
+            label: "Dónde ver cada título",
+          },
+        ],
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
+        globIgnores: ["**/screenshots/*.png"],
         navigateFallback: "index.html",
         navigateFallbackDenylist: [/^\/api\//],
         cleanupOutdatedCaches: true,
