@@ -6,6 +6,7 @@ interface BeforeInstallPromptEvent {
 }
 
 const IOS_HINT_SESSION_KEY = "dondeveo-ios-hint-dismissed";
+const INSTALL_BANNER_SESSION_KEY = "dondeveo-install-banner-dismissed";
 
 const isIOSDevice = () => /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
@@ -22,6 +23,14 @@ function hasDismissedIOSHint(): boolean {
   }
 }
 
+function hasDismissedInstallBanner(): boolean {
+  try {
+    return window.sessionStorage.getItem(INSTALL_BANNER_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
 export const useInstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
@@ -29,12 +38,16 @@ export const useInstallPrompt = () => {
   const [installedEvent, setInstalledEvent] = useState(false);
   const [iosHintDismissed, setIOSHintDismissed] =
     useState(hasDismissedIOSHint);
+  const [installBannerDismissed, setInstallBannerDismissed] =
+    useState(hasDismissedInstallBanner);
 
   const isIOS = isIOSDevice();
   const canInstall = deferredPrompt !== null && !isStandalone;
   const isInstalled = isStandalone || installedEvent;
   const isIOSHintVisible =
     isIOS && !isStandalone && !isInstalled && !iosHintDismissed;
+  const isInstallBannerVisible =
+    canInstall && !isStandalone && !isInstalled && !installBannerDismissed;
 
   useEffect(() => {
     const onInstallPrompt = (event: Event) => {
@@ -93,6 +106,15 @@ export const useInstallPrompt = () => {
     }
   };
 
+  const dismissInstallBanner = () => {
+    setInstallBannerDismissed(true);
+    try {
+      window.sessionStorage.setItem(INSTALL_BANNER_SESSION_KEY, "1");
+    } catch {
+      // storage unavailable: banner stays hidden for this session view
+    }
+  };
+
   return {
     canInstall,
     isStandalone,
@@ -101,5 +123,7 @@ export const useInstallPrompt = () => {
     isInstalled,
     isIOSHintVisible,
     dismissIOSHint,
+    isInstallBannerVisible,
+    dismissInstallBanner,
   };
 };
