@@ -1,0 +1,33 @@
+.line {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  min-height: 22px;
+}
+
+.logos {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-right: -0.35rem;
+  border: 2px solid var(--color-surface-base);
+  background: #222;
+}
+
+.logo:first-child {
+  margin-right: 0;
+}
+
+.extra {
+  margin-left: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}

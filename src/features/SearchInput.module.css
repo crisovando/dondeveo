@@ -22,6 +22,18 @@
   view-transition-name: search-icon;
 }
 
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .input {
   width: 100%;
   height: 64px;
@@ -50,13 +62,18 @@
       0 0 0 2px rgba(0, 0, 0, 0),
       0 0 0 4px var(--color-primary-hover);
   }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
 }
 
 .inputRight {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 16px;
+  right: 12px;
   display: flex;
   align-items: center;
 }
@@ -76,4 +93,9 @@
 
   color: var(--color-text-dimmed);
   transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-surface-elevated);
+    color: var(--color-text);
+  }
 }

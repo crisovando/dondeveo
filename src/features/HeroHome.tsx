@@ -7,6 +7,7 @@ import { navigateToDetail } from "@/helpers/navigation";
 import { useState, useEffect, useRef } from "preact/hooks";
 import { isFavorite, removeFromFavorites } from "@/signals/favorites";
 import { AddFavoriteModal } from "@/components/AddFavoriteModal";
+import { HeroProviders } from "@/features/HeroProviders";
 import styles from "./HeroHome.module.css";
 
 interface HeroHomeProps {
@@ -66,6 +67,7 @@ export function HeroHome({ movies }: HeroHomeProps) {
                 else slideRefs.current.delete(movie.id);
               }}
               data-slide-id={movie.id}
+              aria-current={activeId === movie.id ? "true" : undefined}
               inert={activeId !== movie.id ? true : undefined}
             >
               <Hero.Media
@@ -88,6 +90,13 @@ export function HeroHome({ movies }: HeroHomeProps) {
                     </span>
                   )}
                 </Hero.Attributes>
+                {activeId === movie.id && (
+                  <HeroProviders
+                    type={movie.mediaType}
+                    id={movie.id}
+                    title={movie.title}
+                  />
+                )}
                 <Hero.Title
                   level={activeId === movie.id ? "h1" : "h2"}
                   id={`hero-title-${movie.id}`}
