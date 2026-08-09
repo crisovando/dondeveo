@@ -31,6 +31,10 @@ export const useHomeData = () => {
             ...tv,
             genres: mapGenres(tv.genreIds),
           })),
+          topAnime: json.topAnime.map((anime) => ({
+            ...anime,
+            genres: mapGenres(anime.genreIds),
+          })),
         };
       });
   }, []);

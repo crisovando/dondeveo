@@ -40,7 +40,7 @@ function EmptyProviders() {
 function WatchProvidersList({ providers }: WatchProvidersProps) {
   return (
     <div class={styles.containerCard}>
-      {providers.map((provider) => (
+      {providers?.map((provider) => (
         <div class={styles.card} key={`${provider.providerId}-${provider.type}`}>
           <Img src={provider.logoPath} class={styles.logo} />
           <span class={styles.typeText}>

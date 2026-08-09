@@ -1,84 +1,84 @@
 const isLocalhost = Boolean(
-  window.location.hostname === 'localhost' ||
-  window.location.hostname === '[::1]' ||
-  window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
-)
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "[::1]" ||
+  window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
+);
 
 export function register(config) {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      const swUrl = `/sw.js`
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      const swUrl = `/sw.js`;
 
       if (isLocalhost) {
-        checkValidServiceWorker(swUrl, config)
+        checkValidServiceWorker(swUrl, config);
       } else {
-        registerValidSW(swUrl, config)
+        registerValidSW(swUrl, config);
       }
-    })
+    });
   }
 }
 
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
-    .then(registration => {
+    .then((registration) => {
       registration.onupdatefound = () => {
-        const installingWorker = registration.installing
+        const installingWorker = registration.installing;
         if (installingWorker == null) {
-          return
+          return;
         }
         installingWorker.onstatechange = () => {
-          if (installingWorker.state === 'installed') {
+          if (installingWorker.state === "installed") {
             if (navigator.serviceWorker.controller) {
-              console.log('New content available, please refresh')
+              console.log("New content available, please refresh");
               if (config && config.onUpdate) {
-                config.onUpdate(registration)
+                config.onUpdate(registration);
               }
             } else {
-              console.log('Content cached for offline use')
+              console.log("Content cached for offline use");
               if (config && config.onSuccess) {
-                config.onSuccess(registration)
+                config.onSuccess(registration);
               }
             }
           }
-        }
-      }
+        };
+      };
     })
-    .catch(error => {
-      console.error('Service worker registration failed:', error)
-    })
+    .catch((error) => {
+      console.error("Service worker registration failed:", error);
+    });
 }
 
 function checkValidServiceWorker(swUrl, config) {
-  fetch(swUrl, { headers: { 'Service-Worker': 'script' } })
-    .then(response => {
-      const contentType = response.headers.get('content-type')
+  fetch(swUrl, { headers: { "Service-Worker": "script" } })
+    .then((response) => {
+      const contentType = response.headers.get("content-type");
       if (
         response.status === 404 ||
-        (contentType != null && contentType.indexOf('javascript') === -1)
+        (contentType != null && contentType.indexOf("javascript") === -1)
       ) {
-        navigator.serviceWorker.ready.then(registration => {
+        navigator.serviceWorker.ready.then((registration) => {
           registration.unregister().then(() => {
-            window.location.reload()
-          })
-        })
+            window.location.reload();
+          });
+        });
       } else {
-        registerValidSW(swUrl, config)
+        registerValidSW(swUrl, config);
       }
     })
     .catch(() => {
-      console.log('No internet connection, running in offline mode')
-    })
+      console.log("No internet connection, running in offline mode");
+    });
 }
 
 export function unregister() {
-  if ('serviceWorker' in navigator) {
+  if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready
-      .then(registration => {
-        registration.unregister()
+      .then((registration) => {
+        registration.unregister();
       })
-      .catch(error => {
-        console.error(error.message)
-      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   }
 }

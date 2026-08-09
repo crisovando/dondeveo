@@ -15,7 +15,7 @@
       "react-dom": ["./node_modules/preact/compat/"],
       "@/*": ["./src/*"],
       "@shared/*": ["./shared/*"]
-    },
+    }
   },
   "include": ["node_modules/vite/client.d.ts", "**/*"],
   "exclude": ["public/sw.js"]

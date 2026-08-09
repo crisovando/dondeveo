@@ -97,12 +97,7 @@ export function HeroHome({ movies }: HeroHomeProps) {
         </Hero.Carousel>
       </Hero>
 
-      {modalMovie && (
-        <AddFavoriteModal
-          movie={modalMovie}
-          onClose={() => setModalMovie(null)}
-        />
-      )}
+      {modalMovie && <AddFavoriteModal movie={modalMovie} onClose={() => setModalMovie(null)} />}
     </>
   );
 }

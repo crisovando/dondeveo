@@ -52,10 +52,7 @@ export function HeroDetail({ movie }: HeroDetailProps) {
       </Hero>
 
       {showModal && (
-        <AddFavoriteModal
-          movie={movie as AudioVisualDto}
-          onClose={() => setShowModal(false)}
-        />
+        <AddFavoriteModal movie={movie as AudioVisualDto} onClose={() => setShowModal(false)} />
       )}
     </>
   );

@@ -52,7 +52,7 @@ export function CarouselMulti({
 
             <div className={styles.meta}>
               <span className={styles.genreList}>
-                {movie.genres.map((g) => g?.name).join(", ")}
+                {movie.genres?.map((g) => g?.name).join(", ")}
               </span>
               <span className={styles.dot}></span>
               <span>{movie.releaseDate?.split("-")[0]}</span>
