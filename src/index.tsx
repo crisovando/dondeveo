@@ -15,7 +15,6 @@ import "./styles/base.css";
 import "./styles/header.css";
 import { loadHistory } from "./signals/history";
 import { Historical } from "./pages/Historical";
-import * as serviceWorkerRegistration from "./service-worker";
 
 export function App() {
   useEffect(() => {
@@ -44,5 +43,4 @@ export function App() {
 
 if (typeof window !== "undefined") {
   hydrate(<App />, document.getElementById("app"));
-  serviceWorkerRegistration.register();
 }
