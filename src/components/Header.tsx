@@ -1,14 +1,25 @@
-import { Search } from "lucide-preact";
+import { Download, Search, X } from "lucide-preact";
 import { useLocation } from "preact-iso";
 import { useState } from "preact/hooks";
+import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 
 export function Header() {
   const { path } = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+  const {
+    canInstall,
+    isStandalone,
+    isInstalled,
+    install,
+    isIOSHintVisible,
+    dismissIOSHint,
+  } = useInstallPrompt();
 
   const handleClickOverlay = () => {
     setShowMenu(false);
   };
+
+  const showInstallButton = canInstall && !isStandalone && !isInstalled;
 
   const isHome = path === "/" || path === "/home";
   const isSearchPage = path === "/search";
@@ -57,6 +68,32 @@ export function Header() {
           <img class="logo" alt="" src="/logo.svg" fetchpriority="high" />
           <img src="/logo-text.svg" alt="Donde veo" class="logo-text" fetchpriority="high" />
         </a>
+        {isIOSHintVisible && (
+          <div class="ios-install-hint" role="status">
+            <span class="ios-install-hint-text">
+              Compartir → Añadir a Pantalla de Inicio
+            </span>
+            <button
+              type="button"
+              class="ios-install-hint-close"
+              aria-label="Cerrar aviso"
+              onClick={dismissIOSHint}
+            >
+              <X class="ios-install-hint-close-icon" aria-hidden="true" />
+            </button>
+          </div>
+        )}
+        {showInstallButton && (
+          <button
+            type="button"
+            class="install-button"
+            aria-label="Instalar aplicación"
+            onClick={install}
+          >
+            <Download class="install-button-icon" aria-hidden="true" />
+            <span>Instalar</span>
+          </button>
+        )}
         {!isSearchPage && (
           <a href="/search" class="icon-search-link" aria-label="Buscar películas y series">
             <Search class="icon-search" aria-hidden="true" />
