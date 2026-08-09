@@ -3,7 +3,6 @@
   height: calc(90svh - 80px);
   min-height: 520px;
   overflow: hidden;
-  backdrop-filter: blur(4px);
 }
 
 .slide {
@@ -73,7 +72,8 @@
   font-size: clamp(32px, 8vw, 48px);
   font-weight: 800;
   line-height: 0.95;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .description {
@@ -83,19 +83,24 @@
   max-width: 90%;
 }
 
-.actions {
-  display: flex;
-  gap: var(--space-sm);
-  margin-top: 10px;
-}
-
 .attributes {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 0.75rem;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  color: var(--color-accent);
+  margin-bottom: 0.25rem;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 @media (min-width: 768px) {

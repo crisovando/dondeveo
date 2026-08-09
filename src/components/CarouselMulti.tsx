@@ -1,3 +1,4 @@
+import { useRef } from "preact/hooks";
 import styles from "./CarouselMulti.module.css";
 import type { AudioVisualDto } from "@/shared/types";
 
@@ -9,6 +10,8 @@ interface CarouselMultiProps {
   onSeeAll?: () => void;
 }
 
+const IMG_SRC = "https://image.tmdb.org/t/p/w500";
+
 export function CarouselMulti({
   title,
   subtitle,
@@ -16,13 +19,24 @@ export function CarouselMulti({
   onClick,
   onSeeAll,
 }: CarouselMultiProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
   if (movies.length === 0) return null;
+
+  const scrollByTrack = (dir: "prev" | "next") => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({
+      left: dir === "next" ? Math.round(el.clientWidth * 0.8) : -Math.round(el.clientWidth * 0.8),
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section className={styles.section}>
       <header className={styles.header}>
         <div className={styles.titleGroup}>
-          <h3>{title}</h3>
+          <h2>{title}</h2>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         </div>
         {onSeeAll && (
@@ -32,33 +46,61 @@ export function CarouselMulti({
         )}
       </header>
 
-      <div className={styles.carousel}>
-        {movies.map((movie) => (
-          <article key={movie.id} className={styles.card} onClick={() => onClick?.(movie)}>
-            <figure className={styles.posterWrapper}>
-              <img
-                src={
-                  movie.poster
-                    ? `https://image.tmdb.org/t/p/w500${movie.poster}`
-                    : "/placeholder-poster.png"
-                }
-                alt={movie.title}
-                className={styles.image}
-                loading="lazy"
-              />
-            </figure>
+      <div className={styles.rail}>
+        <button
+          type="button"
+          className={`${styles.nav} ${styles.navPrev}`}
+          onClick={() => scrollByTrack("prev")}
+          aria-label={`Ver anteriores de ${title}`}
+        >
+          ‹
+        </button>
 
-            <h4 className={styles.movieTitle}>{movie.title}</h4>
+        <div className={styles.carousel} ref={trackRef}>
+          {movies.map((movie) => (
+            <a
+              key={movie.id}
+              className={styles.card}
+              href={`/detail/${movie.mediaType}/${movie.id}`}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                e.preventDefault();
+                onClick?.(movie);
+              }}
+            >
+              <figure className={styles.posterWrapper}>
+                {movie.poster ? (
+                  <img
+                    src={`${IMG_SRC}${movie.poster}`}
+                    alt={`Póster de ${movie.title}`}
+                    className={styles.image}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null}
+              </figure>
 
-            <div className={styles.meta}>
-              <span className={styles.genreList}>
-                {movie.genres?.map((g) => g?.name).join(", ")}
-              </span>
-              <span className={styles.dot}></span>
-              <span>{movie.releaseDate?.split("-")[0]}</span>
-            </div>
-          </article>
-        ))}
+              <h3 className={styles.movieTitle}>{movie.title}</h3>
+
+              <div className={styles.meta}>
+                <span className={styles.genreList}>
+                  {movie.genres?.map((g) => g?.name).join(", ")}
+                </span>
+                <span className={styles.dot}></span>
+                <span>{movie.releaseDate?.split("-")[0]}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          className={`${styles.nav} ${styles.navNext}`}
+          onClick={() => scrollByTrack("next")}
+          aria-label={`Ver siguientes de ${title}`}
+        >
+          ›
+        </button>
       </div>
     </section>
   );

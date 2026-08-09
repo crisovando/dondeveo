@@ -27,7 +27,7 @@ export function App() {
   return (
     <LocationProvider>
       <Header />
-      <main>
+      <main id="contenido">
         <Router>
           <Route path="/" component={Home} />
           <Route path="/home" component={Home} />

@@ -3,11 +3,13 @@ import { navigateToDetail } from "@/helpers/navigation";
 import { AudioVisualDto } from "@/shared/types";
 import { useLocation } from "preact-iso";
 
-interface PopularProps {
+export interface PopularProps {
+  title?: string;
+  subtitle?: string;
   movies: AudioVisualDto[];
 }
 
-export function Popular({ movies }: PopularProps) {
+export function Popular({ title = "Populares", subtitle = "Las películas más populares del momento", movies }: PopularProps) {
   const { route } = useLocation();
 
   const handleClickMovie = (movie: AudioVisualDto) => {
@@ -16,8 +18,8 @@ export function Popular({ movies }: PopularProps) {
 
   return (
     <CarouselMulti
-      title="Populares"
-      subtitle="Las películas más populares del momento"
+      title={title}
+      subtitle={subtitle}
       movies={movies}
       onClick={handleClickMovie}
     />
