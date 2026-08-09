@@ -9,6 +9,7 @@ export function navigateToDetail(item: AudioVisualDto, route: RouteFn) {
     title: item.title,
     poster: item.poster,
     backdrop: item.backdrop || "",
+    from: window.location.pathname + window.location.search,
   };
 
   const path = `/detail/${item.mediaType}/${item.id}`;

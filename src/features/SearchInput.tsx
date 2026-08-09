@@ -5,11 +5,12 @@ import { useRef, useState } from "preact/hooks";
 
 interface SearchInputProps {
   onSearch: (a: string) => void;
+  initialValue?: string;
 }
 
-export function SearchInput({ onSearch }: SearchInputProps) {
+export function SearchInput({ onSearch, initialValue = "" }: SearchInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hasValue, setHasValue] = useState(false);
+  const [hasValue, setHasValue] = useState(initialValue.length > 0);
 
   const handleInput = (e: TargetedInputEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -40,6 +41,7 @@ export function SearchInput({ onSearch }: SearchInputProps) {
           type="search"
           autocomplete="off"
           spellcheck={false}
+          defaultValue={initialValue}
           onInput={handleInput}
           ref={inputRef}
         />
