@@ -28,43 +28,38 @@
   animation-range: 0 250px;
 }
 
-.menuButtonContainer {
+.hamburgerButton {
   position: fixed;
   right: 1rem;
   top: 1.5rem;
   z-index: var(--z-menu-button);
-  padding: 0.5rem;
-  border-radius: var(--radius-md);
-  transition: background 0.2s;
-}
-
-.menuButtonContainer:has(.open) {
-  background: oklch(100% 0 0 / 0.06);
-}
-
-@media (min-width: 1024px) {
-  .menuButtonContainer {
-    display: none;
-  }
-}
-
-.hamburgerButton {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 1.5rem;
-  height: 20px;
-  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.35rem;
   cursor: pointer;
   background: transparent;
   border: none;
-  transition: transform 0.3s;
+  border-radius: var(--radius-md);
+  transition: transform 0.3s, background 0.2s;
+}
+
+@media (min-width: 1024px) {
+  .hamburgerButton {
+    display: none;
+  }
 }
 
 .hamburgerButton:hover {
   transform: scale(1.1);
+}
+
+.hamburgerButton:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
 }
 
 .hamburgerButton span {
@@ -87,6 +82,44 @@
 
 .hamburgerButton.open span:nth-child(4) {
   transform: translateY(-9px) rotate(-45deg);
+}
+
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 1rem;
+  z-index: 999;
+  transform: translateY(-150%);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-bright);
+  border: 1px solid var(--color-accent-blue);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  transition: transform 0.2s;
+}
+
+.skip-link:focus {
+  transform: translateY(0.5rem);
+}
+
+.icon-search-link {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  transition: background 0.2s;
+}
+
+.icon-search-link:hover {
+  background: oklch(100% 0 0 / 0.08);
+}
+
+.icon-search-link:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
 }
 
 #overlay-menu {

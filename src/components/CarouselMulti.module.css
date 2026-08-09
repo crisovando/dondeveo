@@ -1,5 +1,5 @@
 .section {
-  margin: 2rem 0;
+  margin: 3rem 0;
   position: relative;
   z-index: 20;
 }
@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: flex-end;
   padding: 0 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 @media (min-width: 768px) {
@@ -18,15 +18,16 @@
   }
 }
 
-.titleGroup h3 {
+.titleGroup h2 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-white);
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  margin: 0;
+  margin: 0.25rem 0 0;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -35,25 +36,43 @@
 
 .viewAllBtn {
   background: none;
-  border: none;
+  border: 1px solid var(--color-border-card);
+  border-radius: var(--radius-full);
   color: var(--color-accent-blue);
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.75rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+  min-height: 40px;
 }
 
 .viewAllBtn:hover {
   color: var(--color-accent-blue-hover);
+  border-color: var(--color-accent-blue);
+}
+
+.viewAllBtn:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
+}
+
+.rail {
+  position: relative;
 }
 
 .carousel {
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  scroll-padding-inline: 1.5rem;
   padding: 0 1.5rem 3rem 1.5rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -70,11 +89,65 @@
   }
 }
 
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: calc(50% - 1.5rem);
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--color-nav-border);
+    background: oklch(10% 0.01 260 / 0.78);
+    color: var(--color-white);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition:
+      background 0.2s,
+      transform 0.2s;
+  }
+
+  .nav:hover {
+    background: oklch(20% 0.02 260 / 0.9);
+  }
+
+  .nav:focus-visible {
+    outline: 2px solid var(--color-accent-blue);
+    outline-offset: 2px;
+  }
+
+  .navPrev {
+    left: 0.75rem;
+  }
+
+  .navNext {
+    right: 0.75rem;
+  }
+}
+
 .card {
   flex: 0 0 280px;
   min-width: 0;
   scroll-snap-align: center;
   cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .card {
+    scroll-snap-align: start;
+  }
 }
 
 .posterWrapper {
@@ -84,12 +157,14 @@
   overflow: hidden;
   position: relative;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
   background-color: var(--color-gray-1);
 }
 
-.card:hover .posterWrapper {
-  transform: translateY(-8px) scale(1.02);
+@media (hover: hover) {
+  .card:hover .posterWrapper {
+    transform: translateY(-8px) scale(1.02);
+  }
 }
 
 .image {
@@ -99,7 +174,7 @@
 }
 
 .movieTitle {
-  margin: 0.75rem 0 0 0;
+  margin: 0.75rem 0 0;
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--color-white);

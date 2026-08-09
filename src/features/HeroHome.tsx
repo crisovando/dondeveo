@@ -1,5 +1,5 @@
 import { useLocation } from "preact-iso";
-import { Minus, Plus } from "lucide-preact";
+import { Play, Plus, Minus, Star } from "lucide-preact";
 import { AudioVisualDto } from "@/shared/types";
 import { Hero } from "@/components/Hero";
 import { ButtonHero } from "@/components/ButtonHero";
@@ -7,9 +7,16 @@ import { navigateToDetail } from "@/helpers/navigation";
 import { useState, useEffect, useRef } from "preact/hooks";
 import { isFavorite, removeFromFavorites } from "@/signals/favorites";
 import { AddFavoriteModal } from "@/components/AddFavoriteModal";
+import styles from "./HeroHome.module.css";
 
 interface HeroHomeProps {
   movies: AudioVisualDto[];
+}
+
+function mediaTypeLabel(mediaType: string) {
+  if (mediaType === "movie") return "Película";
+  if (mediaType === "tv") return "Serie";
+  return mediaType;
 }
 
 export function HeroHome({ movies }: HeroHomeProps) {
@@ -45,6 +52,8 @@ export function HeroHome({ movies }: HeroHomeProps) {
     }
   };
 
+  const activeMovie = movies.find((m) => m.id === activeId) ?? null;
+
   return (
     <>
       <Hero style={{ viewTransitionName: `hero-item` }}>
@@ -57,6 +66,7 @@ export function HeroHome({ movies }: HeroHomeProps) {
                 else slideRefs.current.delete(movie.id);
               }}
               data-slide-id={movie.id}
+              inert={activeId !== movie.id ? true : undefined}
             >
               <Hero.Media
                 src={movie.poster}
@@ -68,7 +78,19 @@ export function HeroHome({ movies }: HeroHomeProps) {
                 }}
               />
               <Hero.Overlay position="left">
+                <Hero.Attributes>
+                  {movie.mediaType && <span>{mediaTypeLabel(movie.mediaType)}</span>}
+                  {movie.releaseDate && <span>{movie.releaseDate.split("-")[0]}</span>}
+                  {movie.rating != null && (
+                    <span class={styles.rating}>
+                      <Star size={14} strokeWidth={2} aria-hidden="true" />
+                      {movie.rating.toFixed(1)}
+                    </span>
+                  )}
+                </Hero.Attributes>
                 <Hero.Title
+                  level={activeId === movie.id ? "h1" : "h2"}
+                  id={`hero-title-${movie.id}`}
                   style={{
                     viewTransitionName: activeId === movie.id ? `title-${movie.id}` : "none",
                   }}
@@ -77,8 +99,13 @@ export function HeroHome({ movies }: HeroHomeProps) {
                 </Hero.Title>
                 <Hero.Description>{movie.overview}</Hero.Description>
                 <Hero.Actions>
-                  <ButtonHero variant="primary" onClick={() => navigateToDetail(movie, route)}>
-                    ▶ Ver más
+                  <ButtonHero
+                    variant="primary"
+                    onClick={() => navigateToDetail(movie, route)}
+                    aria-label={`Ir al detalle de ${movie.title}`}
+                  >
+                    <Play size={16} strokeWidth={2.5} aria-hidden="true" />
+                    Ver más
                   </ButtonHero>
                   <ButtonHero
                     variant="secondary"
@@ -86,6 +113,11 @@ export function HeroHome({ movies }: HeroHomeProps) {
                       viewTransitionName: activeId === movie.id ? `button-${movie.id}` : "none",
                     }}
                     onClick={() => handleFavoriteClick(movie)}
+                    aria-label={
+                      isFavorite(movie.id)
+                        ? `Quitar ${movie.title} de favoritos`
+                        : `Agregar ${movie.title} a favoritos`
+                    }
                   >
                     {isFavorite(movie.id) ? <Minus /> : <Plus />}
                     Favoritos
@@ -96,6 +128,9 @@ export function HeroHome({ movies }: HeroHomeProps) {
           ))}
         </Hero.Carousel>
       </Hero>
+      <p class="sr-only" aria-live="polite">
+        {activeMovie ? `Ahora en portada: ${activeMovie.title}` : ""}
+      </p>
 
       {modalMovie && <AddFavoriteModal movie={modalMovie} onClose={() => setModalMovie(null)} />}
     </>

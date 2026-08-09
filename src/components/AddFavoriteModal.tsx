@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState, useRef, useEffect } from "preact/hooks";
 import { AudioVisualDto, FavoriteEntry } from "@/shared/types";
 import { addToFavorites } from "@/signals/favorites";
 import styles from "./AddFavoriteModal.module.css";
@@ -8,11 +8,54 @@ interface Props {
   onClose: () => void;
 }
 
+const FOCUSABLE =
+  'button:not(:disabled), input:not(:disabled), textarea:not(:disabled), [href], [tabindex]:not([tabindex="-1"])';
+
 export function AddFavoriteModal({ movie, onClose }: Props) {
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [wantsNotification, setWantsNotification] = useState(false);
   const [scheduledAt, setScheduledAt] = useState("");
   const [comment, setComment] = useState("");
   const [dateError, setDateError] = useState("");
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
+    const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE);
+    if (focusable && focusable.length > 0) {
+      focusable[0]?.focus();
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab" && dialogRef.current) {
+        const nodes = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE));
+        if (nodes.length === 0) return;
+
+        const first = nodes[0];
+        const last = nodes[nodes.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [onClose]);
 
   const isScheduledAtValid = (value: string): boolean => {
     if (!value) return false;
@@ -65,7 +108,13 @@ export function AddFavoriteModal({ movie, onClose }: Props) {
 
   return (
     <div class={styles.backdrop} onClick={handleBackdropClick}>
-      <div class={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div
+        ref={dialogRef}
+        class={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
         <header class={styles.header}>
           <h2 id="modal-title" class={styles.title}>
             Agregar a favoritos
@@ -89,20 +138,32 @@ export function AddFavoriteModal({ movie, onClose }: Props) {
           {wantsNotification && (
             <div class={styles.fields}>
               <div>
-                <span class={styles.fieldLabel}>Fecha y hora</span>
+                <span class={styles.fieldLabel} id="datetime-label">
+                  Fecha y hora
+                </span>
                 <input
                   type="datetime-local"
+                  aria-labelledby="datetime-label"
+                  aria-invalid={dateError ? "true" : "false"}
+                  aria-describedby={dateError ? "datetime-error" : undefined}
                   class={`${styles.input} ${dateError ? styles.inputError : ""}`}
                   value={scheduledAt}
                   min={minDatetime()}
                   onInput={(e) => handleScheduledAtChange((e.target as HTMLInputElement).value)}
                 />
-                {dateError && <p class={styles.fieldError}>{dateError}</p>}
+                {dateError && (
+                  <p class={styles.fieldError} id="datetime-error" role="alert">
+                    {dateError}
+                  </p>
+                )}
               </div>
               <div>
-                <span class={styles.fieldLabel}>Comentario (opcional)</span>
+                <span class={styles.fieldLabel} id="comment-label">
+                  Comentario (opcional)
+                </span>
                 <textarea
                   class={styles.textarea}
+                  aria-labelledby="comment-label"
                   placeholder="Ej: Ver con Laura el sábado a la noche"
                   value={comment}
                   onInput={(e) => setComment((e.target as HTMLTextAreaElement).value)}

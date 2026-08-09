@@ -70,11 +70,16 @@ function HeroOverlay({ children, position = "bottom", class: className, style }:
   );
 }
 
-function HeroTitle({ children, class: className, style }: BaseProps) {
+interface TitleProps extends BaseProps {
+  level?: "h1" | "h2" | "h3";
+  id?: string;
+}
+function HeroTitle({ children, class: className, style, level = "h1", id }: TitleProps) {
+  const Tag = level;
   return (
-    <h1 class={clsx(styles.title, className)} style={style as any}>
+    <Tag id={id} class={clsx(styles.title, className)} style={style as any}>
       {children}
-    </h1>
+    </Tag>
   );
 }
 

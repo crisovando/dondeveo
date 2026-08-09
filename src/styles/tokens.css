@@ -13,10 +13,10 @@
   --color-text: oklch(85% 0 0);
   --color-border-subtle: oklch(25% 0.01 260);
   --color-overlay: oklch(0% 0 0 / 0.5);
-  --color-nav-bg: oklch(15% 0.02 340);
-  --color-nav-bg-glass: oklch(13% 0.025 340 / 0.72);
+  --color-nav-bg: oklch(15% 0.02 15);
+  --color-nav-bg-glass: oklch(13% 0.025 15 / 0.72);
   --color-nav-border: oklch(100% 0 0 / 0.06);
-  --color-theme-raisin-black: oklch(25.53% 0.0209 340.25);
+  --color-theme-raisin-black: oklch(25.53% 0.0209 15);
 
   --color-primary: oklch(55% 0.22 25);
   --color-primary-hover: oklch(60% 0.22 25);
