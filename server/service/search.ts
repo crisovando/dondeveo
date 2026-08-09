@@ -7,12 +7,25 @@ const BASE_PATH = "/search/multi";
 
 export async function search(query: string, page: number): Promise<SearchData> {
   const path = `${BASE_PATH}?query=${query}&page=${page}`;
-  const { results, total_pages, total_results } = await fetchTMDB<SearchMultiResponse>(path);
-
-  return {
-    audiovisuals: results.map(mapToAudioVisualDto),
+  const empty: SearchData = {
+    audiovisuals: [],
     page,
-    totalPages: total_pages,
-    totalResults: total_results,
+    totalPages: 0,
+    totalResults: 0,
   };
+
+  try {
+    const { results = [], total_pages = 0, total_results = 0 } =
+      await fetchTMDB<SearchMultiResponse>(path);
+
+    return {
+      audiovisuals: results.map(mapToAudioVisualDto),
+      page,
+      totalPages: total_pages,
+      totalResults: total_results,
+    };
+  } catch (error) {
+    console.error(`TMDb search failed for "${query}":`, error);
+    return empty;
+  }
 }

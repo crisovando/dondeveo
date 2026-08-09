@@ -31,21 +31,35 @@ const animeDiscoverParams = new URLSearchParams({
 });
 
 export async function buildHome() {
-  const [trending, topRatedMovies, topRatedTv, topAnime] = await Promise.all([
+  const settled = await Promise.allSettled([
     fetchTMDB<TrendingResponse>("/trending/all/day"),
     fetchTMDB<TopRatedMovieResponse>("/movie/top_rated"),
     fetchTMDB<TopRatedTVResponse>("/tv/top_rated"),
     fetchTMDB<TopRatedMovieResponse>("/discover/tv", animeDiscoverParams),
   ]);
 
+  if (settled.every((result) => result.status === "rejected")) {
+    throw new Error("TMDb home failed");
+  }
+
+  const fulfilled = (index: number) => {
+    const result = settled[index];
+    return result.status === "fulfilled" ? result.value : undefined;
+  };
+
+  const trending = fulfilled(0);
+  const topRatedMovies = fulfilled(1);
+  const topRatedTv = fulfilled(2);
+  const topAnime = fulfilled(3);
+
   return {
-    trending: trending.results.slice(0, LIMIT_TREND).map(mapToAudioVisualDto),
-    topRatedMovies: topRatedMovies.results
-      .slice(0, LIMIT_TREND)
-      .map(mapToAudioVisualDto),
-    topRatedTv: topRatedTv.results
-      .slice(0, LIMIT_TREND)
-      .map(mapToAudioVisualDto),
-    topAnime: topAnime.results.slice(0, 50).map(mapToAudioVisualDto),
+    trending: trending?.results?.slice(0, LIMIT_TREND).map(mapToAudioVisualDto) ?? [],
+    topRatedMovies: topRatedMovies?.results
+      ?.slice(0, LIMIT_TREND)
+      .map(mapToAudioVisualDto) ?? [],
+    topRatedTv: topRatedTv?.results
+      ?.slice(0, LIMIT_TREND)
+      .map(mapToAudioVisualDto) ?? [],
+    topAnime: topAnime?.results?.slice(0, 50).map(mapToAudioVisualDto) ?? [],
   };
 }
