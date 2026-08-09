@@ -13,6 +13,8 @@ export function Header() {
     install,
     isIOSHintVisible,
     dismissIOSHint,
+    isInstallBannerVisible,
+    dismissInstallBanner,
   } = useInstallPrompt();
 
   const handleClickOverlay = () => {
@@ -83,22 +85,46 @@ export function Header() {
             </button>
           </div>
         )}
-        {showInstallButton && (
-          <button
-            type="button"
-            class="install-button"
-            aria-label="Instalar aplicación"
-            onClick={install}
-          >
-            <Download class="install-button-icon" aria-hidden="true" />
-            <span>Instalar</span>
-          </button>
+        {isInstallBannerVisible && (
+          <div class="install-banner" role="status">
+            <Download class="install-banner-icon" aria-hidden="true" />
+            <span class="install-banner-text">Agregar a tu pantalla de inicio</span>
+            <button
+              type="button"
+              class="install-banner-action"
+              aria-label="Instalar aplicación"
+              onClick={install}
+            >
+              Instalar
+            </button>
+            <button
+              type="button"
+              class="install-banner-close"
+              aria-label="Cerrar aviso"
+              onClick={dismissInstallBanner}
+            >
+              <X class="install-banner-close-icon" aria-hidden="true" />
+            </button>
+          </div>
         )}
-        {!isSearchPage && (
-          <a href="/search" class="icon-search-link" aria-label="Buscar películas y series">
-            <Search class="icon-search" aria-hidden="true" />
-          </a>
-        )}
+        <div class="header-actions">
+          {showInstallButton && (
+            <button
+              type="button"
+              class="install-button"
+              aria-label="Instalar aplicación"
+              onClick={install}
+            >
+              <Download class="install-button-icon" aria-hidden="true" />
+              <span>Instalar</span>
+            </button>
+          )}
+          {!isSearchPage && (
+            <a href="/search" class="icon-search-link" aria-label="Buscar películas y series">
+              <Search class="icon-search" aria-hidden="true" />
+            </a>
+          )}
+        </div>
       </header>
     </>
   );
