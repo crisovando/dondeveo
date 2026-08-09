@@ -6,32 +6,78 @@ const URL_API = "/api/search";
 export const useSearchData = () => {
   const currentQuery = useRef("");
   const currentPage = useRef(1);
+  const seq = useRef(0);
   const [data, setData] = useState<SearchData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchData = (query: string, page = 1) => {
-    fetch(`${URL_API}?query=${query}&page=${page}`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (query !== currentQuery.current) {
-          setData(json);
-          currentQuery.current = query;
-        } else {
-          setData((prev) => {
-            if (!prev) return json;
+    const trimmed = query.trim();
+    const id = ++seq.current;
 
-            return {
-              ...prev,
-              audiovisuals: [...prev.audiovisuals, ...json.audiovisuals],
-            };
-          });
-        }
+    if (!trimmed) {
+      currentQuery.current = "";
+      currentPage.current = 1;
+      setData(null);
+      setLoading(false);
+      setError(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(false);
+
+    if (trimmed !== currentQuery.current) {
+      currentQuery.current = trimmed;
+      currentPage.current = page;
+      setData(null);
+    } else {
+      currentPage.current = page;
+    }
+
+    fetch(`${URL_API}?query=${encodeURIComponent(trimmed)}&page=${page}`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json() as Promise<SearchData>;
+      })
+      .then((json) => {
+        if (seq.current !== id) return;
+        setData((prev) => {
+          if (!prev || page === 1) return json;
+          return {
+            ...prev,
+            audiovisuals: [...prev.audiovisuals, ...json.audiovisuals],
+          };
+        });
+      })
+      .catch(() => {
+        if (seq.current !== id) return;
+        setData(null);
+        setError(true);
+      })
+      .finally(() => {
+        if (seq.current === id) setLoading(false);
       });
   };
 
   const loadMore = async () => {
-    currentPage.current += 1;
-    return fetchData(currentQuery.current, currentPage.current);
+    if (!currentQuery.current) return;
+    fetchData(currentQuery.current, currentPage.current + 1);
   };
 
-  return { data, fetchData, loadMore };
+  const retry = () => {
+    if (!currentQuery.current) return;
+    fetchData(currentQuery.current, 1);
+  };
+
+  const reset = () => {
+    seq.current += 1;
+    currentQuery.current = "";
+    currentPage.current = 1;
+    setData(null);
+    setLoading(false);
+    setError(false);
+  };
+
+  return { data, loading, error, fetchData, loadMore, retry, reset };
 };
