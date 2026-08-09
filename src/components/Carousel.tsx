@@ -1,5 +1,6 @@
 import { ComponentChildren } from "preact";
 import clsx from "clsx";
+import { ChevronLeft, ChevronRight } from "lucide-preact";
 import styles from "./Carousel.module.css";
 import { useRef } from "preact/hooks";
 
@@ -53,7 +54,7 @@ export function Carousel({ children, full = false }: CarouselProps) {
         onClick={() => scroll("prev")}
         aria-label="Anterior"
       >
-        ‹
+        <ChevronLeft size={20} strokeWidth={2.5} aria-hidden="true" />
       </button>
 
       <div class={styles.carousel} ref={ref}>
@@ -65,7 +66,7 @@ export function Carousel({ children, full = false }: CarouselProps) {
         onClick={() => scroll("next")}
         aria-label="Siguiente"
       >
-        ›
+        <ChevronRight size={20} strokeWidth={2.5} aria-hidden="true" />
       </button>
     </div>
   );
