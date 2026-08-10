@@ -20,7 +20,7 @@ const MAX_ITEMS = 10;
 export function TopTenRow({ movies = [], title = "Top 10", subtitle }: TopTenRowProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const { route } = useLocation();
-  const providersMap = useProvidersMap(movies);
+  const providersMap = useProvidersMap(movies, true);
 
   if (movies.length === 0) return null;
 

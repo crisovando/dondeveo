@@ -95,6 +95,7 @@ export function HeroHome({ movies }: HeroHomeProps) {
                     type={movie.mediaType}
                     id={movie.id}
                     title={movie.title}
+                    providers={movie.providers}
                   />
                 )}
                 <Hero.Title
