@@ -6,7 +6,7 @@ import { mapWatchProviders } from "../utils/mappers";
 const SUPPORTED_TYPES = new Set(["movie", "tv"]);
 
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
-const MAX_CONCURRENCY = 4;
+const MAX_CONCURRENCY = 12;
 
 interface CacheEntry {
   providers: ProviderWithType[];

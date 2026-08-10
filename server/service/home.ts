@@ -9,8 +9,9 @@ import {
   WatchProvidersResponse,
 } from "../types/tmdb-discover";
 import { fetchTMDB } from "./tmdbFetch";
+import { getWatchProvidersBatched } from "./providers";
 import { mapToAudioVisualDto } from "../utils/mappers";
-import { PlatformRow } from "../../src/shared/types";
+import { PlatformRow, ProviderWithType } from "../../src/shared/types";
 
 const LIMIT_TREND = 10;
 const MAX_PLATFORMS = 4;
@@ -209,13 +210,42 @@ export async function buildHome() {
   const filteredTopRatedTv = filterSeen(rawTopRatedTv);
   const filteredTopAnime = filterSeen(rawTopAnime);
 
+  // Enrich provider availability through the same batched path
+  // /api/providers/batch serves. Enrichment is best-effort: never fail the
+  // whole home payload on it. Only rails that actually render provider chips
+  // are enriched; platform rails pass showProviders={false} and skip it.
+  const providerRefs = [
+    ...filteredTrending,
+    ...filteredNewReleases,
+    ...filteredMostPopularAR,
+    ...filteredTopRatedMovies,
+    ...filteredTopRatedTv,
+    ...filteredTopAnime,
+  ].map((item) => ({ type: item.mediaType, id: item.id }));
+
+  const providersMap: Record<string, ProviderWithType[]> = {};
+  try {
+    const batched = await getWatchProvidersBatched(providerRefs);
+    Object.assign(providersMap, batched);
+  } catch (error) {
+    console.error("Provider enrichment failed for home:", error);
+  }
+
+  const enrichWithProviders = <T extends { id: number; mediaType: string }>(
+    items: T[],
+  ): (T & { providers?: ProviderWithType[] })[] =>
+    items.map((item) => ({
+      ...item,
+      providers: providersMap[`${item.mediaType}:${item.id}`] ?? undefined,
+    }));
+
   return {
-    trending: filteredTrending,
-    topRatedMovies: filteredTopRatedMovies,
-    topRatedTv: filteredTopRatedTv,
-    topAnime: filteredTopAnime,
-    newReleases: filteredNewReleases,
-    mostPopularAR: filteredMostPopularAR,
+    trending: enrichWithProviders(filteredTrending),
+    topRatedMovies: enrichWithProviders(filteredTopRatedMovies),
+    topRatedTv: enrichWithProviders(filteredTopRatedTv),
+    topAnime: enrichWithProviders(filteredTopAnime),
+    newReleases: enrichWithProviders(filteredNewReleases),
+    mostPopularAR: enrichWithProviders(filteredMostPopularAR),
     platforms: filteredPlatforms,
   };
 }

@@ -8,6 +8,7 @@ interface HeroProvidersProps {
   type?: string;
   id?: number;
   title?: string;
+  providers?: ProviderWithType[];
 }
 
 const BUILTIN_LABELS: Record<string, string> = {
@@ -25,14 +26,22 @@ function labelFor(provider: ProviderWithType): string {
   return BUILTIN_LABELS[provider.providerName] ?? provider.providerName;
 }
 
-export function HeroProviders({ type, id, title }: HeroProvidersProps) {
-  const { data, loading, error } = useWatchProviders(type, id, title);
+export function HeroProviders({ type, id, title, providers }: HeroProvidersProps) {
+  // Prefer providers embedded by the server (home payload); only fall back to a
+  // network call when they are absent (e.g. detail-page usage elsewhere).
+  const { data, loading, error } = useWatchProviders(
+    providers && providers.length > 0 ? undefined : type,
+    providers && providers.length > 0 ? undefined : id,
+    providers && providers.length > 0 ? undefined : title,
+  );
 
   if (error) return null;
 
-  const providers = data?.providers.filter(isStreamProvider) ?? [];
+  const embedded = (providers ?? []).filter(isStreamProvider);
+  const fetched = data?.providers.filter(isStreamProvider) ?? [];
+  const stream = embedded.length > 0 ? embedded : fetched;
 
-  if (loading && providers.length === 0) {
+  if (loading && stream.length === 0) {
     return (
       <p class={styles.line} aria-hidden="true">
         <span class={styles.label}>Disponible en</span>
@@ -41,7 +50,7 @@ export function HeroProviders({ type, id, title }: HeroProvidersProps) {
     );
   }
 
-  if (providers.length === 0) return null;
+  if (stream.length === 0) return null;
 
   return (
     <div class={styles.line}>
@@ -50,7 +59,7 @@ export function HeroProviders({ type, id, title }: HeroProvidersProps) {
         Donde ver
       </span>
       <span class={styles.logos}>
-        {providers.slice(0, 4).map((provider) => (
+        {stream.slice(0, 4).map((provider) => (
           <span
             class={styles.chip}
             key={provider.providerId}

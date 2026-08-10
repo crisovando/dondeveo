@@ -28,7 +28,7 @@ export function CarouselMulti({
   showProviders = true,
 }: CarouselMultiProps) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const providersMap = useProvidersMap(movies);
+  const providersMap = useProvidersMap(movies, showProviders);
 
   if (movies.length === 0) return null;
 

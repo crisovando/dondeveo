@@ -8,6 +8,8 @@ export const isStreamProvider = (provider: ProviderWithType): boolean =>
 
 const TTL_MS = 60 * 60 * 1000;
 
+const BATCH_MAX_ITEMS = 50;
+
 interface CacheEntry {
   data: Record<string, ProviderWithType[]>;
   expiresAt: number;
@@ -15,53 +17,75 @@ interface CacheEntry {
 
 const cache = new Map<string, CacheEntry>();
 
-function keyFor(movies: AudioVisualDto[]): string {
-  return movies
-    .map((m) => `${m.mediaType}:${m.id}`)
-    .sort()
-    .join(",");
+function providerKey(movie: AudioVisualDto): string {
+  return `${movie.mediaType}:${movie.id}`;
 }
 
-export const useProvidersMap = (movies: AudioVisualDto[]) => {
-  const [map, setMap] = useState<Record<string, ProviderWithType[]>>(() => {
-    const key = keyFor(movies);
-    const entry = cache.get(key);
-    if (entry && Date.now() < entry.expiresAt) return entry.data;
-    return {};
-  });
+export const useProvidersMap = (movies: AudioVisualDto[], enabled = true) => {
+  // Providers embedded by the server (search + home payloads). An item with an
+  // empty array is a legitimate "no providers" answer and stays in the map so
+  // we do not refetch it.
+  const embeddedMap = useMemo(() => {
+    const map: Record<string, ProviderWithType[]> = {};
+    for (const movie of movies) {
+      if (Array.isArray(movie.providers)) {
+        map[providerKey(movie)] = movie.providers;
+      }
+    }
+    return map;
+  }, [movies]);
 
-  const key = useMemo(() => keyFor(movies), [movies]);
+  const missingKeys = useMemo(() => {
+    if (!enabled) return [];
+    return movies.filter((movie) => !Array.isArray(movie.providers)).map(providerKey);
+  }, [enabled, movies]);
+
+  const batchKey = useMemo(
+    () => missingKeys.slice(0, BATCH_MAX_ITEMS).sort().join(","),
+    [missingKeys],
+  );
+
+  // Single state seeded from the embedded map; fetched results are merged on
+  // top. Kept in sync so a props change is reflected immediately.
+  const [map, setMap] = useState<Record<string, ProviderWithType[]>>(embeddedMap);
 
   useEffect(() => {
-    if (movies.length === 0) return;
+    setMap(embeddedMap);
+  }, [embeddedMap]);
 
-    const cached = cache.get(key);
+  useEffect(() => {
+    // Nothing to fetch: every relevant item already carries embedded providers.
+    if (!enabled || movies.length === 0 || missingKeys.length === 0) return;
+
+    const cached = cache.get(batchKey);
     if (cached && Date.now() < cached.expiresAt) {
-      setMap(cached.data);
+      setMap((prev) => ({ ...prev, ...cached.data }));
       return;
     }
 
     let cancelled = false;
 
-    fetch(`/api/providers/batch?items=${encodeURIComponent(key)}`)
+    fetch(`/api/providers/batch?items=${encodeURIComponent(batchKey)}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json() as Promise<{ providers: Record<string, ProviderWithType[]> }>;
       })
       .then((json) => {
         if (cancelled) return;
-        cache.set(key, { data: json.providers, expiresAt: Date.now() + TTL_MS });
-        setMap(json.providers);
+        cache.set(batchKey, { data: json.providers, expiresAt: Date.now() + TTL_MS });
+        setMap((prev) => ({ ...prev, ...json.providers }));
       })
       .catch(() => {
         if (cancelled) return;
-        setMap({});
       });
 
     return () => {
       cancelled = true;
     };
-  }, [key, movies.length]);
+  }, [enabled, movies.length, missingKeys, batchKey]);
+
+  if (!enabled || movies.length === 0) return {};
+  if (missingKeys.length === 0) return embeddedMap;
 
   return map;
 };
