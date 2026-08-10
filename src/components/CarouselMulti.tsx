@@ -1,5 +1,6 @@
 import { useRef } from "preact/hooks";
 import { ChevronLeft, ChevronRight } from "lucide-preact";
+import { Img } from "./Img";
 import styles from "./CarouselMulti.module.css";
 import type { AudioVisualDto } from "@/shared/types";
 import { useProvidersMap } from "@/hooks/useProvidersMap";
@@ -15,7 +16,6 @@ interface CarouselMultiProps {
   showProviders?: boolean;
 }
 
-const IMG_SRC = "https://image.tmdb.org/t/p/w342";
 const LOGO_SRC = "https://image.tmdb.org/t/p/w92";
 
 export function CarouselMulti({
@@ -90,12 +90,15 @@ export function CarouselMulti({
             >
               <figure className={styles.posterWrapper}>
                 {movie.poster ? (
-                  <img
-                    src={`${IMG_SRC}${movie.poster}`}
+                  <Img
+                    type="poster"
+                    size="w342"
+                    src={movie.poster}
                     alt={`Póster de ${movie.title}`}
                     className={styles.image}
                     loading="lazy"
                     decoding="async"
+                    sizes="(max-width: 640px) 120px, 150px"
                   />
                 ) : null}
               </figure>

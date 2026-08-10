@@ -5,6 +5,7 @@ import { CardProviders } from "@/features/CardProviders";
 import { navigateToDetail } from "@/helpers/navigation";
 import { useProvidersMap } from "@/hooks/useProvidersMap";
 import type { AudioVisualDto } from "@/shared/types";
+import { Img } from "@/components/Img";
 import styles from "./TopTenRow.module.css";
 
 interface TopTenRowProps {
@@ -13,8 +14,6 @@ interface TopTenRowProps {
   subtitle?: string;
 }
 
-const BACKDROP_SRC = "https://image.tmdb.org/t/p/w780";
-const POSTER_SRC = "https://image.tmdb.org/t/p/w500";
 const MAX_ITEMS = 10;
 
 export function TopTenRow({ movies = [], title = "Top 10", subtitle }: TopTenRowProps) {
@@ -62,11 +61,7 @@ export function TopTenRow({ movies = [], title = "Top 10", subtitle }: TopTenRow
 
         <div className={styles.carousel} ref={trackRef}>
           {visible.map((movie, index) => {
-            const backdrop = movie.backdrop
-              ? `${BACKDROP_SRC}${movie.backdrop}`
-              : movie.poster
-                ? `${POSTER_SRC}${movie.poster}`
-                : "";
+            const backdrop = movie.backdrop ?? undefined;
             const label = `Póster de ${movie.title}`;
 
             return (
@@ -80,12 +75,18 @@ export function TopTenRow({ movies = [], title = "Top 10", subtitle }: TopTenRow
                   handleClickItem(movie);
                 }}
               >
-                <div
-                  className={styles.media}
-                  role="img"
-                  aria-label={label}
-                  style={{ backgroundImage: backdrop ? `url(${backdrop})` : undefined }}
-                />
+                {backdrop ? (
+                  <Img
+                    type="backdrop"
+                    size="w780"
+                    src={backdrop}
+                    alt={label}
+                    class={styles.media}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 640px) 60vw, 480px"
+                  />
+                ) : null}
                 <span className={styles.scrim} aria-hidden="true" />
                 <span className={styles.numeral} aria-hidden="true">
                   {index + 1}
