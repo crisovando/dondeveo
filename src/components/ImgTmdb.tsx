@@ -89,11 +89,11 @@ export function ImgTmdb({
       <div
         style={{
           aspectRatio,
-          background: "#222",
+          background: "var(--color-gray-1)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "#888",
+          color: "var(--color-text-muted)",
           fontSize: "12px",
         }}
       >

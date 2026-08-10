@@ -10,6 +10,7 @@ export const useSearchData = () => {
   const [data, setData] = useState<SearchData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [loadMoreError, setLoadMoreError] = useState(false);
 
   const fetchData = (query: string, page = 1) => {
     const trimmed = query.trim();
@@ -21,11 +22,13 @@ export const useSearchData = () => {
       setData(null);
       setLoading(false);
       setError(false);
+      setLoadMoreError(false);
       return;
     }
 
     setLoading(true);
     setError(false);
+    setLoadMoreError(false);
 
     if (trimmed !== currentQuery.current) {
       currentQuery.current = trimmed;
@@ -52,8 +55,12 @@ export const useSearchData = () => {
       })
       .catch(() => {
         if (seq.current !== id) return;
-        setData(null);
-        setError(true);
+        if (page === 1) {
+          setData(null);
+          setError(true);
+        } else {
+          setLoadMoreError(true);
+        }
       })
       .finally(() => {
         if (seq.current === id) setLoading(false);
@@ -70,6 +77,11 @@ export const useSearchData = () => {
     fetchData(currentQuery.current, 1);
   };
 
+  const retryLoadMore = () => {
+    if (!currentQuery.current) return;
+    fetchData(currentQuery.current, currentPage.current);
+  };
+
   const reset = () => {
     seq.current += 1;
     currentQuery.current = "";
@@ -77,6 +89,7 @@ export const useSearchData = () => {
     setData(null);
     setLoading(false);
     setError(false);
+    setLoadMoreError(false);
   };
 
   const restore = (query: string, json: SearchData) => {
@@ -86,7 +99,19 @@ export const useSearchData = () => {
     setData(json);
     setLoading(false);
     setError(false);
+    setLoadMoreError(false);
   };
 
-  return { data, loading, error, fetchData, loadMore, retry, reset, restore };
+  return {
+    data,
+    loading,
+    error,
+    loadMoreError,
+    fetchData,
+    loadMore,
+    retry,
+    retryLoadMore,
+    reset,
+    restore,
+  };
 };

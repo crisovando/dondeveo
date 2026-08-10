@@ -27,25 +27,44 @@
   animation: fadeIn 0.2s ease;
 }
 
-.ring {
+.overlayInline {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg) 0;
+}
+
+.ring,
+.ringInline {
   position: relative;
+}
+
+.ring {
   width: 52px;
   height: 52px;
 }
 
+.ringInline {
+  width: 26px;
+  height: 26px;
+}
+
 .ring::before,
-.ring::after {
+.ring::after,
+.ringInline::before,
+.ringInline::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;
 }
 
-.ring::before {
+.ring::before,
+.ringInline::before {
   border: 3px solid oklch(100% 0 0 / 0.08);
 }
 
-.ring::after {
+.ring::after,
+.ringInline::after {
   border: 3px solid transparent;
   border-top-color: var(--color-primary);
   animation: spin 0.75s linear infinite;
