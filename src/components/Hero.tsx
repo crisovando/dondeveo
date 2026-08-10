@@ -43,6 +43,10 @@ interface MediaProps extends ImgTmdbProps {
   style?: CSSProperties;
 }
 function HeroMedia({ backdrop, class: className, style, ...props }: MediaProps) {
+  // The hero is above the fold: the LCP slide must load eagerly, never with
+  // Img's default loading="lazy" (that would deprioritize the LCP image).
+  const isPriority = props.fetchPriority === "high";
+
   return (
     <picture class={clsx(styles.media, className)} style={style as any}>
       {backdrop && (
@@ -52,7 +56,13 @@ function HeroMedia({ backdrop, class: className, style, ...props }: MediaProps) 
           sizes="100vw"
         />
       )}
-      <Img type="backdrop" class={clsx(styles.media, className)} size="w342" {...props} />
+      <Img
+        type="backdrop"
+        class={clsx(styles.media, className)}
+        size="w342"
+        {...props}
+        loading={isPriority ? "eager" : undefined}
+      />
     </picture>
   );
 }
