@@ -3,31 +3,42 @@ import { useCallback, useEffect, useRef } from "preact/hooks";
 export const useInfiniteScroll = (fetchData: () => Promise<void>, hasMore: boolean) => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const isFetchingRef = useRef(false);
-
-  const handleIntersection = useCallback(
-    async (entries: IntersectionObserverEntry[]) => {
-      const isIntersecting = entries[0]?.isIntersecting;
-      if (isIntersecting && hasMore) {
-        isFetchingRef.current = true;
-        await fetchData();
-        isFetchingRef.current = false;
-      }
-    },
-    [fetchData, hasMore],
-  );
+  const fetchRef = useRef(fetchData);
+  const hasMoreRef = useRef(hasMore);
 
   useEffect(() => {
+    fetchRef.current = fetchData;
+  }, [fetchData]);
+
+  useEffect(() => {
+    hasMoreRef.current = hasMore;
+  }, [hasMore]);
+
+  const handleIntersection = useCallback(async (entries: IntersectionObserverEntry[]) => {
+    const isIntersecting = entries[0]?.isIntersecting;
+    if (isIntersecting && hasMoreRef.current && !isFetchingRef.current) {
+      isFetchingRef.current = true;
+      try {
+        await fetchRef.current();
+      } finally {
+        isFetchingRef.current = false;
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = loadMoreRef.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(handleIntersection, {
       rootMargin: "300px 0px",
       threshold: 0.1,
     });
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
+    observer.observe(el);
 
     return () => observer.disconnect();
-  }, [handleIntersection]);
+  }, [handleIntersection, hasMore]);
 
   return { loadMoreRef };
 };

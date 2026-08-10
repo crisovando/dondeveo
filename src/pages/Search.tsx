@@ -1,4 +1,4 @@
-import { useEffect } from "preact/hooks";
+import { useEffect, useRef } from "preact/hooks";
 import { useLocation } from "preact-iso";
 import { SearchInput } from "@/features/SearchInput";
 import { SearchResults } from "@/features/SearchResults";
@@ -10,7 +10,19 @@ import { AudioVisualDto } from "@/shared/types";
 
 export function Search() {
   const { route } = useLocation();
-  const { fetchData, data, loadMore, loading, error, reset, restore } = useSearchData();
+  const {
+    fetchData,
+    data,
+    loadMore,
+    loading,
+    error,
+    loadMoreError,
+    retry,
+    retryLoadMore,
+    reset,
+    restore,
+  } = useSearchData();
+  const searchSetterRef = useRef<(title: string) => void>(() => {});
 
   useEffect(() => {
     const session = searchSession.value;
@@ -45,16 +57,32 @@ export function Search() {
     navigateToDetail(item, route);
   };
 
+  const handleRecentSearch = (title: string) => {
+    searchSetterRef.current(title);
+  };
+
   return (
     <div class="search">
-      <SearchInput onSearch={funcDebounced} initialValue={searchSession.value.query} />
+      <SearchInput
+        onSearch={funcDebounced}
+        initialValue={searchSession.value.query}
+        onSetSearchControl={(setSearch) => {
+          searchSetterRef.current = setSearch;
+        }}
+      />
       <SearchResults
         items={data?.audiovisuals}
         total={data?.totalResults ?? 0}
+        page={data?.page}
+        totalPages={data?.totalPages}
         loading={loading}
         error={error}
-        fethMore={loadMore}
+        loadMoreError={loadMoreError}
+        fetchMore={loadMore}
+        retry={retry}
+        retryLoadMore={retryLoadMore}
         onItemClick={handleItemClick}
+        onRecentSearch={handleRecentSearch}
       />
     </div>
   );

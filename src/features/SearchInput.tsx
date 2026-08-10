@@ -1,16 +1,31 @@
 import { TargetedInputEvent } from "preact";
 import { Search, X } from "lucide-preact";
 import styles from "./SearchInput.module.css";
-import { useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 interface SearchInputProps {
   onSearch: (a: string) => void;
   initialValue?: string;
+  onSetSearchControl?: (setSearch: (value: string) => void) => void;
 }
 
-export function SearchInput({ onSearch, initialValue = "" }: SearchInputProps) {
+export function SearchInput({ onSearch, initialValue = "", onSetSearchControl }: SearchInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasValue, setHasValue] = useState(initialValue.length > 0);
+  const onSearchRef = useRef(onSearch);
+
+  useEffect(() => {
+    onSearchRef.current = onSearch;
+  }, [onSearch]);
+
+  useEffect(() => {
+    onSetSearchControl?.((value: string) => {
+      if (inputRef.current) inputRef.current.value = value;
+      setHasValue(value.length > 0);
+      onSearchRef.current(value);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleInput = (e: TargetedInputEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -32,12 +47,12 @@ export function SearchInput({ onSearch, initialValue = "" }: SearchInputProps) {
           <Search class={styles.icon} aria-hidden="true" />
         </div>
         <label class={styles.srOnly} htmlFor="search-input">
-          Buscar películas, series y personas
+          Buscar películas y series
         </label>
         <input
           id="search-input"
           class={styles.input}
-          placeholder="Buscar películas, series y personas"
+          placeholder="Buscar películas y series"
           type="search"
           autocomplete="off"
           spellcheck={false}

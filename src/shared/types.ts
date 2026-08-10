@@ -9,6 +9,7 @@ export interface AudioVisualDto {
   genres?: Genres[];
   genreIds?: number[];
   releaseDate?: string;
+  providers?: ProviderWithType[];
 }
 
 export interface ScheduledNotification {
