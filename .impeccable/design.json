@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-09T18:25:00-03:00",
+  "title": "Design System: Donde veo",
+  "extensions": {
+    "colorMeta": {
+      "dondeveo-red": {
+        "role": "primary",
+        "displayName": "Rojo Dondeveo",
+        "canonical": "oklch(55% 0.22 25)",
+        "tonalRamp": [
+          "oklch(20% 0.22 25)",
+          "oklch(30% 0.22 25)",
+          "oklch(40% 0.22 25)",
+          "oklch(50% 0.22 25)",
+          "oklch(55% 0.22 25)",
+          "oklch(65% 0.22 25)",
+          "oklch(80% 0.22 25)",
+          "oklch(92% 0.22 25)"
+        ]
+      },
+      "accent-amber": {
+        "role": "secondary",
+        "displayName": "Ámbar Atributo",
+        "canonical": "oklch(75% 0.1 35)",
+        "tonalRamp": [
+          "oklch(20% 0.1 35)",
+          "oklch(32% 0.1 35)",
+          "oklch(44% 0.1 35)",
+          "oklch(56% 0.1 35)",
+          "oklch(68% 0.1 35)",
+          "oklch(75% 0.1 35)",
+          "oklch(85% 0.1 35)",
+          "oklch(94% 0.1 35)"
+        ]
+      },
+      "focus-blue": {
+        "role": "tertiary",
+        "displayName": "Azul Foco",
+        "canonical": "oklch(65% 0.15 250)",
+        "tonalRamp": [
+          "oklch(20% 0.15 250)",
+          "oklch(32% 0.15 250)",
+          "oklch(44% 0.15 250)",
+          "oklch(56% 0.15 250)",
+          "oklch(65% 0.15 250)",
+          "oklch(75% 0.15 250)",
+          "oklch(85% 0.15 250)",
+          "oklch(94% 0.15 250)"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Fondo",
+        "canonical": "oklch(12% 0.01 260)",
+        "tonalRamp": [
+          "oklch(15% 0.01 260)",
+          "oklch(24% 0.01 260)",
+          "oklch(33% 0.01 260)",
+          "oklch(42% 0.01 260)",
+          "oklch(52% 0.01 260)",
+          "oklch(62% 0.01 260)",
+          "oklch(75% 0.01 260)",
+          "oklch(90% 0.01 260)"
+        ]
+      },
+      "surface-base": {
+        "role": "neutral",
+        "displayName": "Surface Base",
+        "canonical": "oklch(20% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(20% 0 0)",
+          "oklch(32% 0 0)",
+          "oklch(44% 0 0)",
+          "oklch(56% 0 0)",
+          "oklch(68% 0 0)",
+          "oklch(80% 0 0)",
+          "oklch(93% 0 0)"
+        ]
+      },
+      "surface-elevated": {
+        "role": "neutral",
+        "displayName": "Surface Elevated",
+        "canonical": "oklch(26% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(20% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(38% 0 0)",
+          "oklch(50% 0 0)",
+          "oklch(64% 0 0)",
+          "oklch(78% 0 0)",
+          "oklch(92% 0 0)"
+        ]
+      },
+      "nav-raisin": {
+        "role": "neutral",
+        "displayName": "Nav Raisin",
+        "canonical": "oklch(15% 0.02 15)",
+        "tonalRamp": [
+          "oklch(15% 0.02 15)",
+          "oklch(25% 0.02 15)",
+          "oklch(36% 0.02 15)",
+          "oklch(48% 0.02 15)",
+          "oklch(60% 0.02 15)",
+          "oklch(72% 0.02 15)",
+          "oklch(84% 0.02 15)",
+          "oklch(95% 0.02 15)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Text",
+        "canonical": "oklch(85% 0 0)",
+        "tonalRamp": [
+          "oklch(25% 0 0)",
+          "oklch(35% 0 0)",
+          "oklch(45% 0 0)",
+          "oklch(55% 0 0)",
+          "oklch(65% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(85% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "text-bright": {
+        "role": "neutral",
+        "displayName": "Text Bright",
+        "canonical": "oklch(90.7% 0.003 35.8)",
+        "tonalRamp": [
+          "oklch(30% 0.003 35.8)",
+          "oklch(40% 0.003 35.8)",
+          "oklch(50% 0.003 35.8)",
+          "oklch(60% 0.003 35.8)",
+          "oklch(70% 0.003 35.8)",
+          "oklch(80% 0.003 35.8)",
+          "oklch(90.7% 0.003 35.8)",
+          "oklch(95% 0.003 35.8)"
+        ]
+      },
+      "text-dimmed": {
+        "role": "neutral",
+        "displayName": "Text Dimmed",
+        "canonical": "oklch(75% 0.05 35)",
+        "tonalRamp": [
+          "oklch(30% 0.05 35)",
+          "oklch(40% 0.05 35)",
+          "oklch(50% 0.05 35)",
+          "oklch(60% 0.05 35)",
+          "oklch(70% 0.05 35)",
+          "oklch(75% 0.05 35)",
+          "oklch(85% 0.05 35)",
+          "oklch(95% 0.05 35)"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "canonical": "oklch(60% 0 0)",
+        "tonalRamp": [
+          "oklch(20% 0 0)",
+          "oklch(28% 0 0)",
+          "oklch(36% 0 0)",
+          "oklch(44% 0 0)",
+          "oklch(52% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(80% 0 0)",
+          "oklch(93% 0 0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero marquee: Epilogue 800, clamp(32px, 8vw, 48px), line-height 0.95, tracking -0.01em. One per screen."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles (Cast, Synopsis, Watch Providers, carousels): Epilogue 600, 24px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Compact card and widget titles: Epilogue 700, 14px."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All UI and descriptive copy: Inter 400, 14-16px, line-height 1.5."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Attribute eyebrows, nav labels, metadata: Inter 600, 12px, tracking 0.1em, uppercase."
+      }
+    },
+    "shadows": [
+      {
+        "name": "field-glow",
+        "value": "0 10px 15px rgba(0, 0, 0, 0.2)",
+        "purpose": "Resting search input — anchors the floating search stage."
+      },
+      {
+        "name": "float",
+        "value": "0 8px 24px oklch(0% 0 0 / 0.4)",
+        "purpose": "Install banner and iOS install hint — panels floating above content."
+      },
+      {
+        "name": "drawer-cast",
+        "value": "-8px 0 32px oklch(0% 0 0 / 0.4), inset 1px 0 0 oklch(100% 0 0 / 0.04)",
+        "purpose": "Navigation drawer: left cast shadow with interior hairline edge."
+      },
+      {
+        "name": "focus-ring-red",
+        "value": "0 0 0 4px oklch(60% 0.22 25)",
+        "purpose": "Search input focus ring — speaks in the action accent, not blue."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default easing for the navigation drawer slide (0.35s) and state transitions."
+      },
+      {
+        "name": "hamburger-morph",
+        "value": "transform 0.3s",
+        "purpose": "Hamburger bars fold into the close X; bars 1 and 4 rotate 45deg at 9px, bars 2 and 3 fade."
+      },
+      {
+        "name": "header-blur-scroll",
+        "value": "blur(0px) to blur(10px), 0.3s linear both, animation-timeline: scroll(), animation-range: 0 250px",
+        "purpose": "Header gains a raisin-black blur over 50% black as the page scrolls."
+      },
+      {
+        "name": "skeleton-sweep",
+        "value": "background-position 100% 0 to -100% 0, 1.5s-1.8s",
+        "purpose": "Loading skeleton shimmer across grays 1 and 2."
+      },
+      {
+        "name": "input-transition",
+        "value": "all 0.2s",
+        "purpose": "Soft 200ms response on the search input."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "lg-minus",
+        "value": "1023.98px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The decision button: Rojo Dondeveo rectangle (8px radius) at hero scale.",
+      "html": "<button class=\"ds-btn-primary\">Ver trailer</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--color-primary); color: var(--color-white); border: none; border-radius: 8px; font: 600 18px/1.4 Inter, system-ui, sans-serif; cursor: pointer; transition: background 0.2s; } .ds-btn-primary:hover { background: var(--color-primary-hover); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-accent-blue); outline-offset: 2px; } .ds-btn-primary:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Pill Install Button",
+      "kind": "button",
+      "refersTo": "button-pill",
+      "description": "The chrome install action: full pill, compact, subtle press.",
+      "html": "<button class=\"ds-btn-pill\">Instalar app</button>",
+      "css": ".ds-btn-pill { display: inline-flex; align-items: center; gap: 6px; height: 2.25rem; padding: 0 0.875rem; background: var(--color-primary); color: var(--color-white); border: none; border-radius: 9999px; font: 600 0.8125rem/1 Inter, system-ui, sans-serif; cursor: pointer; transition: background 0.2s, transform 0.2s; } .ds-btn-pill:hover { background: var(--color-primary-hover); } .ds-btn-pill:active { transform: scale(0.96); } .ds-btn-pill:focus-visible { outline: 2px solid var(--color-accent-blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The companion action: translucent white at 15%, same geometry as primary.",
+      "html": "<button class=\"ds-btn-secondary\">Agregar a favoritos</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; background: oklch(100% 0 0 / 0.15); color: var(--color-white); border: none; border-radius: 8px; font: 600 18px/1.4 Inter, system-ui, sans-serif; cursor: pointer; transition: background 0.2s; } .ds-btn-secondary:hover { background: oklch(100% 0 0 / 0.25); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-accent-blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "The one action: 64px full pill, red focus ring, circle clear button.",
+      "html": "<div class=\"ds-search\"><svg class=\"ds-search-icon\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input class=\"ds-input-search\" type=\"search\" placeholder=\"¿Qué querés ver?\"/><button class=\"ds-clear\" aria-label=\"Limpiar\">✕</button></div>",
+      "css": ".ds-search { position: relative; } .ds-search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--color-text-dimmed); } .ds-input-search { width: 100%; height: 64px; padding: 0 64px; background: var(--color-surface-base); color: var(--color-text); border: none; outline: none; border-radius: 9999px; font: 500 18px Inter, system-ui, sans-serif; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); transition: all 0.2s; } .ds-input-search::placeholder { color: var(--color-text-dimmed); } .ds-input-search:focus { box-shadow: 0 0 0 2px rgba(0, 0, 0, 0), 0 0 0 4px var(--color-primary-hover); } .ds-input-search::-webkit-search-cancel-button { display: none; } .ds-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; display: none; align-items: center; justify-content: center; background: transparent; color: var(--color-text); border: none; border-radius: 9999px; cursor: pointer; font-size: 14px; } .ds-input-search:focus ~ .ds-clear, .ds-input-search:not(:placeholder-shown) ~ .ds-clear { display: flex; } .ds-clear:hover { background: var(--color-surface-elevated); } .ds-clear:focus-visible { outline: 2px solid var(--color-accent-blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Provider Medallions",
+      "kind": "chip",
+      "refersTo": "chip-providers",
+      "description": "Who carries it: 22px circular logos with 2px ring, negative overlap, +N cap.",
+      "html": "<div class=\"ds-providers\" aria-label=\"Disponible en\"><img class=\"ds-medallion\" alt=\"Netflix\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Crect width='22' height='22' rx='11' fill='%23222'/%3E%3C/svg%3E\"/><img class=\"ds-medallion\" alt=\"Prime Video\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Crect width='22' height='22' rx='11' fill='%23222'/%3E%3C/svg%3E\"/><span class=\"ds-providers-more\">+1</span></div>",
+      "css": ".ds-providers { display: flex; align-items: center; margin-top: 0.5rem; min-height: 22px; } .ds-medallion { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; margin-right: -0.35rem; border: 2px solid var(--color-surface-base); background: #222; } .ds-medallion:first-child { margin-right: 0; } .ds-providers-more { margin-left: 0.5rem; font: 600 0.7rem Inter, system-ui, sans-serif; color: var(--color-text-muted); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Content surface: elevated luminance step, 12px radius, hairline border, no shadow at rest.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-title\">Minions: Nace un villano</p><p class=\"ds-card-meta\">2022 · Comedia</p></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem; background: var(--color-surface-elevated); border: 1px solid var(--color-border-card); border-radius: 12px; } .ds-card-title { font: 700 14px/1.5 Inter, system-ui, sans-serif; color: var(--color-text); } .ds-card-meta { font: 400 12px/1.5 Inter, system-ui, sans-serif; color: var(--color-text-muted); }"
+    },
+    {
+      "name": "Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Drawer link: 8px radius, red for the active 'you are here' state.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item\" href=\"#\">Explorar</a><a class=\"ds-nav-item ds-nav-item-active\" href=\"#\" aria-current=\"page\">Favoritos</a></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 2px; } .ds-nav-item { display: block; padding: 0.65rem 0.875rem; border-radius: 8px; font: 500 0.9375rem/1.4 Inter, system-ui, sans-serif; color: oklch(82% 0.01 260); text-decoration: none; transition: background 0.2s, color 0.2s; } .ds-nav-item:hover { background: oklch(100% 0 0 / 0.06); color: var(--color-white); } .ds-nav-item:focus-visible { outline: 2px solid var(--color-accent-blue); outline-offset: 2px; } .ds-nav-item-active { background: oklch(55% 0.22 25 / 0.12); color: var(--color-primary); } .ds-nav-item-active:hover { background: oklch(55% 0.22 25 / 0.12); color: var(--color-primary); }"
+    },
+    {
+      "name": "Hero Badge",
+      "kind": "chip",
+      "refersTo": "badge-hero",
+      "description": "Status seal over the scrim: full pill in Rojo Dondeveo at 12px.",
+      "html": "<span class=\"ds-badge-hero\">Nuevo</span>",
+      "css": ".ds-badge-hero { display: inline-flex; align-items: center; padding: 6px 10px; background: var(--color-primary); color: var(--color-white); border-radius: 9999px; font: 600 12px/1 Inter, system-ui, sans-serif; letter-spacing: 0.3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Atlas personal del streaming",
+    "overview": "Donde veo is a map, not a storefront. The product answers one question — ¿dónde lo veo? — in seconds, and the visual system exists to make that answer feel like the user's own well-kept, night-lit guide to Argentine streaming. Dark is not a theme here; it is the viewing condition: the app assumes the sofa, the late hour, and the screen as the only source of light. Content imagery carries the interface; the chrome stays quiet, a translucent instrument floating above posters and stills. The system is deliberately low-density in chrome and high-density in content. Cards, carousels, and the hero do the emotional work; the shell (header, 80px fixed) and navigation (a 260px glass drawer) recede until summoned. Motion is reserved and stateful — the hamburger folds into an ✕, the header blurs as you scroll, the search icon participates in the view transition. Nothing moves for decoration. The one loud voice is the action: Rojo Dondeveo, a warm red reserved for the decision point (instalar, ver en, buscar), appearing on small surfaces so its rarity carries the product's single answer. Every surface is dark and calm — achromatic near-blacks that step by luminance, never by shadow — with a warm raisin tint reserved for the navigation glass. Imagery is never left naked: text always lands on a scrim, because the atlas is only legible when the map underneath is dimmed. The result is a personal, nocturnal catalog: the user's own list of where everything lives, one glowing tap away.",
+    "keyCharacteristics": [
+      "Dark-only, cool near-black canvas (oklch(12% 0.01 260)) with warm raisin navigation",
+      "Single warm-red action voice, used sparingly and only for decisions",
+      "Depth built from luminance steps and hairline borders; shadows only for floating moments",
+      "Pill geometry for one-shot actions; soft rectangles for content surfaces",
+      "Epilogue display face (800, tight leading) over Inter UI text",
+      "The scrim as canvas: imagery dims so copy stays legible"
+    ],
+    "rules": [
+      {
+        "name": "The Ember-Only Rule",
+        "body": "Chroma exists in three jobs only: Rojo Dondeveo acts, Ámbar Atributo annotates, Azul Foco focuses. Any other saturated color on a screen is drift. The red is a decision, used on ≤10% of any given screen — its rarity is the point.",
+        "section": "colors"
+      },
+      {
+        "name": "The Marquee Rule",
+        "body": "Epilogue carries hero and section titles only; everything clickable or scannable is Inter. The display face never types UI text, and UI text never pretends to be the marquee.",
+        "section": "typography"
+      },
+      {
+        "name": "The Luminance-Depth Rule",
+        "body": "Surface hierarchy is declared with lightness steps and hairlines, not with drop shadows. A resting card carries no shadow; float is a state, not a default.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Float-Honesty Rule",
+        "body": "When something casts a shadow, it must be visibly floating — a banner, a drawer, a focused field. Shadows never decorate content that sits in the page flow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do build depth with luminance steps (Fondo 12% → Base 20% → Elevated 26%) and hairline borders; resting cards stay shadow-free.",
+      "Do use pills for one-shot actions (search, install) and 8–12px rectangles for content surfaces.",
+      "Do keep Rojo Dondeveo as the action voice, used sparingly on decision-sized surfaces; give the active nav item its red by all means — it's the map's \"you are here\".",
+      "Do let Epilogue own hero and section titles at 800 weight with tight 0.95 leading, and keep every interactive label in Inter.",
+      "Do dim imagery before placing text on it; the scrim is the legibility mechanism, never a decorative overlay.",
+      "Do keep chroma to the three jobs — red acts, amber annotates, blue focuses.",
+      "Do keep the dark-only scheme; color-scheme: dark and the 12% canvas are the viewing condition, not a style choice."
+    ],
+    "donts": [
+      "Don't add drop shadows to resting content — floating shadows belong to banners, drawers, and the focused field only.",
+      "Don't introduce light-mode, high-chroma surfaces, or decorative gradients; the palette is a ladder of near-blacks with one ember.",
+      "Don't use the red for informational or meta text — it is a decision, and text in red reads as a button that does not exist.",
+      "Don't break the provider medallion stack's negative overlap or shrink the 2px avatar ring; the tiny portrait strip is the system's signature.",
+      "Don't let Epilogue typeset UI copy, and don't let Inter typeset the marquee; the voice split is the hierarchy.",
+      "Don't replace the 4px red focus ring on the search input with a blue ring — search is the product's one action.",
+      "Don't raise the header beyond 80px or widen the drawer beyond 260px; the chrome is an instrument, not a resident."
+    ]
+  }
+}
