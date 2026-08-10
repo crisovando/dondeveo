@@ -1,4 +1,4 @@
-import { HomeData } from "@/shared/types";
+import { HomeData, AudioVisualDto, PlatformRow } from "@/shared/types";
 import { signal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { getGenreNames } from "@/signals/genres";
@@ -10,6 +10,21 @@ const homeErrorSignal = signal<string | null>(null);
 
 const mapGenres = (genreIds?: number[]) => {
   return getGenreNames(genreIds ?? []).filter(Boolean);
+};
+
+const mapDtosWithGenres = (dtos: AudioVisualDto[]): AudioVisualDto[] => {
+  return dtos.map((dto) => ({
+    ...dto,
+    genres: mapGenres(dto.genreIds),
+  }));
+};
+
+const mapPlatformRows = (platforms: PlatformRow[]): PlatformRow[] => {
+  return platforms.map((platform) => ({
+    ...platform,
+    movies: mapDtosWithGenres(platform.movies),
+    tv: mapDtosWithGenres(platform.tv),
+  }));
 };
 
 const loadHomeData = () => {
@@ -24,22 +39,13 @@ const loadHomeData = () => {
     .then((json: HomeData) => {
       homeDataSignal.value = {
         ...json,
-        trending: json.trending.map((movie) => ({
-          ...movie,
-          genres: mapGenres(movie.genreIds),
-        })),
-        topRatedMovies: json.topRatedMovies.map((movie) => ({
-          ...movie,
-          genres: mapGenres(movie.genreIds),
-        })),
-        topRatedTv: json.topRatedTv.map((tv) => ({
-          ...tv,
-          genres: mapGenres(tv.genreIds),
-        })),
-        topAnime: json.topAnime.map((anime) => ({
-          ...anime,
-          genres: mapGenres(anime.genreIds),
-        })),
+        trending: mapDtosWithGenres(json.trending),
+        topRatedMovies: mapDtosWithGenres(json.topRatedMovies),
+        topRatedTv: mapDtosWithGenres(json.topRatedTv),
+        topAnime: mapDtosWithGenres(json.topAnime),
+        newReleases: mapDtosWithGenres(json.newReleases),
+        mostPopularAR: mapDtosWithGenres(json.mostPopularAR),
+        platforms: mapPlatformRows(json.platforms),
       };
     })
     .catch(() => {

@@ -9,18 +9,23 @@ interface CarouselMultiProps {
   title: string;
   subtitle: string;
   movies: AudioVisualDto[];
+  logo?: { src: string; alt: string };
   onClick?: (movie: AudioVisualDto) => void;
   onSeeAll?: () => void;
+  showProviders?: boolean;
 }
 
-const IMG_SRC = "https://image.tmdb.org/t/p/w500";
+const IMG_SRC = "https://image.tmdb.org/t/p/w342";
+const LOGO_SRC = "https://image.tmdb.org/t/p/w92";
 
 export function CarouselMulti({
   title,
   subtitle,
   movies = [],
+  logo,
   onClick,
   onSeeAll,
+  showProviders = true,
 }: CarouselMultiProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const providersMap = useProvidersMap(movies);
@@ -40,8 +45,19 @@ export function CarouselMulti({
     <section className={styles.section}>
       <header className={styles.header}>
         <div className={styles.titleGroup}>
-          <h2>{title}</h2>
-          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+          {logo?.src && (
+            <img
+              src={`${LOGO_SRC}${logo.src}`}
+              alt={logo.alt}
+              className={styles.logo}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+          <div>
+            <h2>{title}</h2>
+            {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+          </div>
         </div>
         {onSeeAll && (
           <button className={styles.viewAllBtn} onClick={() => onSeeAll?.()}>
@@ -93,7 +109,11 @@ export function CarouselMulti({
                 <span className={styles.dot}></span>
                 <span>{movie.releaseDate?.split("-")[0]}</span>
               </div>
-              <CardProviders providers={providersMap[`${movie.mediaType}:${movie.id}`] ?? []} />
+              {showProviders && (
+                <CardProviders
+                  providers={providersMap[`${movie.mediaType}:${movie.id}`] ?? []}
+                />
+              )}
             </a>
           ))}
         </div>

@@ -1,0 +1,67 @@
+.section {
+  margin: 2.5rem 0;
+}
+
+.header {
+  padding: 0 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 0 4rem;
+  }
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+.card:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+.poster {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-white);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

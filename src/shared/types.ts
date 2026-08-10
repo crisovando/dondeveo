@@ -21,11 +21,32 @@ export interface FavoriteEntry extends AudioVisualDto {
   notification?: ScheduledNotification;
 }
 
+export interface PlatformRow {
+  providerId: number;
+  providerName: string;
+  logoPath: string;
+  movies: AudioVisualDto[];
+  tv: AudioVisualDto[];
+}
+
+export interface PlatformData {
+  providerId: number;
+  providerName: string;
+  logoPath: string;
+  movies: AudioVisualDto[];
+  tv: AudioVisualDto[];
+  page: number;
+  totalPages: number;
+}
+
 export interface HomeData {
   trending: AudioVisualDto[];
   topRatedMovies: AudioVisualDto[];
   topRatedTv: AudioVisualDto[];
   topAnime: AudioVisualDto[];
+  newReleases: AudioVisualDto[];
+  mostPopularAR: AudioVisualDto[];
+  platforms: PlatformRow[];
 }
 
 export interface Genres {

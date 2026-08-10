@@ -1,0 +1,164 @@
+.page {
+  padding-bottom: 2rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 1rem 0 1.5rem;
+}
+
+.logo {
+  flex-shrink: 0;
+  height: 40px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: transparent;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+}
+
+.pills {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-border-card);
+}
+
+.pill {
+  border: none;
+  appearance: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.pill:hover {
+  color: var(--color-text-bright);
+  background: var(--color-surface-container-low-hover);
+}
+
+.pill:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
+}
+
+.pillActive,
+.pillActive:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+.card:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+.poster {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-white);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.cardRating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.stateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  text-align: center;
+  padding: 3rem 1rem;
+
+  & h2 {
+    margin: 0;
+  }
+
+  & p {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+}
+
+.retry {
+  margin-top: var(--space-sm);
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry:hover {
+  background: var(--color-primary-hover);
+}
+
+.retry:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
+}
