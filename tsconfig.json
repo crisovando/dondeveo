@@ -4,6 +4,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "noEmit": true,
+    "strict": true,
+    "types": ["node"],
     "allowJs": true,
     "checkJs": true,
     /* Preact Config */
