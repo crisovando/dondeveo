@@ -18,5 +18,5 @@
     }
   },
   "include": ["node_modules/vite/client.d.ts", "**/*"],
-  "exclude": ["public/sw.js", "dist-ssr"]
+  "exclude": ["public/sw.js", "dist", "dist-ssr", "public/assets", ".vercel"]
 }

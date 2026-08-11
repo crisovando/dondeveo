@@ -43,5 +43,7 @@ export const loadGenres = async () => {
 };
 
 export const getGenreNames = (ids: number[]): Genres[] => {
-  return ids.map((id) => genresSignal.value.find((g) => g.id === id));
+  return ids
+    .map((id) => genresSignal.value.find((g) => g.id === id))
+    .filter((genre): genre is Genres => Boolean(genre));
 };

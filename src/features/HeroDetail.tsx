@@ -13,10 +13,15 @@ interface HeroDetailProps {
 
 export function HeroDetail({ movie }: HeroDetailProps) {
   const [showModal, setShowModal] = useState(false);
+  // movie is Partial<DetailItem>; the id is only present when the page has
+  // enough data to render (guarded by hasData in Detail.tsx), so keep the
+  // undefined case out of the favorite handlers and button state.
+  const id = movie.id;
 
   const handleFavoriteClick = () => {
-    if (isFavorite(movie.id)) {
-      removeFromFavorites(movie.id!);
+    if (id === undefined) return;
+    if (isFavorite(id)) {
+      removeFromFavorites(id);
     } else {
       setShowModal(true);
     }
@@ -44,7 +49,7 @@ export function HeroDetail({ movie }: HeroDetailProps) {
               style={{ viewTransitionName: `button-${movie.id}` }}
               onClick={handleFavoriteClick}
             >
-              {isFavorite(movie.id) ? <Minus /> : <Plus />}
+              {id !== undefined && isFavorite(id) ? <Minus /> : <Plus />}
               Favoritos
             </ButtonHero>
           </Hero.Actions>
