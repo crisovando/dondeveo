@@ -8,23 +8,24 @@ p1_count: 2
 timestamp: 2026-08-09T19-03-27Z
 slug: src-pages-home-tsx
 ---
+
 # Critique (r2) — Home surface (src/pages/Home.tsx)
 
 Method: dual-agent (A: general/review · B: general/detector)
 
-| # | Heuristic | Score | Key Issue |
-|---|-----------|-------|-----------|
-| 1 | Visibility of System Status | 3 | No slide-position indicator in hero; provider status only via pulsing dots |
-| 2 | Match System / Real World | 3 | Chips say where to watch but are dead spans — the answer leads nowhere |
-| 3 | User Control and Freedom | 3 | Modal Escape/backdrop OK; no keyboard paging on carousels |
-| 4 | Consistency and Standards | 2 | Two divergent carousels; amber/blue accent split |
-| 5 | Error Prevention | 2 | Provider fetch errors silently swallowed (if error return null) |
-| 6 | Recognition Rather Than Recall | 3 | "cita" metaphor only taught in empty states |
-| 7 | Flexibility and Efficiency | 2 | No shortcuts/arrow-key nav; "Ver todo" on only 2 of 5 rows |
-| 8 | Aesthetic and Minimalist Design | 2 | First-run = 6 sections incl. 2 tall empty cards |
-| 9 | Error Recovery | 3 | HomeError alert+retry good; provider failures invisible |
-| 10 | Help and Documentation | n/a | Content-first app; not scored |
-| **Total** | | **23/36** | **Good** |
+| #         | Heuristic                       | Score     | Key Issue                                                                  |
+| --------- | ------------------------------- | --------- | -------------------------------------------------------------------------- |
+| 1         | Visibility of System Status     | 3         | No slide-position indicator in hero; provider status only via pulsing dots |
+| 2         | Match System / Real World       | 3         | Chips say where to watch but are dead spans — the answer leads nowhere     |
+| 3         | User Control and Freedom        | 3         | Modal Escape/backdrop OK; no keyboard paging on carousels                  |
+| 4         | Consistency and Standards       | 2         | Two divergent carousels; amber/blue accent split                           |
+| 5         | Error Prevention                | 2         | Provider fetch errors silently swallowed (if error return null)            |
+| 6         | Recognition Rather Than Recall  | 3         | "cita" metaphor only taught in empty states                                |
+| 7         | Flexibility and Efficiency      | 2         | No shortcuts/arrow-key nav; "Ver todo" on only 2 of 5 rows                 |
+| 8         | Aesthetic and Minimalist Design | 2         | First-run = 6 sections incl. 2 tall empty cards                            |
+| 9         | Error Recovery                  | 3         | HomeError alert+retry good; provider failures invisible                    |
+| 10        | Help and Documentation          | n/a       | Content-first app; not scored                                              |
+| **Total** |                                 | **23/36** | **Good**                                                                   |
 
 ## Design Specificity Verdict
 

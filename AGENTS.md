@@ -1,4 +1,5 @@
 <!-- gentle-ai:project-conventions -->
+
 # Donde veo — Project Conventions
 
 ## Skills

@@ -29,7 +29,11 @@ function mapDtos(dtos: AudioVisualDto[], genres: Genres[]): AudioVisualDto[] {
 }
 
 function mapPlatformRows(rows: PlatformRow[], genres: Genres[]): PlatformRow[] {
-  return rows.map((row) => ({ ...row, movies: mapDtos(row.movies, genres), tv: mapDtos(row.tv, genres) }));
+  return rows.map((row) => ({
+    ...row,
+    movies: mapDtos(row.movies, genres),
+    tv: mapDtos(row.tv, genres),
+  }));
 }
 
 function mapHomeData(data: HomeData, genres: Genres[]): HomeData {

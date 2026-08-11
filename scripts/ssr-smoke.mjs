@@ -27,7 +27,15 @@ const dto = (id, title) => ({
   overview: "Un título de prueba para validar el SSR de la home.",
   mediaType: "movie",
   genreIds: [28, 12],
-  providers: [{ logoPath: "/netflix.jpg", providerId: 8, providerName: "Netflix", displayPriority: 1, type: "flatrate" }],
+  providers: [
+    {
+      logoPath: "/netflix.jpg",
+      providerId: 8,
+      providerName: "Netflix",
+      displayPriority: 1,
+      type: "flatrate",
+    },
+  ],
 });
 
 const homeStub = {
@@ -55,8 +63,14 @@ const dataEscapedOk = dataScriptMatch ? !dataScriptMatch[1].includes("<") : fals
 
 const checks = [
   ["has <!doctype html>", /<!doctype html>/i.test(html)],
-  ['has hashed module script tag', /<script type="module"[^>]*src="\/assets\/index-[^"]+\.js"/.test(html)],
-  ["has hashed css link", /<link rel="stylesheet"[^>]*href="\/assets\/index-[^"]+\.css"/.test(html)],
+  [
+    "has hashed module script tag",
+    /<script type="module"[^>]*src="\/assets\/index-[^"]+\.js"/.test(html),
+  ],
+  [
+    "has hashed css link",
+    /<link rel="stylesheet"[^>]*href="\/assets\/index-[^"]+\.css"/.test(html),
+  ],
   ["injects window.__HOME_DATA__", html.includes("window.__HOME_DATA__=")],
   ["injects isodata hydration marker", html.includes('<script type="isodata"></script>')],
   ["embeds app id", html.includes('<div id="app">')],
@@ -100,7 +114,9 @@ if (cacheHeader !== REQ_CACHE) httpFailed += 1;
 if (!body.includes("Película de prueba")) httpFailed += 1;
 
 const shell = renderShellHtml();
-console.log(`\nrenderShellHtml length=${shell.length} cache-fallback ok=${shell.includes('<div id="app">')}`);
+console.log(
+  `\nrenderShellHtml length=${shell.length} cache-fallback ok=${shell.includes('<div id="app">')}`,
+);
 
 if (httpFailed) {
   console.error(`\nSmoke: HTTP layer ${httpFailed} check(s) failed.`);

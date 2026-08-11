@@ -31,9 +31,7 @@ function readCache(type?: string, id?: number): ProvidersResult | null {
 }
 
 export const useWatchProviders = (type?: string, id?: number, name?: string) => {
-  const [data, setData] = useState<ProvidersResult | null>(() =>
-    readCache(type, id),
-  );
+  const [data, setData] = useState<ProvidersResult | null>(() => readCache(type, id));
   const [loading, setLoading] = useState(() => readCache(type, id) === null);
   const [error, setError] = useState(false);
 

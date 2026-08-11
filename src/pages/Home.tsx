@@ -41,13 +41,29 @@ export function Home() {
       <HeroHome movies={data.trending} />
       {hasFavorites && <FavoritesCarousel />}
       {hasHistory && <HistoryCarousel />}
-      <Popular title="Estrenos de la semana" subtitle="Lo nuevo que ya podés ver" movies={data.newReleases} />
+      <Popular
+        title="Estrenos de la semana"
+        subtitle="Lo nuevo que ya podés ver"
+        movies={data.newReleases}
+      />
       {data.platforms.map((platform) => (
         <PlatformRow key={platform.providerId} row={platform} />
       ))}
-      <TopTenRow title="Lo más visto en Argentina" subtitle="Lo que más se ve en tus plataformas" movies={data.mostPopularAR} />
-      <GridRow title="Películas" subtitle="Las más valoradas del momento" movies={data.topRatedMovies} />
-      <GridRow title="Series" subtitle="Las series más valoradas del momento" movies={data.topRatedTv} />
+      <TopTenRow
+        title="Lo más visto en Argentina"
+        subtitle="Lo que más se ve en tus plataformas"
+        movies={data.mostPopularAR}
+      />
+      <GridRow
+        title="Películas"
+        subtitle="Las más valoradas del momento"
+        movies={data.topRatedMovies}
+      />
+      <GridRow
+        title="Series"
+        subtitle="Las series más valoradas del momento"
+        movies={data.topRatedTv}
+      />
       {!hasHistory && <HistoryCarousel />}
       {!hasFavorites && <FavoritesCarousel />}
       <TopAnime animes={data.topAnime} />

@@ -8,23 +8,24 @@ p1_count: 3
 timestamp: 2026-08-09T18-08-29Z
 slug: src-pages-search-tsx
 ---
+
 # Critique — Search surface (src/pages/Search.tsx)
 
 Method: dual-agent (A: general/review · B: general/detector)
 
-| # | Heuristic | Score | Key Issue |
-|---|-----------|-------|-----------|
-| 1 | Visibility of System Status | 1 | Silent 1000ms debounce with zero feedback; items===undefined renders empty h3 |
-| 2 | Match System / Real World | 3 | Spanish ok but placeholder missing accents; movie/TV/person indistinguishable |
-| 3 | User Control and Freedom | 2 | Clear (X) empties input but not results; no Escape, no cancel, no back to previous query |
-| 4 | Consistency and Standards | 2 | X always visible even when empty; people cards look clickable but are dead |
-| 5 | Error Prevention | 1 | Race in useSearchData can overwrite fresh search with stale results |
-| 6 | Recognition Rather Than Recall | 3 | Posters strong; title clamp broken; no prior search seeding on blank state |
-| 7 | Flexibility and Efficiency | 2 | No Enter-to-search, no arrow-key nav, no type filter, 1000ms debounce penalizes fast typists |
-| 8 | Aesthetic and Minimalist Design | 3 | Clean token-consistent dark surface; emptiness reads as absent not minimal |
-| 9 | Error Recovery | 0 | No error state, no .catch anywhere, no retry, no toast; failed fetch looks like empty search |
-| 10 | Help and Documentation | n/a | Only guidance is the placeholder |
-| **Total** | | **17/36** | **Poor** |
+| #         | Heuristic                       | Score     | Key Issue                                                                                    |
+| --------- | ------------------------------- | --------- | -------------------------------------------------------------------------------------------- |
+| 1         | Visibility of System Status     | 1         | Silent 1000ms debounce with zero feedback; items===undefined renders empty h3                |
+| 2         | Match System / Real World       | 3         | Spanish ok but placeholder missing accents; movie/TV/person indistinguishable                |
+| 3         | User Control and Freedom        | 2         | Clear (X) empties input but not results; no Escape, no cancel, no back to previous query     |
+| 4         | Consistency and Standards       | 2         | X always visible even when empty; people cards look clickable but are dead                   |
+| 5         | Error Prevention                | 1         | Race in useSearchData can overwrite fresh search with stale results                          |
+| 6         | Recognition Rather Than Recall  | 3         | Posters strong; title clamp broken; no prior search seeding on blank state                   |
+| 7         | Flexibility and Efficiency      | 2         | No Enter-to-search, no arrow-key nav, no type filter, 1000ms debounce penalizes fast typists |
+| 8         | Aesthetic and Minimalist Design | 3         | Clean token-consistent dark surface; emptiness reads as absent not minimal                   |
+| 9         | Error Recovery                  | 0         | No error state, no .catch anywhere, no retry, no toast; failed fetch looks like empty search |
+| 10        | Help and Documentation          | n/a       | Only guidance is the placeholder                                                             |
+| **Total** |                                 | **17/36** | **Poor**                                                                                     |
 
 ## Design Specificity Verdict
 
