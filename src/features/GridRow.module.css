@@ -1,5 +1,7 @@
 .section {
   margin: 2.5rem 0;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 520px;
 }
 
 .header {

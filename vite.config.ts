@@ -16,7 +16,9 @@ export default defineConfig({
         previewMiddlewareFallback: "/404",
       },
     }),
-    webfontDownload(),
+    webfontDownload(undefined, {
+      subsetsAllowed: ["latin"],
+    }),
     VitePWA({
       registerType: "prompt",
       injectRegister: false,
