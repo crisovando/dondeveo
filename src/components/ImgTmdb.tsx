@@ -65,7 +65,6 @@ export function ImgTmdb({
   withSkeleton,
   ...props
 }: ImgTmdbProps) {
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const srcUrl = `${BASE_PATH_IMG}${size}${src}`;
@@ -108,26 +107,24 @@ export function ImgTmdb({
         position: "relative",
         aspectRatio,
         overflow: "hidden",
+        // Pure-CSS skeleton: the gradient shows through until the image paints
+        // over it. No onLoad/state per image, so the ~hundreds of images on the
+        // home page no longer trigger a re-render each time one decodes.
+        ...(withSkeleton
+          ? {
+              background: "linear-gradient(90deg, #222 25%, #333 37%, #222 63%)",
+              backgroundSize: "400% 100%",
+              animation: "skeleton 1.4s ease infinite",
+            }
+          : {}),
       }}
     >
-      {withSkeleton && loading && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(90deg, #222 25%, #333 37%, #222 63%)",
-            backgroundSize: "400% 100%",
-            animation: "skeleton 1.4s ease infinite",
-          }}
-        />
-      )}
       <img
         src={srcUrl}
         srcSet={srcSet}
         sizes={sizes}
         loading={props.loading ?? "lazy"}
         decoding="async"
-        onLoad={() => setLoading(false)}
         onError={() => setError(true)}
         style={{
           width: "100%",

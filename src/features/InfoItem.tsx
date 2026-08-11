@@ -3,7 +3,7 @@ import styles from "./InfoItem.module.css";
 import { DetailItem } from "@/shared/types";
 
 interface InfoItemProps {
-  item: DetailItem;
+  item: Partial<DetailItem>;
 }
 
 export function InfoItem({ item }: InfoItemProps) {
@@ -31,7 +31,9 @@ export function InfoItem({ item }: InfoItemProps) {
         <div>
           <div class={styles.label}>Estudios</div>
           <div class={styles.value}>
-            {item.productionCompanies?.map((company) => company.name).join(", ")}
+            {item.productionCompanies
+              ?.map((company) => company.name)
+              .join(", ")}
           </div>
         </div>
         <div>

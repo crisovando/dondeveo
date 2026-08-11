@@ -1,13 +1,8 @@
-import { LocationProvider, Router, Route, hydrate } from "preact-iso";
+import { LocationProvider, Router, Route, lazy, hydrate } from "preact-iso";
 import { useEffect } from "preact/hooks";
 
 import { Header } from "./components/Header";
 import { Home } from "./pages/Home";
-import { Detail } from "./pages/Detail";
-import { Search } from "./pages/Search";
-import { Platform } from "./pages/Platform";
-import { Favorites } from "./pages/Favorites";
-import { NotFound } from "./pages/_404";
 import { loadGenres } from "./signals/genres";
 import { loadFavorites } from "./signals/favorites";
 
@@ -15,8 +10,17 @@ import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/header.css";
 import { loadHistory } from "./signals/history";
-import { Historical } from "./pages/Historical";
 import { UpdateToast } from "./components/UpdateToast";
+
+// Non-home routes are lazy-loaded: only "/" is server-rendered, so keeping Home
+// as a static import preserves SSR hydration, while the other pages leave the
+// initial bundle and load on demand when the user navigates to them.
+const Detail = lazy(() => import("./pages/Detail").then((m) => m.Detail));
+const Search = lazy(() => import("./pages/Search").then((m) => m.Search));
+const Platform = lazy(() => import("./pages/Platform").then((m) => m.Platform));
+const Favorites = lazy(() => import("./pages/Favorites").then((m) => m.Favorites));
+const Historical = lazy(() => import("./pages/Historical").then((m) => m.Historical));
+const NotFound = lazy(() => import("./pages/_404").then((m) => m.NotFound));
 
 export function App() {
   useEffect(() => {
@@ -46,5 +50,5 @@ export function App() {
 }
 
 if (typeof window !== "undefined") {
-  hydrate(<App />, document.getElementById("app"));
+  hydrate(<App />, document.getElementById("app") ?? undefined);
 }
