@@ -7,13 +7,25 @@ import * as genresController from "../server/controllers/genres.controller";
 import * as detailController from "../server/controllers/detail.controller";
 import * as providersController from "../server/controllers/providers.controller";
 import * as platformController from "../server/controllers/platform.controller";
+import * as ssrController from "../server/controllers/ssr.controller";
 
 export const config = {
   runtime: "edge",
 };
 
-const app = new Hono().basePath("/api");
+const api = new Hono();
+api.get("/home", homeController.getHome);
+api.get("/search", searchController.getSearch);
+api.get("/genres", genresController.getAllGenres);
+api.get("/detail/:type/:id", detailController.getDetail);
+api.get("/providers/:type/:id", providersController.getProviders);
+api.get("/providers/batch", providersController.getProvidersBatch);
+api.get("/platform/:providerId", platformController.getPlatform);
 
+// One app for both surfaces: /api/* keeps the exact same runtime behavior as
+// before, while "/" and "/home" render the SSR'd Home document (wired by the
+// vercel.json rewrites).
+const app = new Hono();
 app.use(logger());
 
 app.onError((err, c) => {
@@ -21,12 +33,8 @@ app.onError((err, c) => {
   return c.json({ error: "Internal Server Error", message: err.message }, 500);
 });
 
-app.get("/home", homeController.getHome);
-app.get("/search", searchController.getSearch);
-app.get("/genres", genresController.getAllGenres);
-app.get("/detail/:type/:id", detailController.getDetail);
-app.get("/providers/:type/:id", providersController.getProviders);
-app.get("/providers/batch", providersController.getProvidersBatch);
-app.get("/platform/:providerId", platformController.getPlatform);
+app.get("/", ssrController.getHomeSsr);
+app.get("/home", ssrController.getHomeSsr);
+app.route("/api", api);
 
 export default handle(app);

@@ -10,6 +10,7 @@ export const historySignal = signal<HistoryItem[] | null>(null);
 
 export const loadHistory = () => {
   if (historySignal.value) return;
+  if (typeof window === "undefined") return;
 
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (saved) {
@@ -36,12 +37,11 @@ export const loadHistory = () => {
 };
 
 export const getHistory = (): HistoryItem[] => {
-  if (!historySignal.value) loadHistory();
-
   return historySignal.value || [];
 };
 
 const saveToLocalStorage = (data: HistoryItem[]) => {
+  if (typeof window === "undefined") return;
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ data }));
 };
 

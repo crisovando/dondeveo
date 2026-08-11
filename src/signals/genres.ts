@@ -8,6 +8,7 @@ export const genresSignal = signal<Genres[]>([]);
 const CACHE_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
 
 export const loadGenres = async () => {
+  if (typeof window === "undefined") return;
   const now = Date.now();
 
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
