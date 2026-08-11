@@ -22,3 +22,7 @@ dist-ssr
 .vercel
 .env
 .env*.local
+
+# Build artifacts synced into public/ for `vercel dev` local preview
+public/assets
+public/manifest.webmanifest
