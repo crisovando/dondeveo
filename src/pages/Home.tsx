@@ -9,13 +9,17 @@ import { TopAnime } from "@/features/TopAnime";
 import { TopTenRow } from "@/features/TopTenRow";
 import { GridRow } from "@/features/GridRow";
 import { HomeError } from "@/features/HomeError";
-import { getFavorites } from "@/signals/favorites";
-import { getHistory } from "@/signals/history";
+import { favoritesSignal } from "@/signals/favorites";
+import { historySignal } from "@/signals/history";
 
 export function Home() {
   const { data, error } = useHomeData();
-  const hasFavorites = getFavorites().length > 0;
-  const hasHistory = getHistory().length > 0;
+  // Read the signals directly (never trigger a synchronous localStorage load):
+  // on the server they are always empty, and the client's FIRST render must
+  // produce the same tree so hydration stays in sync. loadFavorites/loadHistory
+  // run in an effect after mount, so returning users still get their rows.
+  const hasFavorites = (favoritesSignal.value?.length ?? 0) > 0;
+  const hasHistory = (historySignal.value?.length ?? 0) > 0;
 
   if (error) {
     return <HomeError message={error} onRetry={retryHomeData} />;

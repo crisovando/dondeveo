@@ -7,6 +7,7 @@ export const favoritesSignal = signal<FavoriteEntry[] | null>(null);
 
 export const loadFavorites = () => {
   if (favoritesSignal.value) return;
+  if (typeof window === "undefined") return;
 
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (saved) {
@@ -24,7 +25,6 @@ export const isFavorite = (id: number) => {
 };
 
 export const getFavorites = (): FavoriteEntry[] => {
-  if (!favoritesSignal.value) loadFavorites();
   return favoritesSignal.value || [];
 };
 

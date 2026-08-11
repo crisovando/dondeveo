@@ -8,6 +8,22 @@ const URL_API = "/api/home";
 const homeDataSignal = signal<HomeData | null>(null);
 const homeErrorSignal = signal<string | null>(null);
 
+export { homeDataSignal };
+
+declare global {
+  interface Window {
+    __HOME_DATA__?: HomeData;
+  }
+}
+
+// Seed path: the SSR response embeds the exact (already genre-mapped) HomeData
+// in window.__HOME_DATA__ before the module bundle runs, so the client first
+// render matches the server HTML and no duplicate /api/home fetch fires.
+const serverHomeData = typeof window !== "undefined" ? window.__HOME_DATA__ : undefined;
+if (serverHomeData) {
+  homeDataSignal.value = serverHomeData;
+}
+
 const mapGenres = (genreIds?: number[]) => {
   return getGenreNames(genreIds ?? []).filter(Boolean);
 };

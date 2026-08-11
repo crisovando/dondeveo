@@ -34,14 +34,15 @@ function hasDismissedInstallBanner(): boolean {
 export const useInstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [isStandalone, setIsStandalone] = useState(readStandalone);
+  // Browser-only state is hydrated inside an effect (not in useState
+  // initializers) so the SSR first paint is deterministic: every value starts
+  // at its safe default and matches what the server rendered.
+  const [isStandalone, setIsStandalone] = useState(false);
   const [installedEvent, setInstalledEvent] = useState(false);
-  const [iosHintDismissed, setIOSHintDismissed] =
-    useState(hasDismissedIOSHint);
-  const [installBannerDismissed, setInstallBannerDismissed] =
-    useState(hasDismissedInstallBanner);
+  const [iosHintDismissed, setIOSHintDismissed] = useState(false);
+  const [installBannerDismissed, setInstallBannerDismissed] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
-  const isIOS = isIOSDevice();
   const canInstall = deferredPrompt !== null && !isStandalone;
   const isInstalled = isStandalone || installedEvent;
   const isIOSHintVisible =
@@ -50,6 +51,11 @@ export const useInstallPrompt = () => {
     canInstall && !isStandalone && !isInstalled && !installBannerDismissed;
 
   useEffect(() => {
+    setIsStandalone(readStandalone());
+    setIsIOS(isIOSDevice());
+    setIOSHintDismissed(hasDismissedIOSHint());
+    setInstallBannerDismissed(hasDismissedInstallBanner());
+
     const onInstallPrompt = (event: Event) => {
       setDeferredPrompt(event as unknown as BeforeInstallPromptEvent);
     };
