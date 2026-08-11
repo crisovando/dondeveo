@@ -46,13 +46,17 @@ export function CarouselMulti({
       <header className={styles.header}>
         <div className={styles.titleGroup}>
           {logo?.src && (
-            <img
-              src={`${LOGO_SRC}${logo.src}`}
-              alt={logo.alt}
-              className={styles.logo}
-              loading="lazy"
-              decoding="async"
-            />
+            <span className={styles.logoWrap}>
+              <img
+                src={`${LOGO_SRC}${logo.src}`}
+                alt={logo.alt}
+                className={styles.logo}
+                width="110"
+                height="32"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
           )}
           <div>
             <h2>{title}</h2>

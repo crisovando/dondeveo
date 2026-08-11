@@ -67,8 +67,15 @@ export function Header() {
           </ul>
         </nav>
         <a class="logo-container" href="/" aria-label="Ir al inicio de Donde veo">
-          <img class="logo" alt="" src="/logo.svg" fetchpriority="high" />
-          <img src="/logo-text.svg" alt="Donde veo" class="logo-text" fetchpriority="high" />
+          <img class="logo" alt="" src="/logo.svg" fetchpriority="high" width="50" height="50" />
+          <img
+            src="/logo-text.svg"
+            alt="Donde veo"
+            class="logo-text"
+            fetchpriority="high"
+            width="211"
+            height="40"
+          />
         </a>
         {isIOSHintVisible && (
           <div class="ios-install-hint" role="status">

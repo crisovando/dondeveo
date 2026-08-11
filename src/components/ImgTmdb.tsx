@@ -103,6 +103,7 @@ export function ImgTmdb({
 
   return (
     <div
+      className={withSkeleton ? "shimmer" : undefined}
       style={{
         position: "relative",
         aspectRatio,
@@ -113,8 +114,6 @@ export function ImgTmdb({
         ...(withSkeleton
           ? {
               background: "linear-gradient(90deg, #222 25%, #333 37%, #222 63%)",
-              backgroundSize: "400% 100%",
-              animation: "skeleton 1.4s ease infinite",
             }
           : {}),
       }}
