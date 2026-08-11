@@ -26,11 +26,17 @@
   gap: var(--space-sm);
 }
 
-.logo {
+.logoWrap {
   flex-shrink: 0;
+  width: 110px;
   height: 32px;
-  width: auto;
-  max-width: 110px;
+  display: grid;
+  place-items: center;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   border-radius: var(--radius-md);
   background: transparent;
