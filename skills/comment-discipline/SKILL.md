@@ -25,13 +25,13 @@ Load when writing or editing code in this repo (`.ts`, `.tsx`, `.css`, `.mjs`), 
 
 ## Decision Gates
 
-| Situation | Action |
-| --- | --- |
-| Comment explains WHAT | Delete it; rename or extract the code |
-| Non-obvious WHY (SSR/hydration, edge runtime, cache, perf) | Add one concise line |
-| Redundant comment in a touched hunk | Remove it |
-| Long design rationale | Move to DESIGN.md / README.md, not code |
-| Non-visible security/perf warning | One short line, reference a doc if needed |
+| Situation                                                  | Action                                    |
+| ---------------------------------------------------------- | ----------------------------------------- |
+| Comment explains WHAT                                      | Delete it; rename or extract the code     |
+| Non-obvious WHY (SSR/hydration, edge runtime, cache, perf) | Add one concise line                      |
+| Redundant comment in a touched hunk                        | Remove it                                 |
+| Long design rationale                                      | Move to DESIGN.md / README.md, not code   |
+| Non-visible security/perf warning                          | One short line, reference a doc if needed |
 
 ## Execution Steps
 

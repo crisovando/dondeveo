@@ -79,9 +79,7 @@ export function Header() {
         </a>
         {isIOSHintVisible && (
           <div class="ios-install-hint" role="status">
-            <span class="ios-install-hint-text">
-              Compartir → Añadir a Pantalla de Inicio
-            </span>
+            <span class="ios-install-hint-text">Compartir → Añadir a Pantalla de Inicio</span>
             <button
               type="button"
               class="ios-install-hint-close"

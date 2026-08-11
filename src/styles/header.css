@@ -44,7 +44,9 @@
   background: transparent;
   border: none;
   border-radius: var(--radius-md);
-  transition: transform 0.3s, background 0.2s;
+  transition:
+    transform 0.3s,
+    background 0.2s;
 }
 
 @media (min-width: 1024px) {

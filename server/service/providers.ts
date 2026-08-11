@@ -38,9 +38,7 @@ async function fetchOne(type: string, id: number): Promise<CacheEntry> {
   const cached = readCache(type, id);
   if (cached) return cached;
 
-  const providers = await fetchTMDB<ProvidersResponse>(
-    `/${type}/${id}/watch/providers`,
-  );
+  const providers = await fetchTMDB<ProvidersResponse>(`/${type}/${id}/watch/providers`);
   const entry = {
     providers: mapWatchProviders(providers),
     expiresAt: Date.now() + CACHE_TTL_MS,
@@ -49,17 +47,11 @@ async function fetchOne(type: string, id: number): Promise<CacheEntry> {
   return entry;
 }
 
-async function runPooled(
-  items: MediaRef[],
-  workers: Array<Promise<void>>,
-): Promise<void> {
+async function runPooled(items: MediaRef[], workers: Array<Promise<void>>): Promise<void> {
   await Promise.all(workers);
 }
 
-export async function getWatchProviders(
-  type: string,
-  id: number,
-): Promise<ProviderWithType[]> {
+export async function getWatchProviders(type: string, id: number): Promise<ProviderWithType[]> {
   if (!SUPPORTED_TYPES.has(type)) return [];
   const entry = await fetchOne(type, id);
   return entry.providers;

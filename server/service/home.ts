@@ -19,13 +19,7 @@ const RELEASES_WINDOW_DAYS = 45;
 
 // Streaming services available in Argentina. Matched case-insensitively against
 // TMDB provider names from /watch/providers/movie?watch_region=AR.
-const PLATFORM_ALLOWLIST = [
-  "Netflix",
-  "Amazon Prime Video",
-  "Disney Plus",
-  "Max",
-  "Flow",
-];
+const PLATFORM_ALLOWLIST = ["Netflix", "Amazon Prime Video", "Disney Plus", "Max", "Flow"];
 
 // Keyword IDs for adult/fanservice anime content excluded from the discover
 // query. Resolved against the TMDB /search/keyword endpoint and verified to
@@ -164,21 +158,15 @@ export async function buildHome() {
   const popularMovies = fulfilled(5);
   const popularTv = fulfilled(6);
 
-  const mostPopularAR = dedupeById([
-    ...(popularMovies?.results ?? []),
-    ...(popularTv?.results ?? []),
-  ].map(mapToAudioVisualDto)).slice(0, LIMIT_TREND);
+  const mostPopularAR = dedupeById(
+    [...(popularMovies?.results ?? []), ...(popularTv?.results ?? [])].map(mapToAudioVisualDto),
+  ).slice(0, LIMIT_TREND);
 
   const rawTrending = trending?.results?.slice(0, LIMIT_TREND).map(mapToAudioVisualDto) ?? [];
-  const rawNewReleases = newReleases?.results
-    ?.slice(0, LIMIT_TREND)
-    .map(mapToAudioVisualDto) ?? [];
-  const rawTopRatedMovies = topRatedMovies?.results
-    ?.slice(0, LIMIT_TREND)
-    .map(mapToAudioVisualDto) ?? [];
-  const rawTopRatedTv = topRatedTv?.results
-    ?.slice(0, LIMIT_TREND)
-    .map(mapToAudioVisualDto) ?? [];
+  const rawNewReleases = newReleases?.results?.slice(0, LIMIT_TREND).map(mapToAudioVisualDto) ?? [];
+  const rawTopRatedMovies =
+    topRatedMovies?.results?.slice(0, LIMIT_TREND).map(mapToAudioVisualDto) ?? [];
+  const rawTopRatedTv = topRatedTv?.results?.slice(0, LIMIT_TREND).map(mapToAudioVisualDto) ?? [];
   const rawTopAnime = topAnime?.results?.slice(0, 50).map(mapToAudioVisualDto) ?? [];
 
   // Deduplicate titles globally across home rails, giving precedence to the

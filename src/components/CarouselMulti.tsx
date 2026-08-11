@@ -115,9 +115,7 @@ export function CarouselMulti({
                 <span>{movie.releaseDate?.split("-")[0]}</span>
               </div>
               {showProviders && (
-                <CardProviders
-                  providers={providersMap[`${movie.mediaType}:${movie.id}`] ?? []}
-                />
+                <CardProviders providers={providersMap[`${movie.mediaType}:${movie.id}`] ?? []} />
               )}
             </a>
           ))}

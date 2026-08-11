@@ -17,8 +17,9 @@ if (latin.length === 0) {
   throw new Error("purge-fonts: no latin @font-face found; aborting to avoid a broken CSS");
 }
 
-const purged = html.replace(/@font-face\s*\{[\s\S]*?\}(?=\s*@font-face|\s*<\/style>|\s*$)/g, (match) =>
-  latin.includes(match) ? match : "",
+const purged = html.replace(
+  /@font-face\s*\{[\s\S]*?\}(?=\s*@font-face|\s*<\/style>|\s*$)/g,
+  (match) => (latin.includes(match) ? match : ""),
 );
 
 const usedFiles = new Set([...purged.matchAll(/url\([^)]*?\/([^/)]+\.woff2)\)/g)].map((m) => m[1]));
