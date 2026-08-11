@@ -85,14 +85,21 @@ function injectSsrMarkup(appHtml: string, homeDataScript: string): string {
   if (closeIdx < contentStart) return rawTemplate;
 
   const head = rawTemplate.slice(0, contentStart);
-  const tail = rawTemplate.slice(closeIdx);
+  const tail = rawTemplate.slice(closeIdx, bodyIdx);
+  const bodyClose = rawTemplate.slice(bodyIdx);
 
+  // The hydration payload and isodata marker are injected BEFORE </body> so the
+  // emitted document stays valid HTML. This is safe for execution order: a
+  // classic inline <script> runs synchronously during parsing, while the module
+  // bundle is deferred by default and only runs after the document is parsed —
+  // so window.__HOME_DATA__ always exists before useHomeData.ts evaluates.
   return (
     head +
     appHtml +
     tail +
     `<script>window.__HOME_DATA__=${homeDataScript}</script>` +
-    `<script type="isodata"></script>\n`
+    `<script type="isodata"></script>\n` +
+    bodyClose
   );
 }
 
