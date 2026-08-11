@@ -44,7 +44,9 @@ const mapPlatformRows = (platforms: PlatformRow[]): PlatformRow[] => {
 };
 
 const loadHomeData = () => {
-  homeDataSignal.value = null;
+  // Keep existing data visible during a retry to avoid a loading flash;
+  // only the error state is cleared. A null signal is only meaningful as the
+  // initial "not loaded yet" state, which is already its default.
   homeErrorSignal.value = null;
 
   fetch(URL_API)
