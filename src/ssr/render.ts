@@ -1,6 +1,5 @@
 import { h } from "preact";
 import { renderToString } from "preact-render-to-string";
-import { locationStub } from "preact-iso/prerender";
 
 import rawTemplate from "../../dist/index.html?raw";
 import type { AudioVisualDto, Genres, HomeData, PlatformRow } from "@/shared/types";
@@ -46,8 +45,11 @@ function mapHomeData(data: HomeData, genres: Genres[]): HomeData {
   };
 }
 
-// Same mechanism as preact-iso's locationStub(): give the Router a static
-// `location` global during SSR so it resolves the requested path deterministically.
+// Mirrors preact-iso's locationStub(): give the Router a static `location`
+// global during SSR so it resolves the requested path deterministically. We
+// implement it inline instead of importing preact-iso/prerender, whose full
+// module pulls in Node-only APIs (renderToStringAsync) that the Vercel Edge
+// runtime cannot bundle.
 function stubLocationForSsr(path: string) {
   const url = new URL(path, "http://dondeveo.local");
   const stub = {
@@ -61,17 +63,13 @@ function stubLocationForSsr(path: string) {
     href: url.href,
   };
   try {
-    locationStub(path);
+    (globalThis as unknown as { location: unknown }).location = stub;
   } catch {
-    try {
-      (globalThis as unknown as { location: unknown }).location = stub;
-    } catch {
-      Object.defineProperty(globalThis, "location", {
-        value: stub,
-        configurable: true,
-        writable: true,
-      });
-    }
+    Object.defineProperty(globalThis, "location", {
+      value: stub,
+      configurable: true,
+      writable: true,
+    });
   }
 }
 
