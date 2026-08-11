@@ -1,6 +1,9 @@
 import { defineConfig } from "vite";
 import preact from "@preact/preset-vite";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Dedicated build for the edge SSR render module. It must reuse the SAME CSS
 // modules config as the client build so hashed class names match hydration.

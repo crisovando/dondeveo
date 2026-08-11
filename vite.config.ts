@@ -1,8 +1,11 @@
 import { defineConfig } from "vite";
 import preact from "@preact/preset-vite";
 import path from "path";
+import { fileURLToPath } from "url";
 import webfontDownload from "vite-plugin-webfont-dl";
 import { VitePWA } from "vite-plugin-pwa";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   base: "/",
@@ -134,11 +137,15 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
+    minify: "oxc",
+    rolldownOptions: {
+      output: {
+        minify: {
+          compress: {
+            dropConsole: true,
+            dropDebugger: true,
+          },
+        },
       },
     },
   },
