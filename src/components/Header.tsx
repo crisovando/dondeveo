@@ -64,6 +64,11 @@ export function Header() {
                 Historial
               </a>
             </li>
+            <li>
+              <a href="/roulette" class={path === "/roulette" ? "active" : ""}>
+                Ruleta
+              </a>
+            </li>
           </ul>
         </nav>
         <a class="logo-container" href="/" aria-label="Ir al inicio de Donde veo">
