@@ -12,13 +12,17 @@ export const loadRoulette = () => {
   if (typeof window === "undefined") return;
 
   const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (saved) {
-    try {
-      const { data } = JSON.parse(saved);
-      rouletteSignal.value = data;
-    } catch (e) {
-      console.error("Error parsing roulette from localStorage", e);
-    }
+  if (!saved) {
+    rouletteSignal.value = [];
+    return;
+  }
+
+  try {
+    const { data } = JSON.parse(saved);
+    rouletteSignal.value = data;
+  } catch (e) {
+    console.error("Error parsing roulette from localStorage", e);
+    rouletteSignal.value = [];
   }
 };
 

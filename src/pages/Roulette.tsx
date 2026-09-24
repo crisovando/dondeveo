@@ -6,7 +6,6 @@ import { ImgTmdb } from "@/components/ImgTmdb";
 import {
   MAX_ROULETTE_ENTRIES,
   clearRoulette,
-  getRoulette,
   pickRandomRouletteIndex,
   removeFromRoulette,
   rouletteSignal,
@@ -62,7 +61,8 @@ export function Roulette() {
   const [winnerIndex, setWinnerIndex] = useState<number | null>(null);
   const timeoutRef = useRef<number | null>(null);
 
-  const entries = rouletteSignal.value ?? getRoulette();
+  const stored = rouletteSignal.value;
+  const entries = stored ?? [];
   const count = entries.length;
   const seg = count > 0 ? 360 / count : 0;
   const winner = winnerIndex === null ? null : (entries[winnerIndex] ?? null);
@@ -112,12 +112,14 @@ export function Roulette() {
           <h1 class={styles.title}>Ruleta</h1>
           <p class={styles.subtitle}>Dejá que el azar elija tu próxima película o serie</p>
         </div>
-        <span class={styles.counter}>
-          {count} / {MAX_ROULETTE_ENTRIES}
-        </span>
+        {stored !== null && (
+          <span class={styles.counter}>
+            {count} / {MAX_ROULETTE_ENTRIES}
+          </span>
+        )}
       </header>
 
-      {count === 0 ? (
+      {stored === null ? null : count === 0 ? (
         <EmptyRow
           title="Tu ruleta"
           subtitle="Elegí al azar"
