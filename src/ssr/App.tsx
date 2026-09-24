@@ -8,6 +8,7 @@ import { Platform } from "@/pages/Platform";
 import { Favorites } from "@/pages/Favorites";
 import { NotFound } from "@/pages/_404";
 import { Historical } from "@/pages/Historical";
+import { Roulette } from "@/pages/Roulette";
 
 // Server-side twin of <App/> in src/index.tsx. Deliberately omits <UpdateToast/>
 // (it pulls in the Vite-only virtual:pwa-register/preact module, which does not
@@ -24,6 +25,7 @@ export function AppSsr() {
           <Route path="/home" component={Home} />
           <Route path="/favorites" component={Favorites} />
           <Route path="/historical" component={Historical} />
+          <Route path="/roulette" component={Roulette} />
           <Route path="/search" component={Search} />
           <Route path="/platform/:providerId" component={Platform} />
           <Route path="/detail/:type/:id" component={Detail} />
