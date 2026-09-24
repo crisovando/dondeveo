@@ -64,7 +64,7 @@ export function HeroDetail({ movie }: HeroDetailProps) {
               Favoritos
             </ButtonHero>
             <ButtonHero
-              variant="secondary"
+              variant={id !== undefined && isInRoulette(id) ? "primary" : "secondary"}
               icon={<Dices />}
               onClick={handleRouletteClick}
               aria-pressed={id !== undefined && isInRoulette(id)}
