@@ -1,9 +1,10 @@
 import { useState } from "preact/hooks";
-import { Minus, Plus } from "lucide-preact";
+import { Dices, Minus, Plus } from "lucide-preact";
 import { ButtonHero } from "@/components/ButtonHero";
 import { Hero } from "@/components/Hero";
 import { AudioVisualDto, DetailItem } from "@/shared/types";
 import { isFavorite, removeFromFavorites } from "@/signals/favorites";
+import { isInRoulette, isRouletteFull, toggleRoulette } from "@/signals/roulette";
 import { AddFavoriteModal } from "@/components/AddFavoriteModal";
 import styles from "./HeroDetail.module.css";
 
@@ -25,6 +26,16 @@ export function HeroDetail({ movie }: HeroDetailProps) {
     } else {
       setShowModal(true);
     }
+  };
+
+  const handleRouletteClick = () => {
+    if (id === undefined) return;
+    toggleRoulette({
+      id,
+      title: movie.title ?? "",
+      poster: movie.poster ?? null,
+      mediaType: movie.mediaType ?? "movie",
+    });
   };
 
   return (
@@ -51,6 +62,15 @@ export function HeroDetail({ movie }: HeroDetailProps) {
             >
               {id !== undefined && isFavorite(id) ? <Minus /> : <Plus />}
               Favoritos
+            </ButtonHero>
+            <ButtonHero
+              variant={id !== undefined && isInRoulette(id) ? "primary" : "secondary"}
+              icon={<Dices />}
+              onClick={handleRouletteClick}
+              aria-pressed={id !== undefined && isInRoulette(id)}
+              disabled={id !== undefined && !isInRoulette(id) && isRouletteFull()}
+            >
+              Ruleta
             </ButtonHero>
           </Hero.Actions>
         </Hero.Overlay>

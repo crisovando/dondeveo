@@ -4,11 +4,18 @@ import styles from "./SearchResults.module.css";
 import { ImgTmdb } from "@/components/ImgTmdb";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { MediaGrid } from "@/components/MediaGrid";
-import { Star } from "lucide-preact";
+import { Dices, Star } from "lucide-preact";
+import clsx from "clsx";
 import { CardProviders } from "@/features/CardProviders";
 import { isStreamProvider } from "@/hooks/useProvidersMap";
 import { Spinner } from "@/components/Spinner";
 import { getHistory } from "@/signals/history";
+import {
+  MAX_ROULETTE_ENTRIES,
+  isInRoulette,
+  isRouletteFull,
+  toggleRoulette,
+} from "@/signals/roulette";
 
 interface SearchResultsProps {
   items?: AudioVisualDto[];
@@ -177,40 +184,72 @@ export function SearchResults({
         </div>
 
         <MediaGrid>
-          {visibleItems?.map((item) => (
-            <a
-              class={styles.cardResult}
-              href={`/detail/${item.mediaType}/${item.id}`}
-              onClick={(e) => {
-                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-                e.preventDefault();
-                handleClickItem(item);
-              }}
-              key={item.id}
-            >
-              <ImgTmdb
-                type="poster"
-                layout="poster-grid"
-                src={item.poster}
-                class={styles.poster}
-                alt={`Póster de ${item.title}`}
-                withSkeleton
-                style={{ viewTransitionName: `media-${item.id}` }}
-              />
-              <h3 class={styles.title}>{item.title}</h3>
-              <div class={styles.meta}>
-                <span class={styles.metaType}>{MEDIA_TYPE_LABEL[item.mediaType]}</span>
-                {typeof item.rating === "number" && item.rating > 0 && (
-                  <span class={styles.metaRating}>
-                    <Star size={12} strokeWidth={2} aria-hidden="true" />
-                    {item.rating.toFixed(1)}
-                  </span>
-                )}
-                {item.releaseDate && <span>{item.releaseDate.slice(0, 4)}</span>}
+          {visibleItems?.map((item) => {
+            const inRoulette = isInRoulette(item.id);
+            const full = isRouletteFull();
+
+            return (
+              <div class={styles.cardWrapper} key={item.id}>
+                <a
+                  class={styles.cardResult}
+                  href={`/detail/${item.mediaType}/${item.id}`}
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                    e.preventDefault();
+                    handleClickItem(item);
+                  }}
+                >
+                  <ImgTmdb
+                    type="poster"
+                    layout="poster-grid"
+                    src={item.poster}
+                    class={styles.poster}
+                    alt={`Póster de ${item.title}`}
+                    withSkeleton
+                    style={{ viewTransitionName: `media-${item.id}` }}
+                  />
+                  <h3 class={styles.title}>{item.title}</h3>
+                  <div class={styles.meta}>
+                    <span class={styles.metaType}>{MEDIA_TYPE_LABEL[item.mediaType]}</span>
+                    {typeof item.rating === "number" && item.rating > 0 && (
+                      <span class={styles.metaRating}>
+                        <Star size={12} strokeWidth={2} aria-hidden="true" />
+                        {item.rating.toFixed(1)}
+                      </span>
+                    )}
+                    {item.releaseDate && <span>{item.releaseDate.slice(0, 4)}</span>}
+                  </div>
+                  <Availability providers={item.providers} />
+                </a>
+                <button
+                  type="button"
+                  class={clsx(styles.rouletteButton, inRoulette && styles.active)}
+                  onClick={() =>
+                    toggleRoulette({
+                      id: item.id,
+                      title: item.title,
+                      poster: item.poster ?? null,
+                      mediaType: item.mediaType,
+                    })
+                  }
+                  aria-pressed={inRoulette}
+                  disabled={!inRoulette && full}
+                  aria-label={
+                    inRoulette
+                      ? `Quitar ${item.title} de la ruleta`
+                      : `Agregar ${item.title} a la ruleta`
+                  }
+                  title={
+                    !inRoulette && full
+                      ? `La ruleta ya tiene ${MAX_ROULETTE_ENTRIES} opciones`
+                      : undefined
+                  }
+                >
+                  <Dices size={16} strokeWidth={2} aria-hidden="true" />
+                </button>
               </div>
-              <Availability providers={item.providers} />
-            </a>
-          ))}
+            );
+          })}
           {hasMore && (
             <div class={styles.sentinel} ref={loadMoreRef}>
               {loading && <Spinner inline />}

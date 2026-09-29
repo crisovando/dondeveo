@@ -10,6 +10,7 @@ import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/header.css";
 import { loadHistory } from "./signals/history";
+import { loadRoulette } from "./signals/roulette";
 import { UpdateToast } from "./components/UpdateToast";
 
 // Non-home routes are lazy-loaded: only "/" is server-rendered, so keeping Home
@@ -20,6 +21,7 @@ const Search = lazy(() => import("./pages/Search").then((m) => m.Search));
 const Platform = lazy(() => import("./pages/Platform").then((m) => m.Platform));
 const Favorites = lazy(() => import("./pages/Favorites").then((m) => m.Favorites));
 const Historical = lazy(() => import("./pages/Historical").then((m) => m.Historical));
+const Roulette = lazy(() => import("./pages/Roulette").then((m) => m.Roulette));
 const NotFound = lazy(() => import("./pages/_404").then((m) => m.NotFound));
 
 export function App() {
@@ -27,6 +29,7 @@ export function App() {
     loadGenres();
     loadFavorites();
     loadHistory();
+    loadRoulette();
   }, []);
 
   return (
@@ -38,6 +41,7 @@ export function App() {
           <Route path="/home" component={Home} />
           <Route path="/favorites" component={Favorites} />
           <Route path="/historical" component={Historical} />
+          <Route path="/roulette" component={Roulette} />
           <Route path="/search" component={Search} />
           <Route path="/platform/:providerId" component={Platform} />
           <Route path="/detail/:type/:id" component={Detail} />
