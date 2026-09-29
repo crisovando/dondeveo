@@ -1,8 +1,10 @@
 import { useLocation } from "preact-iso";
+import clsx from "clsx";
 import { Dices, Trash2 } from "lucide-preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { EmptyRow } from "@/components/EmptyRow";
 import { ImgTmdb } from "@/components/ImgTmdb";
+import { buildTmdbSrc } from "@/helpers/utils";
 import {
   MAX_ROULETTE_ENTRIES,
   clearRoulette,
@@ -18,6 +20,11 @@ const VIEW_RADIUS = 96;
 const LABEL_RADIUS = 62;
 const SPIN_MS = 4200;
 const EXTRA_TURNS = 5;
+const MAX_SECTORS_WITH_POSTERS = 6;
+const POSTER_WIDTH = 46;
+const POSTER_HEIGHT = 69;
+const POSTER_OUTER_RADIUS = 94;
+const POSTER_OPACITY = 0.58;
 
 const SECTOR_FILLS = [
   "var(--color-primary)",
@@ -66,6 +73,7 @@ export function Roulette() {
   const count = entries.length;
   const seg = count > 0 ? 360 / count : 0;
   const winner = winnerIndex === null ? null : (entries[winnerIndex] ?? null);
+  const showPosters = count >= 2 && count <= MAX_SECTORS_WITH_POSTERS;
 
   useEffect(() => {
     return () => {
@@ -138,6 +146,16 @@ export function Roulette() {
               role="img"
               aria-label="Ruleta de opciones"
             >
+              {showPosters && (
+                <defs>
+                  {Array.from({ length: count }, (_, index) => (
+                    <clipPath key={entries[index].id} id={`roulette-sector-${index}`}>
+                      <path d={sectorPath(-seg / 2, seg / 2)} />
+                    </clipPath>
+                  ))}
+                </defs>
+              )}
+
               <g class={styles.rotor} style={{ transform: `rotate(${rotation}deg)` }}>
                 {count === 1 && (
                   <circle
@@ -166,8 +184,22 @@ export function Roulette() {
                           stroke-width="1"
                         />
                       )}
+                      {showPosters && entries[index].poster && (
+                        <g transform={`rotate(${mid} 100 100)`}>
+                          <image
+                            href={buildTmdbSrc(entries[index].poster, "w185")}
+                            x={VIEW_CENTER - POSTER_WIDTH / 2}
+                            y={VIEW_CENTER - POSTER_OUTER_RADIUS}
+                            width={POSTER_WIDTH}
+                            height={POSTER_HEIGHT}
+                            preserveAspectRatio="xMidYMid slice"
+                            opacity={POSTER_OPACITY}
+                            clip-path={`url(#roulette-sector-${index})`}
+                          />
+                        </g>
+                      )}
                       <text
-                        class={styles.sectorLabel}
+                        class={clsx(styles.sectorLabel, showPosters && styles.sectorLabelHalo)}
                         x={labelX.toFixed(2)}
                         y={labelY.toFixed(2)}
                         text-anchor="middle"
