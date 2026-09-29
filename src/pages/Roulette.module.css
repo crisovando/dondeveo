@@ -83,6 +83,13 @@
   pointer-events: none;
 }
 
+.sectorLabelHalo {
+  paint-order: stroke;
+  stroke: var(--color-bg);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
 .pointer {
   fill: var(--color-white);
   stroke: var(--color-primary);
