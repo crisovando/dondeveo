@@ -22,6 +22,13 @@ export interface FavoriteEntry extends AudioVisualDto {
   notification?: ScheduledNotification;
 }
 
+export interface RouletteEntry {
+  id: number;
+  title: string;
+  poster: string | null;
+  mediaType: string;
+}
+
 export interface PlatformRow {
   providerId: number;
   providerName: string;
