@@ -20,7 +20,7 @@ const VIEW_RADIUS = 96;
 const LABEL_RADIUS = 62;
 const SPIN_MS = 4200;
 const EXTRA_TURNS = 5;
-const MAX_SECTORS_WITH_POSTERS = 6;
+const MAX_SECTORS_WITH_POSTERS = 10;
 const POSTER_WIDTH = 46;
 const POSTER_HEIGHT = 69;
 const POSTER_OUTER_RADIUS = 94;
@@ -33,6 +33,7 @@ const SECTOR_FILLS = [
 ];
 
 const SECTOR_LABEL_FILLS = ["var(--color-white)", "var(--color-text-bright)", "var(--color-bg)"];
+const POSTER_LABEL_FILL = "var(--color-white)";
 
 function pointOnWheel(angleDeg: number, radius = VIEW_RADIUS): [number, number] {
   const rad = (angleDeg * Math.PI) / 180;
@@ -204,7 +205,7 @@ export function Roulette() {
                         y={labelY.toFixed(2)}
                         text-anchor="middle"
                         dominant-baseline="central"
-                        style={{ fill: SECTOR_LABEL_FILLS[fillIndex] }}
+                        style={{ fill: showPosters ? POSTER_LABEL_FILL : SECTOR_LABEL_FILLS[fillIndex] }}
                       >
                         {index + 1}
                       </text>
