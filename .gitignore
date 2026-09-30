@@ -15,6 +15,7 @@ dist-ssr
 .idea
 .openchamber/
 .atl/
+odd/
 .DS_Store
 *.suo
 *.ntvs*
