@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState } from "preact/hooks";
-import { AudioVisualDto, ProviderWithType } from "@/shared/types";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
+import {
+  AudioVisualDto,
+  ProviderWithType,
+  SearchFilters as SearchFiltersState,
+} from "@/shared/types";
 import styles from "./SearchResults.module.css";
 import { ImgTmdb } from "@/components/ImgTmdb";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
@@ -10,6 +14,9 @@ import { CardProviders } from "@/features/CardProviders";
 import { isStreamProvider } from "@/hooks/useProvidersMap";
 import { Spinner } from "@/components/Spinner";
 import { getHistory } from "@/signals/history";
+import { getGenreNames } from "@/signals/genres";
+import { DEFAULT_SEARCH_FILTERS, hasActiveFilters } from "@/signals/search";
+import { SearchFilters } from "@/features/SearchFilters";
 import {
   MAX_ROULETTE_ENTRIES,
   isInRoulette,
@@ -30,6 +37,8 @@ interface SearchResultsProps {
   retryLoadMore: () => void;
   onItemClick?: (item: AudioVisualDto) => void;
   onRecentSearch?: (title: string) => void;
+  filters: SearchFiltersState;
+  onFiltersChange: (next: SearchFiltersState) => void;
 }
 
 const MEDIA_TYPE_LABEL: Record<string, string> = {
@@ -79,6 +88,8 @@ export function SearchResults({
   retryLoadMore,
   onItemClick,
   onRecentSearch,
+  filters,
+  onFiltersChange,
 }: SearchResultsProps) {
   const hasMore = !!(
     items &&
@@ -89,6 +100,47 @@ export function SearchResults({
 
   const [announce, setAnnounce] = useState("");
   const lastCountRef = useRef(0);
+  const filteredAnnounceRef = useRef("");
+
+  const loadedItems = items?.filter((item) => item.mediaType !== "people");
+  const filtersActive = hasActiveFilters(filters);
+
+  const filteredItems = useMemo(() => {
+    if (!loadedItems) return undefined;
+    return loadedItems.filter((item) => {
+      if (filters.mediaType !== "all" && item.mediaType !== filters.mediaType) return false;
+      if (filters.genres.length > 0) {
+        const ids = item.genreIds ?? [];
+        if (!ids.some((id) => filters.genres.includes(id))) return false;
+      }
+      if (filters.minRating !== null) {
+        if (typeof item.rating !== "number" || item.rating < filters.minRating) return false;
+      }
+      if (filters.streamOnly) {
+        if (!(item.providers ?? []).some(isStreamProvider)) return false;
+      }
+      return true;
+    });
+  }, [loadedItems, filters]);
+
+  const availableGenres = useMemo(() => {
+    const counts = new Map<number, number>();
+    for (const item of loadedItems ?? []) {
+      for (const id of item.genreIds ?? []) counts.set(id, (counts.get(id) ?? 0) + 1);
+    }
+    for (const id of filters.genres) if (!counts.has(id)) counts.set(id, 0);
+    return getGenreNames([...counts.keys()])
+      .map((genre) => ({ id: genre.id, name: genre.name, count: counts.get(genre.id) ?? 0 }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "es"));
+  }, [loadedItems, filters.genres]);
+
+  const showMediaType =
+    !!loadedItems?.some((item) => item.mediaType === "movie") &&
+    !!loadedItems?.some((item) => item.mediaType === "tv");
+  const showRating = !!loadedItems?.some(
+    (item) => typeof item.rating === "number" && item.rating > 0,
+  );
+  const showStream = !!loadedItems?.some((item) => (item.providers ?? []).some(isStreamProvider));
 
   useEffect(() => {
     if (items === undefined) {
@@ -102,17 +154,43 @@ export function SearchResults({
     }
   }, [items, loading, total]);
 
+  useEffect(() => {
+    if (!filtersActive) {
+      filteredAnnounceRef.current = "";
+      return;
+    }
+    const message = `${filteredItems?.length ?? 0} de ${loadedItems?.length ?? 0} resultados cargados`;
+    if (filteredAnnounceRef.current === message) return;
+    filteredAnnounceRef.current = message;
+    setAnnounce(message);
+  }, [filtersActive, filteredItems?.length, loadedItems?.length]);
+
   const handleClickItem = (item: AudioVisualDto) => {
     if (item.mediaType !== "people" && onItemClick) {
       onItemClick(item);
     }
   };
 
-  const visibleItems = items?.filter((item) => item.mediaType !== "people");
-
   const isInitial = items === undefined && !loading && !error;
   const isError = error && items === undefined;
-  const isEmpty = items !== undefined && visibleItems?.length === 0;
+  const isEmpty = items !== undefined && loadedItems?.length === 0;
+  const isFilteredEmpty =
+    items !== undefined &&
+    (loadedItems?.length ?? 0) > 0 &&
+    (filteredItems?.length ?? 0) === 0 &&
+    filtersActive;
+
+  const filtersBar = (
+    <SearchFilters
+      filters={filters}
+      onChange={onFiltersChange}
+      onClear={() => onFiltersChange(DEFAULT_SEARCH_FILTERS)}
+      availableGenres={availableGenres}
+      showMediaType={showMediaType}
+      showRating={showRating}
+      showStream={showStream}
+    />
+  );
 
   const recent = getHistory().slice(0, RECENT_LIMIT);
 
@@ -175,16 +253,45 @@ export function SearchResults({
         <p>Probá con otro título o palabra clave.</p>
       </div>
     );
+  } else if (isFilteredEmpty) {
+    body = (
+      <>
+        {filtersBar}
+        <div class={styles.stateBox} role="status">
+          <h2>Ningún resultado cargado coincide</h2>
+          <p>Probá quitar algún filtro o cargá más resultados.</p>
+          <div class={styles.stateActions}>
+            <button
+              type="button"
+              class={styles.retryButton}
+              onClick={() => onFiltersChange(DEFAULT_SEARCH_FILTERS)}
+            >
+              Limpiar filtros
+            </button>
+            {hasMore && (
+              <button type="button" class={styles.secondaryButton} onClick={fetchMore}>
+                Cargar más resultados
+              </button>
+            )}
+          </div>
+        </div>
+      </>
+    );
   } else {
     body = (
       <>
+        {filtersBar}
         <div class={styles.header}>
-          <h2>Resultados de búsqueda</h2>
-          <span>{resultCountLabel(total)}</span>
+          <h2>{filtersActive ? "Resultados filtrados" : "Resultados de búsqueda"}</h2>
+          <span>
+            {filtersActive
+              ? `${filteredItems?.length ?? 0} de ${loadedItems?.length ?? 0} cargados`
+              : resultCountLabel(total)}
+          </span>
         </div>
 
         <MediaGrid>
-          {visibleItems?.map((item) => {
+          {filteredItems?.map((item) => {
             const inRoulette = isInRoulette(item.id);
             const full = isRouletteFull();
 
@@ -250,7 +357,7 @@ export function SearchResults({
               </div>
             );
           })}
-          {hasMore && (
+          {hasMore && !(filtersActive && (filteredItems?.length ?? 0) === 0) && (
             <div class={styles.sentinel} ref={loadMoreRef}>
               {loading && <Spinner inline />}
             </div>
