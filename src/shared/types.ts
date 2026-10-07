@@ -125,3 +125,12 @@ export interface ProductionCompany {
   logoPath: string;
   originCountry: string;
 }
+
+export type MediaTypeFilter = "all" | "movie" | "tv";
+
+export interface SearchFilters {
+  mediaType: MediaTypeFilter;
+  genres: number[];
+  minRating: number | null;
+  streamOnly: boolean;
+}
