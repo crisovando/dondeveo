@@ -36,6 +36,9 @@ export function SearchFilters({
   const panelId = useId();
   const activeCount = countActiveFilters(filters);
   const active = hasActiveFilters(filters);
+  const hasPanelContent = showMediaType || showRating || availableGenres.length > 0 || showStream;
+
+  if (!hasPanelContent && !active) return null;
 
   const update = (patch: Partial<SearchFiltersState>) => onChange({ ...filters, ...patch });
 
@@ -118,7 +121,7 @@ export function SearchFilters({
         )}
 
         {active && (
-          <button type="button" class={styles.clear} onClick={onClear}>
+          <button type="button" class={styles.clear} onClick={onClear} aria-label="Limpiar filtros">
             Limpiar
           </button>
         )}

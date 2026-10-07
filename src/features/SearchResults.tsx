@@ -96,7 +96,6 @@ export function SearchResults({
     items.length < total &&
     page < (totalPages ?? Number.MAX_SAFE_INTEGER)
   );
-  const { loadMoreRef } = useInfiniteScroll(fetchMore, hasMore);
 
   const [announce, setAnnounce] = useState("");
   const lastCountRef = useRef(0);
@@ -141,6 +140,9 @@ export function SearchResults({
     (item) => typeof item.rating === "number" && item.rating > 0,
   );
   const showStream = !!loadedItems?.some((item) => (item.providers ?? []).some(isStreamProvider));
+
+  const suppressAutoLoad = filtersActive && (filteredItems?.length ?? 0) === 0;
+  const { loadMoreRef } = useInfiniteScroll(fetchMore, hasMore && !suppressAutoLoad);
 
   useEffect(() => {
     if (items === undefined) {
