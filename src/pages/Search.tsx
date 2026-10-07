@@ -5,7 +5,7 @@ import { SearchResults } from "@/features/SearchResults";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchData } from "@/hooks/useSearchData";
 import { navigateToDetail } from "@/helpers/navigation";
-import { searchSession } from "@/signals/search";
+import { searchSession, searchFilters, resetSearchFilters } from "@/signals/search";
 import { AudioVisualDto } from "@/shared/types";
 
 export function Search() {
@@ -41,6 +41,7 @@ export function Search() {
     searchSession.value = { ...searchSession.value, query: value.trim(), data: null };
     if (!value.trim()) {
       reset();
+      resetSearchFilters();
       return;
     }
     fetchData(value);
@@ -83,6 +84,10 @@ export function Search() {
         retryLoadMore={retryLoadMore}
         onItemClick={handleItemClick}
         onRecentSearch={handleRecentSearch}
+        filters={searchFilters.value}
+        onFiltersChange={(next) => {
+          searchFilters.value = next;
+        }}
       />
     </div>
   );
