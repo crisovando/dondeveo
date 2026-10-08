@@ -1,0 +1,79 @@
+.nav {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+  z-index: var(--z-header);
+  display: flex;
+  align-items: stretch;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: var(--space-xs);
+  translate: -50% 0;
+  border-radius: var(--radius-full);
+  background: var(--color-nav-bg-glass);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--color-nav-border);
+  box-shadow: 0 8px 24px oklch(0% 0 0 / 0.4);
+  transition:
+    translate 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease;
+}
+
+/* No backdrop-filter support: fall back to the solid raisin tint instead of a see-through bar. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav {
+    background: var(--color-nav-bg);
+  }
+}
+
+.hidden {
+  translate: -50% 160%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.indicator {
+  position: absolute;
+  top: var(--space-xs);
+  bottom: var(--space-xs);
+  left: 0;
+  width: 0;
+  border-radius: var(--radius-full);
+  background: oklch(55% 0.22 25 / 0.16);
+  opacity: 0;
+  transform-origin: center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.link {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0.375rem 0.25rem;
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link:active {
+  color: var(--color-text);
+}
+
+.active {
+  color: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}
