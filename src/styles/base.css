@@ -101,8 +101,7 @@ h4 {
   animation-timing-function: var(--motion-ease-bounds);
 }
 
-/* A single named avatar crosses the whole page from the cast rail to the header;
-   without this the UA 250ms default makes that travel read as no animation. */
+/* The UA default (250ms) makes the cross-page travel read as no animation. */
 ::view-transition-group(cast-avatar) {
   animation-duration: var(--motion-duration-cast-morph);
   animation-timing-function: var(--motion-ease-cast-morph);

@@ -107,8 +107,7 @@ function PersonHeader({ name, photo, meta }: PersonHeaderProps) {
   return (
     <header class={styles.header}>
       <div class={styles.avatar} style={{ viewTransitionName: CAST_AVATAR_TRANSITION_NAME }}>
-        {/* ImgTmdb consumes `alt` without forwarding it to the <img>, so the
-            accessible name has to ride on aria-label. */}
+        {/* ImgTmdb drops `alt` before the <img>, so the accessible name rides on aria-label. */}
         <ImgTmdb
           type="profile"
           size="w342"
@@ -216,8 +215,7 @@ export function Person({ id, initialPhoto }: PersonProps) {
   const { route } = useLocation();
   const { data, loading, error, retry } = usePersonData(id);
 
-  // The cast source tile and this avatar must carry the same name for the morph;
-  // the id guard stops a stale signal from painting an unrelated person.
+  // Same name as the cast tile so the morph pairs; the id guard rejects a stale signal.
   const castTransition =
     castTransitionData.value && String(castTransitionData.value.personId) === id
       ? castTransitionData.value

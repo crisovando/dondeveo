@@ -8,8 +8,7 @@ interface CastProps {
   cast?: PersonCast[];
 }
 
-// One name, one holder: a name left on a previously clicked tile collides with
-// the next click and the browser silently drops the morph.
+// A stale name on a previous tile collides with the next click, and the morph is dropped.
 let namedAvatar: HTMLElement | null = null;
 
 function nameAvatar(avatar: HTMLElement) {

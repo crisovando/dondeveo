@@ -8,9 +8,7 @@ export const transitionData = signal<{
   from: string;
 } | null>(null);
 
-// Person consumes this to paint the tapped avatar before its fetch resolves: the
-// new snapshot is captured on navigation, so an empty destination morphs into
-// nothing. `personId` keeps a stale signal from naming an unrelated person.
+// Painted by Person before its fetch resolves; `personId` rejects a stale signal.
 export const castTransitionData = signal<{
   personId: number;
   photo: string | null;
