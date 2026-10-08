@@ -3,6 +3,8 @@ import {
   DetailItem,
   Person as PersonShared,
   PersonCast,
+  PersonCredit,
+  PersonDetail,
   ProviderWithType,
   Review as SharedReview,
   ProductionCompany,
@@ -19,6 +21,11 @@ import {
   ContentRatingResult,
 } from "../types/tmdb-item-detail";
 import { Movie, TV, Person } from "../types/tmdb-common";
+import {
+  PersonDetail as ApiPersonDetail,
+  PersonMovieCredit,
+  PersonTvCredit,
+} from "../types/tmdb-person";
 
 function isProviderType(key: string): key is keyof typeof ProvidersType {
   return Object.keys(ProvidersType).includes(key);
@@ -83,6 +90,58 @@ export function mapPerson(person?: Person): PersonShared | undefined {
     id: person.id,
     name: person.name,
     profilePath: person.profile_path || "",
+  };
+}
+
+function mapMovieCredit(credit: PersonMovieCredit): PersonCredit {
+  return {
+    id: credit.id,
+    title: credit.title,
+    poster: credit.poster_path,
+    mediaType: "movie",
+    date: credit.release_date || null,
+    character: credit.character,
+    popularity: credit.popularity,
+  };
+}
+
+function mapTvCredit(credit: PersonTvCredit): PersonCredit {
+  return {
+    id: credit.id,
+    title: credit.name,
+    poster: credit.poster_path,
+    mediaType: "tv",
+    date: credit.first_air_date || null,
+    character: credit.character,
+    popularity: credit.popularity,
+  };
+}
+
+export function mapPersonDetail(person: ApiPersonDetail): PersonDetail {
+  const credits = [
+    ...(person.movie_credits?.cast ?? []).map(mapMovieCredit),
+    ...(person.tv_credits?.cast ?? []).map(mapTvCredit),
+  ];
+
+  // One person can be credited twice on a title; movie and tv ids are separate namespaces.
+  const seen = new Set<string>();
+  const deduped = credits.filter((credit) => {
+    const key = `${credit.mediaType}:${credit.id}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  return {
+    id: person.id,
+    name: person.name,
+    profilePath: person.profile_path,
+    biography: person.biography,
+    birthday: person.birthday,
+    deathday: person.deathday,
+    placeOfBirth: person.place_of_birth,
+    knownFor: person.known_for_department,
+    credits: deduped,
   };
 }
 
