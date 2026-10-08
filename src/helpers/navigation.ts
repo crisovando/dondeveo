@@ -24,6 +24,43 @@ export interface PersonNavigationTarget {
   photo: string | null;
 }
 
+// A lazy destination suspends on its chunk and lands its real DOM swap after
+// the transition's new-state capture, and Chrome cancels the whole transition
+// when that swap lands mid-animation: the destination module must be awaited
+// inside the callback, before the capture.
+const routeModules: Record<string, () => Promise<unknown>> = {
+  detail: () => import("@/pages/Detail"),
+  favorites: () => import("@/pages/Favorites"),
+  persona: () => import("@/pages/Person"),
+};
+
+function preloadRoute(path: string): Promise<unknown> | undefined {
+  return routeModules[path.split("/")[1]]?.();
+}
+
+// The route commit is a microtask chain, and only a macrotask boundary can
+// witness it: a rAF would deadlock, because rendering is suppressed while
+// the callback's promise is pending.
+function afterRouteCommit(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+function navigateWithTransition(path: string, route: RouteFn) {
+  if (!document.startViewTransition) {
+    route(path);
+    return;
+  }
+
+  const preload = preloadRoute(path);
+  document.startViewTransition(async () => {
+    // route() must win the navigation: preact-iso's own window-level click
+    // handler fires later in the same click dispatch.
+    route(path);
+    if (preload) await preload.catch(() => undefined);
+    await afterRouteCommit();
+  });
+}
+
 export function navigateToDetail(item: DetailNavigationItem, route: RouteFn) {
   transitionData.value = {
     id: item.id,
@@ -33,14 +70,7 @@ export function navigateToDetail(item: DetailNavigationItem, route: RouteFn) {
     from: window.location.pathname + window.location.search,
   };
 
-  const path = `/detail/${item.mediaType}/${item.id}`;
-
-  if (!document.startViewTransition) {
-    route(path);
-    return;
-  }
-
-  document.startViewTransition(() => route(path));
+  navigateWithTransition(`/detail/${item.mediaType}/${item.id}`, route);
 }
 
 export function navigateToPerson(target: PersonNavigationTarget, route: RouteFn) {
@@ -50,23 +80,9 @@ export function navigateToPerson(target: PersonNavigationTarget, route: RouteFn)
     name: target.name,
   };
 
-  const path = `/persona/${target.id}`;
-
-  if (!document.startViewTransition) {
-    route(path);
-    return;
-  }
-
-  document.startViewTransition(() => route(path));
+  navigateWithTransition(`/persona/${target.id}`, route);
 }
 
 export function navigateToFavorites(route: RouteFn) {
-  const path = `/favorites`;
-
-  if (!document.startViewTransition) {
-    route(path);
-    return;
-  }
-
-  document.startViewTransition(() => route(path));
+  navigateWithTransition(`/favorites`, route);
 }
