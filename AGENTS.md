@@ -27,10 +27,11 @@ want to confirm which account is in use, `gh auth status` is enough — then lea
 - A failed mutation under the wrong account reports
   `Unauthorized: As an Enterprise Managed User`, which is an account problem, not a code or
   permissions problem in this repository.
-- Git identity: `user.email` is set **locally** in this repository to
-  `<personal-email>` (the `crisovando` account email). The machine-wide
-  `~/.gitconfig` carries the Allie address, so removing this local override would attribute
-  commits here to the wrong account.
+- Git identity: this repository resolves to `<personal-email>` (the `crisovando`
+  account email). That now comes from the machine-wide `~/.gitconfig`, which defaults to the
+  personal identity and pulls in `~/.<work-gitconfig>` only for repositories under
+  `~/<work-repo-root>/`. The value is also pinned with a repo-local `user.email`; the two
+  agree, so leave both in place.
 - This repository has no `.github/` directory, no workflows and no issues. Pull requests
   follow the body structure of PR #2 (Summary, Changes table, Implementation notes,
   Verification); there is no issue-first gate and no `type:*` label to add.
