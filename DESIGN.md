@@ -109,7 +109,7 @@ components:
 
 Donde veo is a map, not a storefront. The product answers one question — ¿dónde lo veo? — in seconds, and the visual system exists to make that answer feel like the user's own well-kept, night-lit guide to Argentine streaming. Dark is not a theme here; it is the viewing condition: the app assumes the sofa, the late hour, and the screen as the only source of light. Content imagery carries the interface; the chrome stays quiet, a translucent instrument floating above posters and stills.
 
-The system is deliberately low-density in chrome and high-density in content. Cards, carousels, and the hero do the emotional work; the shell (header, 80px fixed) and navigation (a 260px glass drawer) recede until summoned. Motion is reserved and stateful — the hamburger folds into an ✕, the header blurs as you scroll, the search icon participates in the view transition. Nothing moves for decoration. The one loud voice is the action: **Rojo Dondeveo**, a warm red reserved for the decision point (instalar, ver en, buscar), appearing on small surfaces so its rarity carries the product's single answer.
+The system is deliberately low-density in chrome and high-density in content. Cards, carousels, and the hero do the emotional work; the shell (header, 80px fixed) and navigation (a floating bottom pill) recede until summoned. Motion is reserved and stateful — the hamburger folds into an ✕, the header blurs as you scroll, the search icon participates in the view transition. Nothing moves for decoration. The one loud voice is the action: **Rojo Dondeveo**, a warm red reserved for the decision point (instalar, ver en, buscar), appearing on small surfaces so its rarity carries the product's single answer.
 
 Every surface is dark and calm — achromatic near-blacks that step by luminance, never by shadow — with a warm raisin tint reserved for the navigation glass. Imagery is never left naked: text always lands on a scrim, because the atlas is only legible when the map underneath is dimmed. The result is a personal, nocturnal catalog: the user's own list of where everything lives, one glowing tap away.
 
@@ -183,7 +183,7 @@ Mobile-first PWA, laid out for the phone where the decision happens, scaling up 
 - **Hero:** mobile `height: calc(90svh - 80px)` (min 520px), desktop 85vh; overlay content bottom-anchored on mobile, center-anchored at 60px padding on desktop, capped at 600px max-width — like a movie title card.
 - **Detail page:** centered grid, `max-width: 1200px`, 3rem column gap; collapses from 12 columns (8/4 content/sidebar split) below 1024px. Right column stacks use 3rem spacing.
 - **Responsive:** `768px` (typography scale-up, hero full-size treatments, hover states enabled) and `1024px` (12-column grid, hamburger hidden, install button hidden below 1023.98px). Fluid sizing is used only where it matters — the hero title `clamp()`.
-- **Navigation:** 260px off-canvas drawer, right-anchored, `height: 100dvh`, opening on `translate` with a 0.35s `cubic-bezier(0.4, 0, 0.2, 1)` ease.
+- **Navigation:** a floating bottom pill on every viewport, plus the four header links inline at `>= 1024px`.
 
 ## Elevation & Depth
 
@@ -245,10 +245,10 @@ Backdrop translucency is the depth partner: the nav drawer glass blurs at `24px 
 
 ### Navigation
 
-- **Style:** 260px off-canvas right drawer, nav-raisin glass (`blur(24px) saturate(160%)`), 1px white-hairline left edge, 5rem top padding, 2rem item gaps; overlay dims the page at black 55% with 2px blur.
-- **Typography:** section labels are uppercase Inter 600 at 0.625rem with widest tracking; menu links are Inter 500 at 0.9375rem.
-- **States:** idle links in cool `oklch(82% 0.01 260)`; hover raises to white on a `oklch(100% 0 0 / 0.06)` wash; active state is Rojo Dondeveo text on a 12% red wash — the red's second sanctioned appearance, marking "you are here" on the map.
-- **Mobile treatment:** a 2rem hamburger (8px radius, four 2px bars) morphs into a ✕ (rotating bars 1 and 4, fading 2 and 3), hover scales to 1.1 before opening. The drawer slides on `translate` (0.35s standard ease).
+- **Bottom bar:** the primary navigation on every viewport — a floating pill, fixed and centered, `16px` above `env(safe-area-inset-bottom)`. Nav-raisin glass (`blur(24px) saturate(160%)`) with a solid raisin fallback where `backdrop-filter` is unsupported. Three destinations — Inicio, Búsqueda, Favoritos — as a 20px icon over an 11px Inter 600 label.
+- **States:** idle items in Text Muted; the active item takes Rojo Dondeveo as text and sits on a 16% red-wash pill that springs between items. The red marks "you are here", the map's only sanctioned meaning.
+- **Behaviour:** the bar hides on downward vertical page scroll and returns on upward scroll; a horizontal rail scroll never moves it. It recedes under `prefers-reduced-motion`.
+- **Desktop header nav:** the four header links (Inicio, Favoritos, Historial, Ruleta) render inline in the header only at `>= 1024px`. Below that the bar is the only navigation; the off-canvas drawer, its overlay and the hamburger are gone.
 
 ### Signature Component — the Scrim Canvas (hero)
 
@@ -263,6 +263,8 @@ The poster-open reference case: `view-transition-name: hero-item` is set on both
 The reference's 200ms blur fraction is deliberately not applied: animating `filter`/`backdrop-filter` during a view transition is a mid-range-Android jank source, so opacity and transform carry the motion instead. Every animation is suppressed under `prefers-reduced-motion: reduce` by the global guard in `base.css`.
 
 The cast-avatar morph reuses the same machinery: the tapped tile takes the single name `cast-avatar` at click time (not at render, so a repeated actor cannot collide), the destination header avatar paints from the navigation signal before its fetch resolves, and the group travels 480ms (`--motion-duration-cast-morph`).
+
+The bottom bar's indicator is hand-rolled spring physics, no library. Four springs run in one `requestAnimationFrame` loop that stops when every spring rests: position (stiffness 1000 / dampingRatio 1.0) drives the travel, press (1000 / 1.0) the tap-down, and an underdamped velocity spring (300 / 0.5) feeds the horizontal stretch (scaleX 250 / 0.6) and vertical squish (scaleY 250 / 0.7) so the pill leans into its own momentum and settles. The hide-on-scroll listener sits on the window and reads `scrollY`, so a horizontal rail's internal scroll — which never reaches the window — cannot hide the bar. Under `prefers-reduced-motion` the indicator snaps to its target and the bar's CSS transition is disabled.
 
 Navigation through a view transition carries one runtime constraint: the destination route is a lazy chunk whose real DOM swap lands after the transition captured the new state, and a swap arriving mid-animation makes the browser cancel the whole transition — the morph then snaps instead of travelling. `navigateWithTransition` in `navigation.ts` therefore awaits the destination module inside the callback and settles only after the route commits, witnessed by a `setTimeout(0)` macrotask boundary; a `requestAnimationFrame` cannot be used there, because rendering is suppressed while a transition callback's promise is pending and a rAF await deadlocks the transition. `route()` runs first in the callback so it wins the navigation over the router's own window-level click handler, which fires later in the same click dispatch.
 

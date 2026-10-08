@@ -1,6 +1,7 @@
 import { LocationProvider, Router, Route, lazy, hydrate } from "preact-iso";
 import { useEffect } from "preact/hooks";
 
+import { BottomNav } from "./components/BottomNav";
 import { Header } from "./components/Header";
 import { Home } from "./pages/Home";
 import { loadGenres } from "./signals/genres";
@@ -50,6 +51,7 @@ export function App() {
           <Route default component={NotFound} />
         </Router>
       </main>
+      <BottomNav />
       <UpdateToast />
     </LocationProvider>
   );

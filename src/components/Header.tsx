@@ -1,11 +1,9 @@
 import { Download, Search, X } from "lucide-preact";
 import { useLocation } from "preact-iso";
-import { useState } from "preact/hooks";
 import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 
 export function Header() {
   const { path } = useLocation();
-  const [showMenu, setShowMenu] = useState(false);
   const {
     canInstall,
     isStandalone,
@@ -17,10 +15,6 @@ export function Header() {
     dismissInstallBanner,
   } = useInstallPrompt();
 
-  const handleClickOverlay = () => {
-    setShowMenu(false);
-  };
-
   const showInstallButton = canInstall && !isStandalone && !isInstalled;
 
   const isHome = path === "/" || path === "/home";
@@ -28,26 +22,11 @@ export function Header() {
 
   return (
     <>
-      <button
-        id="menuButton"
-        class={`hamburgerButton ${showMenu ? "open" : ""}`}
-        aria-expanded={showMenu}
-        aria-controls="main-nav"
-        aria-label={showMenu ? "Cerrar menú" : "Abrir menú"}
-        onClick={() => setShowMenu(!showMenu)}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
       <a href="#contenido" class="skip-link">
         Saltar al contenido
       </a>
       <header class="header">
-        <div id="overlay-menu" class={showMenu ? "show" : ""} onClick={handleClickOverlay} />
-        <nav id="main-nav" class={showMenu ? "showing" : ""} aria-label="Navegación principal">
-          <span class="nav-label">Navegación</span>
+        <nav id="main-nav" aria-label="Navegación">
           <ul class="main-menu">
             <li>
               <a href="/" class={isHome ? "active" : ""}>

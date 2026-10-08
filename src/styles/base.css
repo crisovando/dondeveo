@@ -32,7 +32,8 @@ li {
 }
 
 main {
-  padding-bottom: 2rem;
+  /* Clear the fixed bottom bar (≈64px tall + 16px offset) so the last row never sits under it. */
+  padding-bottom: calc(2rem + 5rem + env(safe-area-inset-bottom, 0px));
   margin-top: var(--header-height);
 }
 
