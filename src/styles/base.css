@@ -101,6 +101,12 @@ h4 {
   animation-timing-function: var(--motion-ease-bounds);
 }
 
+/* The UA default (250ms) makes the cross-page travel read as no animation. */
+::view-transition-group(cast-avatar) {
+  animation-duration: var(--motion-duration-cast-morph);
+  animation-timing-function: var(--motion-ease-cast-morph);
+}
+
 ::view-transition-old(hero-item) {
   transform-origin: center;
   animation:

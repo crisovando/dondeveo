@@ -4,7 +4,8 @@ import { ChevronLeft, ChevronRight } from "lucide-preact";
 import { BackButton } from "@/features/BackButton";
 import { ImgTmdb } from "@/components/ImgTmdb";
 import { MovieSkeleton } from "@/components/Skeletons";
-import { navigateToDetail } from "@/helpers/navigation";
+import { CAST_AVATAR_TRANSITION_NAME, navigateToDetail } from "@/helpers/navigation";
+import { castTransitionData } from "@/signals/transitionData";
 import { usePersonData } from "@/hooks/usePersonData";
 import type { AudioVisualDto, PersonCredit, PersonDetail } from "@/shared/types";
 import styles from "./Person.module.css";
@@ -105,9 +106,8 @@ function PersonHeader({ name, photo, meta }: PersonHeaderProps) {
 
   return (
     <header class={styles.header}>
-      <div class={styles.avatar}>
-        {/* ImgTmdb consumes `alt` without forwarding it to the <img>, so the
-            accessible name has to ride on aria-label. */}
+      <div class={styles.avatar} style={{ viewTransitionName: CAST_AVATAR_TRANSITION_NAME }}>
+        {/* ImgTmdb drops `alt` before the <img>, so the accessible name rides on aria-label. */}
         <ImgTmdb
           type="profile"
           size="w342"
@@ -215,10 +215,16 @@ export function Person({ id, initialPhoto }: PersonProps) {
   const { route } = useLocation();
   const { data, loading, error, retry } = usePersonData(id);
 
+  // Same name as the cast tile so the morph pairs; the id guard rejects a stale signal.
+  const castTransition =
+    castTransitionData.value && String(castTransitionData.value.personId) === id
+      ? castTransitionData.value
+      : null;
+
   const isLoading = loading && !data;
   const isError = error && !data;
 
-  const photo = data?.profilePath || initialPhoto;
+  const photo = data?.profilePath || castTransition?.photo || initialPhoto;
   const biography = data?.biography?.trim() ?? "";
   const rails = data ? creditRails(data.credits ?? []) : null;
 
@@ -227,7 +233,7 @@ export function Person({ id, initialPhoto }: PersonProps) {
       <BackButton />
 
       <PersonHeader
-        name={data?.name ?? (isError ? "Persona" : undefined)}
+        name={data?.name ?? castTransition?.name ?? (isError ? "Persona" : undefined)}
         photo={photo}
         meta={data ? metaFor(data) : []}
       />
