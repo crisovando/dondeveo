@@ -13,12 +13,12 @@ export const searchSession = signal<SearchSession>({
   scrollY: 0,
 });
 
-export const DEFAULT_SEARCH_FILTERS: SearchFilters = {
+export const DEFAULT_SEARCH_FILTERS: Readonly<SearchFilters> = Object.freeze({
   mediaType: "all",
   genres: [],
   minRating: null,
   streamOnly: false,
-};
+});
 
 export const searchFilters = signal<SearchFilters>({ ...DEFAULT_SEARCH_FILTERS });
 

@@ -1,4 +1,4 @@
-import { useId, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { SlidersHorizontal, X } from "lucide-preact";
 import clsx from "clsx";
 import styles from "./SearchFilters.module.css";
@@ -33,7 +33,6 @@ export function SearchFilters({
   showStream,
 }: SearchFiltersProps) {
   const [open, setOpen] = useState(false);
-  const panelId = useId();
   const activeCount = countActiveFilters(filters);
   const active = hasActiveFilters(filters);
   const hasPanelContent = showMediaType || showRating || availableGenres.length > 0 || showStream;
@@ -97,7 +96,6 @@ export function SearchFilters({
           class={clsx(styles.toggle, open && styles.toggleOpen)}
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
-          aria-controls={panelId}
         >
           <SlidersHorizontal size={16} strokeWidth={2} aria-hidden="true" />
           {activeCount === 0 ? "Filtros" : `Filtros · ${activeCount}`}
@@ -128,7 +126,7 @@ export function SearchFilters({
       </div>
 
       {open && (
-        <div class={styles.panel} id={panelId}>
+        <div class={styles.panel}>
           {showMediaType && (
             <div class={styles.row} role="group" aria-label="Tipo">
               <span class={styles.rowLabel}>Tipo</span>
