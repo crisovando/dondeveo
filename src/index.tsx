@@ -19,6 +19,7 @@ import { UpdateToast } from "./components/UpdateToast";
 const Detail = lazy(() => import("./pages/Detail").then((m) => m.Detail));
 const Search = lazy(() => import("./pages/Search").then((m) => m.Search));
 const Platform = lazy(() => import("./pages/Platform").then((m) => m.Platform));
+const Person = lazy(() => import("./pages/Person").then((m) => m.Person));
 const Favorites = lazy(() => import("./pages/Favorites").then((m) => m.Favorites));
 const Historical = lazy(() => import("./pages/Historical").then((m) => m.Historical));
 const Roulette = lazy(() => import("./pages/Roulette").then((m) => m.Roulette));
@@ -45,6 +46,7 @@ export function App() {
           <Route path="/search" component={Search} />
           <Route path="/platform/:providerId" component={Platform} />
           <Route path="/detail/:type/:id" component={Detail} />
+          <Route path="/persona/:id" component={Person} />
           <Route default component={NotFound} />
         </Router>
       </main>
