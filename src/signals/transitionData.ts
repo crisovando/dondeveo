@@ -7,3 +7,10 @@ export const transitionData = signal<{
   backdrop: string;
   from: string;
 } | null>(null);
+
+// Painted by Person before its fetch resolves; `personId` rejects a stale signal.
+export const castTransitionData = signal<{
+  personId: number;
+  photo: string | null;
+  name: string;
+} | null>(null);

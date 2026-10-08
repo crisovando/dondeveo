@@ -262,6 +262,10 @@ The poster-open reference case: `view-transition-name: hero-item` is set on both
 
 The reference's 200ms blur fraction is deliberately not applied: animating `filter`/`backdrop-filter` during a view transition is a mid-range-Android jank source, so opacity and transform carry the motion instead. Every animation is suppressed under `prefers-reduced-motion: reduce` by the global guard in `base.css`.
 
+The cast-avatar morph reuses the same machinery: the tapped tile takes the single name `cast-avatar` at click time (not at render, so a repeated actor cannot collide), the destination header avatar paints from the navigation signal before its fetch resolves, and the group travels 480ms (`--motion-duration-cast-morph`).
+
+Navigation through a view transition carries one runtime constraint: the destination route is a lazy chunk whose real DOM swap lands after the transition captured the new state, and a swap arriving mid-animation makes the browser cancel the whole transition — the morph then snaps instead of travelling. `navigateWithTransition` in `navigation.ts` therefore awaits the destination module inside the callback and settles only after the route commits, witnessed by a `setTimeout(0)` macrotask boundary; a `requestAnimationFrame` cannot be used there, because rendering is suppressed while a transition callback's promise is pending and a rAF await deadlocks the transition. `route()` runs first in the callback so it wins the navigation over the router's own window-level click handler, which fires later in the same click dispatch.
+
 ## Do's and Don'ts
 
 ### Do:
