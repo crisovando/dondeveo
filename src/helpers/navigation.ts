@@ -13,17 +13,15 @@ export interface DetailNavigationItem {
   mediaType: string;
 }
 
+// One stable name shared by the tapped tile and the destination avatar. The tile
+// is named only on click, so each snapshot holds a single element with this name:
+// duplicate actors cannot collide and one group rule covers every cast morph.
+export const CAST_AVATAR_TRANSITION_NAME = "cast-avatar";
+
 export interface PersonNavigationTarget {
   id: number;
   name: string;
   photo: string | null;
-  occurrence: number;
-}
-
-// The occurrence disambiguates the same actor appearing twice in one cast list:
-// a browser drops every transition whose name is duplicated in one snapshot.
-export function castAvatarTransitionName(personId: number, occurrence: number) {
-  return `cast-avatar-${personId}-${occurrence}`;
 }
 
 export function navigateToDetail(item: DetailNavigationItem, route: RouteFn) {
@@ -48,7 +46,6 @@ export function navigateToDetail(item: DetailNavigationItem, route: RouteFn) {
 export function navigateToPerson(target: PersonNavigationTarget, route: RouteFn) {
   castTransitionData.value = {
     personId: target.id,
-    transitionName: castAvatarTransitionName(target.id, target.occurrence),
     photo: target.photo,
     name: target.name,
   };

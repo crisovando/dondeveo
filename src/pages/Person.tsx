@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-preact";
 import { BackButton } from "@/features/BackButton";
 import { ImgTmdb } from "@/components/ImgTmdb";
 import { MovieSkeleton } from "@/components/Skeletons";
-import { navigateToDetail, castAvatarTransitionName } from "@/helpers/navigation";
+import { CAST_AVATAR_TRANSITION_NAME, navigateToDetail } from "@/helpers/navigation";
 import { castTransitionData } from "@/signals/transitionData";
 import { usePersonData } from "@/hooks/usePersonData";
 import type { AudioVisualDto, PersonCredit, PersonDetail } from "@/shared/types";
@@ -99,18 +99,14 @@ interface PersonHeaderProps {
   name?: string;
   photo?: string;
   meta: string[];
-  transitionName?: string;
 }
 
-function PersonHeader({ name, photo, meta, transitionName }: PersonHeaderProps) {
+function PersonHeader({ name, photo, meta }: PersonHeaderProps) {
   const label = name ? `Foto de ${name}` : "Foto de la persona";
 
   return (
     <header class={styles.header}>
-      <div
-        class={styles.avatar}
-        style={transitionName ? { viewTransitionName: transitionName } : undefined}
-      >
+      <div class={styles.avatar} style={{ viewTransitionName: CAST_AVATAR_TRANSITION_NAME }}>
         {/* ImgTmdb consumes `alt` without forwarding it to the <img>, so the
             accessible name has to ride on aria-label. */}
         <ImgTmdb
@@ -221,8 +217,7 @@ export function Person({ id, initialPhoto }: PersonProps) {
   const { data, loading, error, retry } = usePersonData(id);
 
   // The cast source tile and this avatar must carry the same name for the morph;
-  // the id guard stops a stale signal from naming an unrelated person. Falling
-  // back to occurrence 0 keeps the name on a direct visit and the back morph.
+  // the id guard stops a stale signal from painting an unrelated person.
   const castTransition =
     castTransitionData.value && String(castTransitionData.value.personId) === id
       ? castTransitionData.value
@@ -243,7 +238,6 @@ export function Person({ id, initialPhoto }: PersonProps) {
         name={data?.name ?? castTransition?.name ?? (isError ? "Persona" : undefined)}
         photo={photo}
         meta={data ? metaFor(data) : []}
-        transitionName={castTransition?.transitionName ?? castAvatarTransitionName(Number(id), 0)}
       />
 
       {isLoading && (

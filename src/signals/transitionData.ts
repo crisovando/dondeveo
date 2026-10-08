@@ -13,7 +13,6 @@ export const transitionData = signal<{
 // nothing. `personId` keeps a stale signal from naming an unrelated person.
 export const castTransitionData = signal<{
   personId: number;
-  transitionName: string;
   photo: string | null;
   name: string;
 } | null>(null);

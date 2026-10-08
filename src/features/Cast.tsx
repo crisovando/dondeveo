@@ -1,6 +1,6 @@
 import { useLocation } from "preact-iso";
 import { ImgTmdb } from "@/components/ImgTmdb";
-import { castAvatarTransitionName, navigateToPerson } from "@/helpers/navigation";
+import { CAST_AVATAR_TRANSITION_NAME, navigateToPerson } from "@/helpers/navigation";
 import styles from "./Cast.module.css";
 import { PersonCast } from "@/shared/types";
 
@@ -8,15 +8,14 @@ interface CastProps {
   cast?: PersonCast[];
 }
 
-// Per-actor occurrence, not list index: the destination avatar falls back to
-// occurrence 0, so a uniquely-cast actor pairs on both sides.
-function withOccurrence(cast: PersonCast[]) {
-  const seen = new Map<number, number>();
-  return cast.map((person) => {
-    const occurrence = seen.get(person.id) ?? 0;
-    seen.set(person.id, occurrence + 1);
-    return { person, occurrence };
-  });
+// One name, one holder: a name left on a previously clicked tile collides with
+// the next click and the browser silently drops the morph.
+let namedAvatar: HTMLElement | null = null;
+
+function nameAvatar(avatar: HTMLElement) {
+  if (namedAvatar && namedAvatar !== avatar) namedAvatar.style.viewTransitionName = "";
+  avatar.style.viewTransitionName = CAST_AVATAR_TRANSITION_NAME;
+  namedAvatar = avatar;
 }
 
 export function Cast({ cast }: CastProps) {
@@ -28,24 +27,23 @@ export function Cast({ cast }: CastProps) {
     <section class={styles.cast}>
       <h2 class={styles.title}>Elenco</h2>
       <div class={styles.castsContainer}>
-        {withOccurrence(cast).map(({ person, occurrence }) => (
+        {cast.map((person) => (
           <a
-            key={`${person.id}-${occurrence}`}
+            key={`${person.id}-${person.character ?? person.name}`}
             class={styles.person}
             href={`/persona/${person.id}`}
             onClick={(e) => {
               if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
               e.preventDefault();
+              const avatar = e.currentTarget.querySelector<HTMLElement>("[data-cast-avatar]");
+              if (avatar) nameAvatar(avatar);
               navigateToPerson(
-                { id: person.id, name: person.name, photo: person.profilePath, occurrence },
+                { id: person.id, name: person.name, photo: person.profilePath },
                 route,
               );
             }}
           >
-            <div
-              class={styles.imageContainer}
-              style={{ viewTransitionName: castAvatarTransitionName(person.id, occurrence) }}
-            >
+            <div class={styles.imageContainer} data-cast-avatar>
               <ImgTmdb
                 src={person.profilePath}
                 type="profile"
