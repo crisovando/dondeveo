@@ -13,4 +13,5 @@ export const castTransitionData = signal<{
   personId: number;
   photo: string | null;
   name: string;
+  from: string;
 } | null>(null);

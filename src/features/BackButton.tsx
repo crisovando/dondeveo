@@ -1,14 +1,15 @@
 import { ChevronLeft } from "lucide-preact";
 import { useLocation } from "preact-iso";
-import { transitionData } from "@/signals/transitionData";
 import styles from "./BackButton.module.css";
 
-export function BackButton() {
+interface BackButtonProps {
+  from?: string;
+}
+
+export function BackButton({ from }: BackButtonProps) {
   const { route } = useLocation();
 
   const handleClick = () => {
-    const from = transitionData.value?.from;
-
     if (!from) {
       route("/");
       return;

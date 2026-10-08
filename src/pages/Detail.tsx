@@ -45,7 +45,7 @@ export function Detail({ type, id }: DetailProps) {
 
   return (
     <div class="details">
-      <BackButton />
+      <BackButton from={transitionData.value?.from} />
       {hasData ? <HeroDetail movie={finalData} /> : <HeroDetailSkeleton />}
       <article class="content-detail" data-reveal={revealed ? "in" : "out"}>
         <div class="left-column">

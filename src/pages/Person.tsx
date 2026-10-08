@@ -230,7 +230,7 @@ export function Person({ id, initialPhoto }: PersonProps) {
 
   return (
     <div class={styles.page}>
-      <BackButton />
+      <BackButton from={castTransition?.from} />
 
       <PersonHeader
         name={data?.name ?? castTransition?.name ?? (isError ? "Persona" : undefined)}

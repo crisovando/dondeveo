@@ -70,6 +70,7 @@ export function navigateToPerson(target: PersonNavigationTarget, route: RouteFn)
     personId: target.id,
     photo: target.photo,
     name: target.name,
+    from: window.location.pathname + window.location.search,
   };
 
   navigateWithTransition(`/persona/${target.id}`, route);
