@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { useLocation } from "preact-iso";
-import { Heart, House, Search } from "lucide-preact";
+import { Dices, Heart, House, Search } from "lucide-preact";
 import clsx from "clsx";
 import styles from "./BottomNav.module.css";
 
@@ -20,6 +20,7 @@ const TABS: Tab[] = [
     Icon: Heart,
     isActive: (path) => path === "/favorites",
   },
+  { href: "/roulette", label: "Ruleta", Icon: Dices, isActive: (path) => path === "/roulette" },
 ];
 
 const HIDE_AFTER_SCROLL_PX = 6;
