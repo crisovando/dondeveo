@@ -97,3 +97,17 @@ h4 {
 ::view-transition-new(hero-item) {
   animation: none;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+
+  .content-detail {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
