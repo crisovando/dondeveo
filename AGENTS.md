@@ -13,9 +13,12 @@ the right account by itself, so this repository needs no switch at all:
 
 - The **default** gh profile (`~/.config/gh`) is `crisovando`, so `gh` works here directly.
 - Projects that need the Allie credential live under `~/<work-repo-root>/` and are
-  routed to `~/.config/<work-gh-profile>` (`<account>`) by a function plus a `chpwd` hook
-  in `~/<shell-startup-file>`. That covers both a shell started inside such a project and a shell opened
-  elsewhere that `cd`s into one.
+  routed to `~/.config/<work-gh-profile>` (`<account>`) in **two layers that apply the same
+  boundary**: a function plus a `chpwd` hook in `~/<shell-startup-file>`, which every zsh reads including
+  non-interactive ones, and a `gh` wrapper at `~/<gh-wrapper>`, which covers the shells that
+  never read `<shell-startup-file>` — bash, sh, a direct exec from an agent. Change one, change the other.
+- To force a specific profile, bypass the wrapper and call the real binary directly:
+  `/opt/<gh-binary>`.
 
 **Do not switch accounts by hand.** In particular, do not "restore" the active account to
 `<account>` when a task is done: `gh auth switch` rewrites the default profile,
