@@ -120,6 +120,28 @@ export interface PersonCast {
   job?: string;
 }
 
+export interface PersonCredit {
+  id: number;
+  title: string;
+  poster: string | null;
+  mediaType: "movie" | "tv";
+  date: string | null;
+  character: string;
+  popularity: number;
+}
+
+export interface PersonDetail {
+  id: number;
+  name: string;
+  profilePath: string | null;
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  placeOfBirth: string | null;
+  knownFor: string;
+  credits: PersonCredit[];
+}
+
 export interface ProductionCompany {
   name: string;
   logoPath: string;
