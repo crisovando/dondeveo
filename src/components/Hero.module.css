@@ -137,9 +137,3 @@
     font-size: 16px;
   }
 }
-
-::view-transition-old(overlay-poster),
-::view-transition-new(overlay-poster) {
-  mix-blend-mode: normal;
-  animation: none;
-}

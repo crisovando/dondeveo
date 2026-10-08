@@ -1,4 +1,4 @@
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { Cast } from "@/features/Cast";
 import { BackButton } from "@/features/BackButton";
 import { HeroDetail } from "@/features/HeroDetail";
@@ -26,6 +26,16 @@ export function Detail({ type, id }: DetailProps) {
     addToHistory(data);
   }, [data]);
 
+  const [revealed, setRevealed] = useState(false);
+
+  // The single frame after mount commits the shared hero snapshot; the reveal
+  // itself is delayed in CSS so the content lands after the poster has expanded.
+  useEffect(() => {
+    setRevealed(false);
+    const frame = requestAnimationFrame(() => setRevealed(true));
+    return () => cancelAnimationFrame(frame);
+  }, [id]);
+
   const finalData = {
     ...preloaded,
     ...data,
@@ -37,7 +47,7 @@ export function Detail({ type, id }: DetailProps) {
     <div class="details">
       <BackButton />
       {hasData ? <HeroDetail movie={finalData} /> : <HeroDetailSkeleton />}
-      <article class="content-detail">
+      <article class="content-detail" data-reveal={revealed ? "in" : "out"}>
         <div class="left-column">
           <WatchProviders providers={finalData.providers} />
           <Synopsis text={finalData.overview || ""} />
