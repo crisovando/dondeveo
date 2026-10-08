@@ -93,9 +93,32 @@ h4 {
   }
 }
 
-::view-transition-old(hero-item),
-::view-transition-new(hero-item) {
-  animation: none;
+/* The hero is the shared element: its rect morphs across the whole poster-open,
+   while the outgoing snapshot dissolves and recedes. The incoming snapshot keeps
+   the UA cross-fade (inherit the group duration) so no empty frame is ever shown. */
+::view-transition-group(hero-item) {
+  animation-duration: var(--motion-duration-bounds);
+  animation-timing-function: var(--motion-ease-bounds);
+}
+
+::view-transition-old(hero-item) {
+  transform-origin: center;
+  animation:
+    var(--motion-duration-dissolve-background) var(--motion-ease-dissolve-background) both
+      motion-fade-out,
+    var(--motion-duration-recede) var(--motion-ease-recede) both motion-recede;
+}
+
+@keyframes motion-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes motion-recede {
+  to {
+    transform: scale(0.9);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

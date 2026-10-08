@@ -2,6 +2,19 @@
   padding-inline: 1.5rem;
 }
 
+/* Held at alpha 0 until Detail marks data-reveal="in" one frame after mount, so the
+   hero snapshot lands before the content fades in. The reduced-motion guard in
+   base.css forces this visible when the animation is suppressed. */
+@keyframes detail-content-reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .details {
   padding-bottom: 2rem;
 
@@ -14,6 +27,11 @@
     margin-left: auto;
     margin-right: auto;
     max-width: 1200px;
+    opacity: 0;
+  }
+
+  .content-detail[data-reveal="in"] {
+    animation: detail-content-reveal var(--motion-duration-reveal) var(--motion-ease-reveal) both;
   }
 
   .right-column {

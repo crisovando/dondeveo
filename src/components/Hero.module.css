@@ -138,8 +138,24 @@
   }
 }
 
-::view-transition-old(overlay-poster),
+/* No element assigns view-transition-name: overlay-poster today, so this is inert until one does. */
+::view-transition-group(overlay-poster) {
+  animation-duration: var(--motion-duration-bounds);
+  animation-timing-function: var(--motion-ease-bounds);
+}
+
+::view-transition-old(overlay-poster) {
+  mix-blend-mode: normal;
+  animation: var(--motion-duration-dissolve-artwork) var(--motion-ease-dissolve-artwork) both
+    artworkDissolve;
+}
+
 ::view-transition-new(overlay-poster) {
   mix-blend-mode: normal;
-  animation: none;
+}
+
+@keyframes artworkDissolve {
+  to {
+    opacity: 0;
+  }
 }
