@@ -101,7 +101,7 @@ export function SearchResults({
   const lastCountRef = useRef(0);
   const filteredAnnounceRef = useRef("");
 
-  const loadedItems = items?.filter((item) => item.mediaType !== "people");
+  const loadedItems = useMemo(() => items?.filter((item) => item.mediaType !== "people"), [items]);
   const filtersActive = hasActiveFilters(filters);
 
   const filteredItems = useMemo(() => {
@@ -182,11 +182,13 @@ export function SearchResults({
     (filteredItems?.length ?? 0) === 0 &&
     filtersActive;
 
+  const clearFilters = () => onFiltersChange({ ...DEFAULT_SEARCH_FILTERS });
+
   const filtersBar = (
     <SearchFilters
       filters={filters}
       onChange={onFiltersChange}
-      onClear={() => onFiltersChange(DEFAULT_SEARCH_FILTERS)}
+      onClear={clearFilters}
       availableGenres={availableGenres}
       showMediaType={showMediaType}
       showRating={showRating}
@@ -263,11 +265,7 @@ export function SearchResults({
           <h2>Ningún resultado cargado coincide</h2>
           <p>Probá quitar algún filtro o cargá más resultados.</p>
           <div class={styles.stateActions}>
-            <button
-              type="button"
-              class={styles.retryButton}
-              onClick={() => onFiltersChange(DEFAULT_SEARCH_FILTERS)}
-            >
+            <button type="button" class={styles.retryButton} onClick={clearFilters}>
               Limpiar filtros
             </button>
             {hasMore && (
