@@ -8,6 +8,7 @@
   align-items: center;
   gap: var(--space-md);
   margin-top: 2.5rem;
+  padding-inline: 1.5rem;
   text-align: center;
 }
 
@@ -16,6 +17,7 @@
   width: 8rem;
   border-radius: var(--radius-full);
   overflow: hidden;
+  background-color: var(--color-gray-1);
   box-shadow: 0 0 0 2px var(--color-surface-base);
 }
 
@@ -46,6 +48,7 @@
 }
 
 .biography {
+  padding-inline: 1.5rem;
   max-width: 70ch;
 }
 
@@ -62,13 +65,101 @@
   color: var(--color-text);
 }
 
+.rail {
+  margin: 2.5rem 0;
+}
+
+.railHeader {
+  padding-inline: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.railTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+}
+
+.railSubtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  letter-spacing: var(--letter-space-widest);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.railBody {
+  position: relative;
+}
+
+.railTrack {
+  display: flex;
+  gap: var(--space-sm);
+  padding: 0 1.5rem 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--space-lg);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.railTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 120px;
+  min-width: 0;
+  display: block;
+  scroll-snap-align: start;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.poster {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-gray-1);
+  transition: transform 0.3s ease;
+}
+
+.posterFallback {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) {
+  .card:hover .poster {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.cardTitle {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.railNav {
+  display: none;
+}
+
 .stateBox {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-xs);
   margin-top: 2.5rem;
-  padding: 3rem 1rem;
+  padding: 3rem 1.5rem;
   text-align: center;
 }
 
@@ -109,11 +200,47 @@
     flex-direction: row;
     align-items: center;
     gap: var(--space-lg);
-    margin-top: 3rem;
+    margin-top: 4rem;
     text-align: left;
   }
 
   .avatar {
     width: 10rem;
+  }
+
+  .card {
+    flex: 0 0 150px;
+  }
+
+  .railNav {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: calc(50% - 1.5rem);
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--color-nav-border);
+    background: oklch(10% 0.01 260 / 0.78);
+    color: var(--color-white);
+    cursor: pointer;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .railNavPrev {
+    left: 0.75rem;
+  }
+
+  .railNavNext {
+    right: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster {
+    transition: none;
   }
 }
