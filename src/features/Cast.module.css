@@ -25,15 +25,25 @@
   flex-direction: column;
   flex-shrink: 0;
   width: 8rem;
+  color: inherit;
+  text-decoration: none;
 }
 
 .imageContainer {
   width: 100%;
-  border-radius: var(--radius-md);
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-full);
   overflow: hidden;
-  width: 8rem;
-  height: 10rem;
+  background-color: var(--color-gray-1);
+  box-shadow: 0 0 0 2px var(--color-surface-base);
   margin-bottom: var(--space-sm);
+  transition: transform 0.3s ease;
+}
+
+@media (hover: hover) {
+  .person:hover .imageContainer {
+    transform: translateY(-4px) scale(1.03);
+  }
 }
 
 .name {
@@ -47,4 +57,10 @@
   color: var(--color-text-dimmed);
   letter-spacing: -0.05em;
   text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imageContainer {
+    transition: none;
+  }
 }

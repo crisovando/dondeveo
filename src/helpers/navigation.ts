@@ -1,4 +1,4 @@
-import { transitionData } from "@/signals/transitionData";
+import { castTransitionData, transitionData } from "@/signals/transitionData";
 
 type RouteFn = (path: string) => void;
 
@@ -13,6 +13,19 @@ export interface DetailNavigationItem {
   mediaType: string;
 }
 
+export interface PersonNavigationTarget {
+  id: number;
+  name: string;
+  photo: string | null;
+  occurrence: number;
+}
+
+// The occurrence disambiguates the same actor appearing twice in one cast list:
+// a browser drops every transition whose name is duplicated in one snapshot.
+export function castAvatarTransitionName(personId: number, occurrence: number) {
+  return `cast-avatar-${personId}-${occurrence}`;
+}
+
 export function navigateToDetail(item: DetailNavigationItem, route: RouteFn) {
   transitionData.value = {
     id: item.id,
@@ -23,6 +36,24 @@ export function navigateToDetail(item: DetailNavigationItem, route: RouteFn) {
   };
 
   const path = `/detail/${item.mediaType}/${item.id}`;
+
+  if (!document.startViewTransition) {
+    route(path);
+    return;
+  }
+
+  document.startViewTransition(() => route(path));
+}
+
+export function navigateToPerson(target: PersonNavigationTarget, route: RouteFn) {
+  castTransitionData.value = {
+    personId: target.id,
+    transitionName: castAvatarTransitionName(target.id, target.occurrence),
+    photo: target.photo,
+    name: target.name,
+  };
+
+  const path = `/persona/${target.id}`;
 
   if (!document.startViewTransition) {
     route(path);
