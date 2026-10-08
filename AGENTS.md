@@ -8,30 +8,28 @@
 
 ## GitHub CLI account
 
-This repository is owned by `crisovando`. This machine is already wired so that `gh` picks
-the right account by itself, so this repository needs no switch at all:
+**This repository is public.** Never record account names, email addresses, or local filesystem
+paths in it — machine-specific setup belongs in the machine's own configuration, not here.
 
-- The **default** gh profile (`~/.config/gh`) is `crisovando`, so `gh` works here directly.
-- Projects that need the Allie credential live under `~/Documents/GitHub/allie/` and are
-  routed to `~/.config/gh-allie` (`cristian-ovando_allie`) by a function plus a `chpwd` hook
-  in `~/.zshenv`. That covers both a shell started inside such a project and a shell opened
-  elsewhere that `cd`s into one.
+This repository is owned by `crisovando`. On this machine `gh` is already configured to use the
+right account here, so no manual switch is ever needed.
 
-**Do not switch accounts by hand.** In particular, do not "restore" the active account to
-`cristian-ovando_allie` when a task is done: `gh auth switch` rewrites the default profile,
-and doing that is what breaks this setup for every personal repository on the machine. If you
-want to confirm which account is in use, `gh auth status` is enough — then leave it alone.
-
+- **Do not switch accounts by hand.** `gh auth switch` rewrites a machine-wide setting and
+  breaks the account routing for other repositories on this machine. `gh auth status` is enough
+  to confirm what is in use — then leave it alone.
+- Account routing is automatic and per directory, in two layers that apply the same boundary:
+  the shells that read a startup file, and a `gh` wrapper that covers the ones that do not
+  (bash, sh, a direct exec from an agent). Change one layer, change the other. The concrete
+  profiles and paths belong to the machine's own configuration and are deliberately not
+  recorded in this public repository.
+- To force a specific profile, bypass the wrapper and call the real `gh` binary directly.
 - `git push` is unaffected, because it goes over SSH: a branch can push successfully while
   `gh` is on the wrong account. A green push is not proof the account is right.
 - A failed mutation under the wrong account reports
   `Unauthorized: As an Enterprise Managed User`, which is an account problem, not a code or
   permissions problem in this repository.
-- Git identity: this repository resolves to `cristian.f.ovando@gmail.com` (the `crisovando`
-  account email). That now comes from the machine-wide `~/.gitconfig`, which defaults to the
-  personal identity and pulls in `~/.gitconfig-allie` only for repositories under
-  `~/Documents/GitHub/allie/`. The value is also pinned with a repo-local `user.email`; the two
-  agree, so leave both in place.
+- Commits here must use the personal identity, never a work address. It is already configured
+  as a repository-local `user.email`; do not change it.
 - This repository has no `.github/` directory, no workflows and no issues. Pull requests
   follow the body structure of PR #2 (Summary, Changes table, Implementation notes,
   Verification); there is no issue-first gate and no `type:*` label to add.
