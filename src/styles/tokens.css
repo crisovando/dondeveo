@@ -69,18 +69,12 @@
 
   --motion-duration-bounds: 550ms;
   --motion-duration-recede: 550ms;
-  --motion-duration-dissolve-artwork: 260ms;
   --motion-duration-dissolve-background: 300ms;
   --motion-duration-reveal: 350ms;
-
-  /* Blur fraction is defined for parameter parity but intentionally unapplied:
-     animating filter/backdrop-filter during a view transition janks mid-range Android. */
-  --motion-duration-blur: 200ms;
+  --motion-duration-content-delay: 400ms;
 
   --motion-ease-bounds: cubic-bezier(0.345, 0.602, 0.186, 1);
   --motion-ease-recede: cubic-bezier(0.176, 0.258, 0.324, 1);
-  --motion-ease-dissolve-artwork: cubic-bezier(0.146, 0, 0.538, 1);
   --motion-ease-dissolve-background: cubic-bezier(0.061, 0, 0.435, 1);
   --motion-ease-reveal: cubic-bezier(0.5, 0, 0.14, 1);
-  --motion-ease-blur: cubic-bezier(0.718, 0.392, 0.569, 1);
 }

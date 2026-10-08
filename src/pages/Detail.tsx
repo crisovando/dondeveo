@@ -28,8 +28,8 @@ export function Detail({ type, id }: DetailProps) {
 
   const [revealed, setRevealed] = useState(false);
 
-  // Reveal one frame after mount, so the shared hero snapshot is committed before
-  // the content fades in rather than cross-fading with it.
+  // The single frame after mount commits the shared hero snapshot; the reveal
+  // itself is delayed in CSS so the content lands after the poster has expanded.
   useEffect(() => {
     setRevealed(false);
     const frame = requestAnimationFrame(() => setRevealed(true));

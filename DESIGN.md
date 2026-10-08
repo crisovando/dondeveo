@@ -258,9 +258,9 @@ The hero is the system's relationship with imagery made explicit: a full-bleed `
 
 Motion is reserved and stateful: it explains a spatial change the user just caused, then stops. Timings and easings live as `--motion-duration-*` / `--motion-ease-*` tokens in `tokens.css`.
 
-The poster-open reference case: `view-transition-name: hero-item` is set on both Home and Detail, so the hero is a shared element. On open its rect morphs over 550ms (`--motion-duration-bounds`), while the outgoing snapshot dissolves over 300ms (`--motion-duration-dissolve-background`) and recedes to 0.9 (`--motion-duration-recede`). The incoming snapshot keeps the browser cross-fade, so no empty frame is shown. The detail content below the hero holds at alpha 0 and reveals over 350ms (`--motion-duration-reveal`), started one frame after mount so the shared element lands first.
+The poster-open reference case: `view-transition-name: hero-item` is set on both Home and Detail, so the hero is a shared element. On open its rect morphs over 550ms (`--motion-duration-bounds`), while the outgoing snapshot dissolves over 300ms (`--motion-duration-dissolve-background`) and recedes to 0.9 (`--motion-duration-recede`). The incoming snapshot keeps the browser cross-fade, so no empty frame is shown. The detail content below the hero holds at alpha 0, then reveals over 350ms (`--motion-duration-reveal`) after a 400ms delay (`--motion-duration-content-delay`), so the copy lands once the poster has mostly expanded rather than crossing it as a peer.
 
-The 200ms blur fraction is tokenized (`--motion-duration-blur`, `--motion-ease-blur`) but deliberately not applied: animating `filter`/`backdrop-filter` during a view transition is a mid-range-Android jank source, so opacity and transform carry the motion instead. Every animation is suppressed under `prefers-reduced-motion: reduce` by the global guard in `base.css`.
+The reference's 200ms blur fraction is deliberately not applied: animating `filter`/`backdrop-filter` during a view transition is a mid-range-Android jank source, so opacity and transform carry the motion instead. Every animation is suppressed under `prefers-reduced-motion: reduce` by the global guard in `base.css`.
 
 ## Do's and Don'ts
 

@@ -2,9 +2,9 @@
   padding-inline: 1.5rem;
 }
 
-/* Held at alpha 0 until Detail marks data-reveal="in" one frame after mount, so the
-   hero snapshot lands before the content fades in. The reduced-motion guard in
-   base.css forces this visible when the animation is suppressed. */
+/* Held at alpha 0; Detail flips data-reveal="in" one frame after mount, then the
+   400ms delay lets the hero morph land before the content fades in over 350ms.
+   The reduced-motion guard in base.css forces this visible when suppressed. */
 @keyframes detail-content-reveal {
   from {
     opacity: 0;
@@ -32,6 +32,7 @@
 
   .content-detail[data-reveal="in"] {
     animation: detail-content-reveal var(--motion-duration-reveal) var(--motion-ease-reveal) both;
+    animation-delay: var(--motion-duration-content-delay);
   }
 
   .right-column {
