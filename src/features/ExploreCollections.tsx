@@ -7,6 +7,7 @@ interface ExploreCollectionsProps {
   loading: boolean;
   error: boolean;
   onRetry: () => void;
+  onSelect: () => void;
 }
 
 const MEDIA_TYPE_LABEL: Record<string, string> = {
@@ -19,6 +20,7 @@ export function ExploreCollections({
   loading,
   error,
   onRetry,
+  onSelect,
 }: ExploreCollectionsProps) {
   if (loading && collections.length === 0) {
     return (
@@ -50,7 +52,12 @@ export function ExploreCollections({
 
       <div class={styles.grid}>
         {collections.map((collection) => (
-          <a key={collection.id} class={styles.tile} href={`/explore?collection=${collection.id}`}>
+          <a
+            key={collection.id}
+            class={styles.tile}
+            href={`/explore?collection=${collection.id}`}
+            onClick={onSelect}
+          >
             <span class={styles.tileType}>{MEDIA_TYPE_LABEL[collection.mediaType]}</span>
             <h2 class={styles.tileTitle}>{collection.title}</h2>
             <p class={styles.tileSubtitle}>{collection.subtitle}</p>
