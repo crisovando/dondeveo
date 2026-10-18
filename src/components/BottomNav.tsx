@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { useLocation } from "preact-iso";
-import { Dices, Heart, House, Search } from "lucide-preact";
+import { Compass, Dices, Heart, House, Search } from "lucide-preact";
 import clsx from "clsx";
 import styles from "./BottomNav.module.css";
 
@@ -14,6 +14,12 @@ interface Tab {
 const TABS: Tab[] = [
   { href: "/", label: "Inicio", Icon: House, isActive: (path) => path === "/" || path === "/home" },
   { href: "/search", label: "Búsqueda", Icon: Search, isActive: (path) => path === "/search" },
+  {
+    href: "/explore",
+    label: "Explorar",
+    Icon: Compass,
+    isActive: (path) => path === "/explore",
+  },
   {
     href: "/favorites",
     label: "Favoritos",

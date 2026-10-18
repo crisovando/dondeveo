@@ -5,7 +5,8 @@
   z-index: var(--z-header);
   display: flex;
   align-items: stretch;
-  width: min(20rem, calc(100vw - 2rem));
+  /* Five destinations need the extra room; four did not. */
+  width: min(22rem, calc(100vw - 2rem));
   padding: var(--space-xs);
   translate: -50% 0;
   border-radius: var(--radius-full);
