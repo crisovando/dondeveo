@@ -20,6 +20,7 @@ api.get("/home", homeController.getHome);
 api.get("/search", searchController.getSearch);
 api.get("/explore", exploreController.getExplore);
 api.get("/explore/collections", exploreController.getCollections);
+api.get("/explore/providers", exploreController.getProviders);
 api.get("/genres", genresController.getAllGenres);
 api.get("/detail/:type/:id", detailController.getDetail);
 api.get("/person/:id", personController.getPerson);

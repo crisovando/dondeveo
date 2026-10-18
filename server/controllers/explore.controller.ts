@@ -1,6 +1,7 @@
 import type { Context } from "hono";
 import { z } from "zod";
 import { explore as exploreService, listCollections } from "../service/explore";
+import { resolveArStreamingProviders } from "../service/streamingProviders";
 
 const exploreParamSchema = z.object({
   collection: z.string(),
@@ -62,4 +63,9 @@ export const getExplore = async (c: Context) => {
 
 export const getCollections = (c: Context) => {
   return c.json({ collections: listCollections() });
+};
+
+export const getProviders = async (c: Context) => {
+  const providers = await resolveArStreamingProviders();
+  return c.json({ providers });
 };

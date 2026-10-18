@@ -113,6 +113,12 @@ export interface ExploreCollection {
   mediaType: "movie" | "tv";
 }
 
+export interface ExploreProvider {
+  providerId: number;
+  providerName: string;
+  logoPath: string;
+}
+
 export interface ExploreFilters {
   genres: number[];
   minRating: number | null;
