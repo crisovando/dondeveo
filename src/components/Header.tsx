@@ -34,6 +34,11 @@ export function Header() {
               </a>
             </li>
             <li>
+              <a href="/explore" class={path === "/explore" ? "active" : ""}>
+                Explorar
+              </a>
+            </li>
+            <li>
               <a href="/favorites" class={path === "/favorites" ? "active" : ""}>
                 Favoritos
               </a>

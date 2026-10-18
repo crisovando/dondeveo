@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "preact/hooks";
 import { useLocation } from "preact-iso";
 import { ChevronLeft } from "lucide-preact";
 import type { AudioVisualDto } from "@/shared/types";
+import { ExploreCollections } from "@/features/ExploreCollections";
 import { ExploreResults } from "@/features/ExploreResults";
 import { useExploreData } from "@/hooks/useExploreData";
 import { navigateToDetail } from "@/helpers/navigation";
@@ -78,13 +79,12 @@ export function Explore() {
     return (
       <div class={styles.explore}>
         <div class={styles.landing}>
-          <p>Elegí una colección.</p>
-          {exploreCatalogLoading.value && <p>Cargando…</p>}
-          {exploreCatalogError.value && (
-            <button type="button" onClick={() => loadExploreCatalog(true)}>
-              Reintentar
-            </button>
-          )}
+          <ExploreCollections
+            collections={exploreCollections.value}
+            loading={exploreCatalogLoading.value}
+            error={exploreCatalogError.value}
+            onRetry={() => loadExploreCatalog(true)}
+          />
         </div>
       </div>
     );

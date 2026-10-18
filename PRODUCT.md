@@ -22,6 +22,7 @@ What a neighboring product could not truthfully copy: up-to-date availability fo
 
 - PWA on Vercel, mobile-first, dark theme; feels like an installed app on the phone.
 - Core flow: search → detail page → provider chips ("Ver en Netflix / Prime…", "Comprar" for transactional platforms).
+- Second entry: explore a curated collection → refine with real server-side filters → detail page, for when there is no title in mind.
 - Carousels by genre/trending on the home page.
 - Favorites and history are stored locally (no user accounts, no server-side state).
 - App shell and API responses work offline for previously viewed content; installability is a first-class concern (manifest, iOS icon, update prompt).
@@ -30,6 +31,7 @@ What a neighboring product could not truthfully copy: up-to-date availability fo
 ## Capabilities and Constraints
 
 - Search movies and series; detail pages with provider availability chips for the AR region.
+- Explore by collection (family, kids, family comedy, classics, family series): server-side Discover with type, genre, year, rating, platform and order filters, paginated against a real total.
 - Home carousels (genre, trending, popular); favorites, history.
 - PWA: installable, offline shell + cached API, update prompt.
 - No authentication; all user state is local.

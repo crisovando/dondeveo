@@ -4,6 +4,7 @@ import styles from "./SearchResults.module.css";
 import { ImgTmdb } from "@/components/ImgTmdb";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { MediaGrid } from "@/components/MediaGrid";
+import { Compass } from "lucide-preact";
 import { isStreamProvider } from "@/hooks/useProvidersMap";
 import { Spinner } from "@/components/Spinner";
 import { getHistory } from "@/signals/history";
@@ -166,7 +167,13 @@ export function SearchResults({
   if (isInitial) {
     body = (
       <>
-        <p class={styles.hint}>Escribí arriba para buscar películas y series.</p>
+        <div class={styles.hintBox}>
+          <p class={styles.hint}>Escribí arriba para buscar películas y series.</p>
+          <a class={styles.exploreLink} href="/explore">
+            <Compass size={16} strokeWidth={2} aria-hidden="true" />
+            O explorá por colecciones
+          </a>
+        </div>
         {recent.length > 0 && (
           <div class={styles.recent} aria-label="Búsquedas recientes">
             <h2 class={styles.recentHeading}>Recientes</h2>
