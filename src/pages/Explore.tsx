@@ -6,13 +6,17 @@ import { ExploreCollections } from "@/features/ExploreCollections";
 import { ExploreResults } from "@/features/ExploreResults";
 import { useExploreData } from "@/hooks/useExploreData";
 import { navigateToDetail } from "@/helpers/navigation";
+import { movieGenresSignal, tvGenresSignal } from "@/signals/genres";
 import {
   buildExploreQuery,
   exploreCatalogError,
   exploreCatalogLoading,
   exploreCollections,
+  exploreFilters,
+  exploreProviders,
   exploreSession,
   loadExploreCatalog,
+  resetExploreFilters,
 } from "@/signals/explore";
 import styles from "./Explore.module.css";
 
@@ -24,8 +28,9 @@ export function Explore() {
   const collection = exploreCollections.value.find((item) => item.id === collectionId) ?? null;
 
   const queryString = useMemo(
-    () => (collectionId && collection ? buildExploreQuery(collectionId) : null),
-    [collectionId, collection],
+    () =>
+      collectionId && collection ? buildExploreQuery(collectionId, exploreFilters.value) : null,
+    [collectionId, collection, exploreFilters.value],
   );
 
   const {
@@ -75,6 +80,15 @@ export function Explore() {
     navigateToDetail(item, route);
   };
 
+  // Filters belong to the shelf they were set on; opening another one starts
+  // clean, which is why this is not a side effect of the fetch above.
+  const handleSelectCollection = () => resetExploreFilters();
+
+  const handleBack = () => {
+    resetExploreFilters();
+    route("/explore");
+  };
+
   if (!collection) {
     return (
       <div class={styles.explore}>
@@ -84,16 +98,19 @@ export function Explore() {
             loading={exploreCatalogLoading.value}
             error={exploreCatalogError.value}
             onRetry={() => loadExploreCatalog(true)}
+            onSelect={handleSelectCollection}
           />
         </div>
       </div>
     );
   }
 
+  const genres = collection.mediaType === "tv" ? tvGenresSignal.value : movieGenresSignal.value;
+
   return (
     <div class={styles.explore}>
       <header class={styles.collectionHeader}>
-        <button type="button" class={styles.back} onClick={() => route("/explore")}>
+        <button type="button" class={styles.back} onClick={handleBack}>
           <ChevronLeft size={16} strokeWidth={2} aria-hidden="true" />
           Colecciones
         </button>
@@ -109,7 +126,14 @@ export function Explore() {
         loading={loading}
         error={error}
         loadMoreError={loadMoreError}
+        filters={exploreFilters.value}
+        genres={genres}
+        providers={exploreProviders.value}
         onItemClick={handleItemClick}
+        onFiltersChange={(next) => {
+          exploreFilters.value = next;
+        }}
+        onClearFilters={resetExploreFilters}
         fetchMore={loadMore}
         retry={retry}
         retryLoadMore={retryLoadMore}

@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "preact/hooks";
-import type { AudioVisualDto } from "@/shared/types";
+import type { AudioVisualDto, ExploreFilters, ExploreProvider, Genres } from "@/shared/types";
 import styles from "./ExploreResults.module.css";
 import { MediaCard } from "@/features/MediaCard";
 import { MediaGrid } from "@/components/MediaGrid";
 import { Spinner } from "@/components/Spinner";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { ExploreFilterBar } from "@/features/ExploreFilterBar";
+import { hasActiveExploreFilters } from "@/signals/explore";
 
 interface ExploreResultsProps {
   items?: AudioVisualDto[];
@@ -14,7 +16,12 @@ interface ExploreResultsProps {
   loading: boolean;
   error: boolean;
   loadMoreError: boolean;
+  filters: ExploreFilters;
+  genres: Genres[];
+  providers: ExploreProvider[];
   onItemClick: (item: AudioVisualDto) => void;
+  onFiltersChange: (next: ExploreFilters) => void;
+  onClearFilters: () => void;
   fetchMore: () => Promise<void>;
   retry: () => void;
   retryLoadMore: () => void;
@@ -40,7 +47,12 @@ export function ExploreResults({
   loading,
   error,
   loadMoreError,
+  filters,
+  genres,
+  providers,
   onItemClick,
+  onFiltersChange,
+  onClearFilters,
   fetchMore,
   retry,
   retryLoadMore,
@@ -48,6 +60,7 @@ export function ExploreResults({
   const [announce, setAnnounce] = useState("");
   const lastCountRef = useRef(0);
 
+  const filtersActive = hasActiveExploreFilters(filters);
   const hasMore = !!(
     items &&
     items.length < total &&
@@ -70,6 +83,16 @@ export function ExploreResults({
   const isError = error && items === undefined;
   const isLoading = loading && items === undefined;
   const isEmpty = items !== undefined && items.length === 0;
+
+  const filtersBar = (
+    <ExploreFilterBar
+      filters={filters}
+      onChange={onFiltersChange}
+      onClear={onClearFilters}
+      genres={genres}
+      providers={providers}
+    />
+  );
 
   let body;
 
@@ -95,19 +118,31 @@ export function ExploreResults({
     );
   } else if (isEmpty) {
     body = (
-      <div class={styles.stateBox} role="status">
-        <h2>Esta colección está vacía</h2>
-        <p>Volvé a intentarlo en un rato.</p>
-        <button type="button" class={styles.retryButton} onClick={retry}>
-          Reintentar
-        </button>
-      </div>
+      <>
+        {filtersBar}
+        <div class={styles.stateBox} role="status">
+          <h2>{filtersActive ? "Ningún título con estos filtros" : "Esta colección está vacía"}</h2>
+          <p>
+            {filtersActive
+              ? "Probá quitar alguno o ampliar el año."
+              : "Volvé a intentarlo en un rato."}
+          </p>
+          <button
+            type="button"
+            class={styles.retryButton}
+            onClick={filtersActive ? onClearFilters : retry}
+          >
+            {filtersActive ? "Limpiar filtros" : "Reintentar"}
+          </button>
+        </div>
+      </>
     );
   } else {
     body = (
       <>
+        {filtersBar}
         <div class={styles.header}>
-          <h2>Para explorar</h2>
+          <h2>{filtersActive ? "Resultados filtrados" : "Para explorar"}</h2>
           <span>{countLabel(total)}</span>
         </div>
 
