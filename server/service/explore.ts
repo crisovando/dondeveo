@@ -13,13 +13,27 @@ import {
 
 type DiscoverType = "movie" | "tv";
 
-// Genre ids shared by the movie and TV vocabularies, so a collection can only
-// use ids that exist for its own media type.
+// Genre ids, grouped by the vocabulary they belong to. Movie and TV keep
+// separate lists and only some ids are shared, so a recipe may only use ids
+// from its own media type: 10759 and 10765 exist for TV and 28, 53, 878, 10749
+// and 10752 for movies, and neither resolves against the other.
 const GENRE = {
+  ACTION: 28,
   ADVENTURE: 12,
   ANIMATION: 16,
   COMEDY: 35,
+  CRIME: 80,
+  DOCUMENTARY: 99,
+  DRAMA: 18,
   FAMILY: 10751,
+  HISTORY: 36,
+  HORROR: 27,
+  MYSTERY: 9648,
+  ROMANCE: 10749,
+  SCI_FI: 878,
+  THRILLER: 53,
+  WAR: 10752,
+  TV_SCI_FI_FANTASY: 10765,
 } as const;
 
 // Certifications are read off the US scale: the AR scale tags far fewer titles
@@ -62,6 +76,9 @@ interface CollectionRecipe extends ExploreCollection {
   genres: number[];
   certification?: string;
   minRating: number;
+  // A floor per recipe: a broad single genre ranked by popularity surfaces
+  // unrated and barely-voted titles without one.
+  minVotes?: number;
   toYear?: number;
 }
 
@@ -97,13 +114,103 @@ export const COLLECTIONS: CollectionRecipe[] = [
   },
   {
     id: "clasicos",
-    title: "Infantiles de siempre",
-    subtitle: "Los clásicos que ya viste mil veces",
+    title: "Dibujos de siempre",
+    subtitle: "Animación clásica, de antes del 2000",
     mediaType: "movie",
     genres: [GENRE.ANIMATION, GENRE.FAMILY],
     certification: "G|PG",
     minRating: 6.5,
     toYear: 1999,
+  },
+  {
+    id: "accion",
+    title: "Acción y adrenalina",
+    subtitle: "Persecuciones, golpes y tiros",
+    mediaType: "movie",
+    genres: [GENRE.ACTION, GENRE.ADVENTURE],
+    minRating: 6.5,
+    minVotes: 200,
+  },
+  {
+    id: "ciencia-ficcion",
+    title: "Ciencia ficción",
+    subtitle: "Futuros, naves y mundos raros",
+    mediaType: "movie",
+    genres: [GENRE.SCI_FI, GENRE.ADVENTURE],
+    minRating: 6.5,
+    minVotes: 200,
+  },
+  {
+    id: "terror",
+    title: "Terror",
+    subtitle: "Para ver con la luz prendida",
+    mediaType: "movie",
+    genres: [GENRE.HORROR],
+    minRating: 6.5,
+    minVotes: 200,
+  },
+  {
+    id: "suspenso",
+    title: "Suspenso",
+    subtitle: "Tensión hasta el final",
+    mediaType: "movie",
+    genres: [GENRE.THRILLER],
+    minRating: 7.5,
+    minVotes: 200,
+  },
+  {
+    id: "crimen",
+    title: "Crimen",
+    subtitle: "Mafias, robos y policías",
+    mediaType: "movie",
+    genres: [GENRE.CRIME],
+    minRating: 7.5,
+    minVotes: 200,
+  },
+  {
+    id: "comedia",
+    title: "Comedia",
+    subtitle: "Para reír sin chicos",
+    mediaType: "movie",
+    genres: [GENRE.COMEDY],
+    minRating: 7,
+    minVotes: 200,
+  },
+  {
+    id: "romance",
+    title: "Romance",
+    subtitle: "Amores de todos los tipos",
+    mediaType: "movie",
+    genres: [GENRE.ROMANCE],
+    minRating: 7,
+    minVotes: 200,
+  },
+  {
+    id: "drama",
+    title: "Drama",
+    subtitle: "Las que pegan fuerte",
+    mediaType: "movie",
+    genres: [GENRE.DRAMA],
+    minRating: 8,
+    minVotes: 200,
+  },
+  {
+    id: "documentales",
+    title: "Documentales",
+    subtitle: "Historias reales",
+    mediaType: "movie",
+    genres: [GENRE.DOCUMENTARY],
+    minRating: 7.5,
+    minVotes: 200,
+  },
+  {
+    id: "guerra-historia",
+    title: "Historia y guerra",
+    subtitle: "Lo que ya pasó",
+    mediaType: "movie",
+    genres: [GENRE.HISTORY, GENRE.WAR],
+    minRating: 7,
+    minVotes: 200,
   },
   {
     id: "series-familia",
@@ -115,11 +222,47 @@ export const COLLECTIONS: CollectionRecipe[] = [
   },
   {
     id: "series-comedia",
-    title: "Series para reír en casa",
-    subtitle: "Comedia familiar de todos los días",
+    title: "Series para reír",
+    subtitle: "Comedia de todos los días",
     mediaType: "tv",
     genres: [GENRE.COMEDY, GENRE.FAMILY],
     minRating: 6.5,
+  },
+  {
+    id: "series-ciencia-ficcion",
+    title: "Ciencia ficción y fantasía",
+    subtitle: "Otros mundos, en capítulos",
+    mediaType: "tv",
+    genres: [GENRE.TV_SCI_FI_FANTASY],
+    minRating: 7.5,
+    minVotes: 200,
+  },
+  {
+    id: "series-crimen",
+    title: "Policiales",
+    subtitle: "Casos, misterios y detectives",
+    mediaType: "tv",
+    genres: [GENRE.CRIME, GENRE.MYSTERY],
+    minRating: 7.5,
+    minVotes: 200,
+  },
+  {
+    id: "series-drama",
+    title: "Dramas para maratonear",
+    subtitle: "De las que no soltás",
+    mediaType: "tv",
+    genres: [GENRE.DRAMA],
+    minRating: 7.5,
+    minVotes: 200,
+  },
+  {
+    id: "series-animacion",
+    title: "Animación para grandes",
+    subtitle: "Dibujos que no son para chicos",
+    mediaType: "tv",
+    genres: [GENRE.ANIMATION],
+    minRating: 7.5,
+    minVotes: 200,
   },
 ];
 
@@ -152,7 +295,7 @@ function buildParams(
   const genres = [...new Set([...collection.genres, ...filters.genres])];
   params.set("with_genres", genres.join(","));
 
-  const minVotes = ORDER_MIN_VOTES[filters.order];
+  const minVotes = Math.max(collection.minVotes ?? 0, ORDER_MIN_VOTES[filters.order] ?? 0);
   if (minVotes) params.set("vote_count.gte", String(minVotes));
 
   const minRating = Math.max(collection.minRating, filters.minRating ?? 0);
