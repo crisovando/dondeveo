@@ -19,6 +19,7 @@ import { UpdateToast } from "./components/UpdateToast";
 // initial bundle and load on demand when the user navigates to them.
 const Detail = lazy(() => import("./pages/Detail").then((m) => m.Detail));
 const Search = lazy(() => import("./pages/Search").then((m) => m.Search));
+const Explore = lazy(() => import("./pages/Explore").then((m) => m.Explore));
 const Platform = lazy(() => import("./pages/Platform").then((m) => m.Platform));
 const Person = lazy(() => import("./pages/Person").then((m) => m.Person));
 const Favorites = lazy(() => import("./pages/Favorites").then((m) => m.Favorites));
@@ -45,6 +46,7 @@ export function App() {
           <Route path="/historical" component={Historical} />
           <Route path="/roulette" component={Roulette} />
           <Route path="/search" component={Search} />
+          <Route path="/explore" component={Explore} />
           <Route path="/platform/:providerId" component={Platform} />
           <Route path="/detail/:type/:id" component={Detail} />
           <Route path="/persona/:id" component={Person} />
