@@ -9,5 +9,7 @@ export async function getGenres() {
 
   return {
     genres: [...movieGenres.genres, ...tvGenres.genres],
+    movieGenres: movieGenres.genres,
+    tvGenres: tvGenres.genres,
   };
 }

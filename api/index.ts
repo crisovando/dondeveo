@@ -3,6 +3,7 @@ import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
 import * as homeController from "../server/controllers/home.controller";
 import * as searchController from "../server/controllers/search.controller";
+import * as exploreController from "../server/controllers/explore.controller";
 import * as genresController from "../server/controllers/genres.controller";
 import * as detailController from "../server/controllers/detail.controller";
 import * as personController from "../server/controllers/person.controller";
@@ -17,6 +18,9 @@ export const config = {
 const api = new Hono();
 api.get("/home", homeController.getHome);
 api.get("/search", searchController.getSearch);
+api.get("/explore", exploreController.getExplore);
+api.get("/explore/collections", exploreController.getCollections);
+api.get("/explore/providers", exploreController.getProviders);
 api.get("/genres", genresController.getAllGenres);
 api.get("/detail/:type/:id", detailController.getDetail);
 api.get("/person/:id", personController.getPerson);

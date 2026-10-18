@@ -10,16 +10,13 @@ import {
 } from "../types/tmdb-discover";
 import { fetchTMDB } from "./tmdbFetch";
 import { getWatchProvidersBatched } from "./providers";
+import { isStreamingPlatform } from "./streamingProviders";
 import { mapToAudioVisualDto } from "../utils/mappers";
 import { PlatformRow, ProviderWithType } from "../../src/shared/types";
 
 const LIMIT_TREND = 10;
 const MAX_PLATFORMS = 4;
 const RELEASES_WINDOW_DAYS = 45;
-
-// Streaming services available in Argentina. Matched case-insensitively against
-// TMDB provider names from /watch/providers/movie?watch_region=AR.
-const PLATFORM_ALLOWLIST = ["Netflix", "Amazon Prime Video", "Disney Plus", "Max", "Flow"];
 
 // Keyword IDs for adult/fanservice anime content excluded from the discover
 // query. Resolved against the TMDB /search/keyword endpoint and verified to
@@ -83,11 +80,7 @@ async function resolvePlatforms(): Promise<PlatformRow[]> {
     );
 
     const selected = (response.results ?? [])
-      .filter((provider) =>
-        PLATFORM_ALLOWLIST.some(
-          (name) => name.toLowerCase() === provider.provider_name.toLowerCase(),
-        ),
-      )
+      .filter((provider) => isStreamingPlatform(provider.provider_name))
       .sort((a, b) => a.display_priority - b.display_priority)
       .slice(0, MAX_PLATFORMS);
 

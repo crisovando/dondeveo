@@ -98,6 +98,37 @@ export interface SearchData {
   totalResults: number;
 }
 
+export interface GenresResponse {
+  genres: Genres[];
+  movieGenres?: Genres[];
+  tvGenres?: Genres[];
+}
+
+export type ExploreOrder = "popular" | "rated" | "recent";
+
+export interface ExploreCollection {
+  id: string;
+  title: string;
+  subtitle: string;
+  mediaType: "movie" | "tv";
+}
+
+export interface ExploreProvider {
+  providerId: number;
+  providerName: string;
+  logoPath: string;
+}
+
+export interface ExploreFilters {
+  genres: number[];
+  minRating: number | null;
+  fromYear: number | null;
+  toYear: number | null;
+  providerId: number | null;
+  streamOnly: boolean;
+  order: ExploreOrder;
+}
+
 export interface Person {
   id: number;
   name: string;
