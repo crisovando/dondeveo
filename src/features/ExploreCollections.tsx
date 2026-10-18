@@ -10,7 +10,7 @@ interface ExploreCollectionsProps {
   onSelect: () => void;
 }
 
-const MEDIA_TYPE_LABEL: Record<string, string> = {
+const GROUP_LABEL: Record<string, string> = {
   movie: "Películas",
   tv: "Series",
 };
@@ -43,6 +43,13 @@ export function ExploreCollections({
     );
   }
 
+  const groups = (["movie", "tv"] as const)
+    .map((mediaType) => ({
+      mediaType,
+      items: collections.filter((collection) => collection.mediaType === mediaType),
+    }))
+    .filter((group) => group.items.length > 0);
+
   return (
     <section class={styles.collections} aria-label="Colecciones para explorar">
       <header class={styles.header}>
@@ -50,20 +57,31 @@ export function ExploreCollections({
         <p>Elegí un punto de partida y filtrá desde ahí.</p>
       </header>
 
-      <div class={styles.grid}>
-        {collections.map((collection) => (
-          <a
-            key={collection.id}
-            class={styles.tile}
-            href={`/explore?collection=${collection.id}`}
-            onClick={onSelect}
-          >
-            <span class={styles.tileType}>{MEDIA_TYPE_LABEL[collection.mediaType]}</span>
-            <h2 class={styles.tileTitle}>{collection.title}</h2>
-            <p class={styles.tileSubtitle}>{collection.subtitle}</p>
-          </a>
-        ))}
-      </div>
+      {groups.map((group) => (
+        <section
+          class={styles.group}
+          key={group.mediaType}
+          aria-labelledby={`explore-group-${group.mediaType}`}
+        >
+          <h2 class={styles.groupHeading} id={`explore-group-${group.mediaType}`}>
+            {GROUP_LABEL[group.mediaType]}
+          </h2>
+
+          <div class={styles.grid}>
+            {group.items.map((collection) => (
+              <a
+                key={collection.id}
+                class={styles.tile}
+                href={`/explore?collection=${collection.id}`}
+                onClick={onSelect}
+              >
+                <h3 class={styles.tileTitle}>{collection.title}</h3>
+                <p class={styles.tileSubtitle}>{collection.subtitle}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
     </section>
   );
 }

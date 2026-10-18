@@ -24,6 +24,22 @@
   font-size: 14px;
 }
 
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.groupHeading {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -35,7 +51,7 @@
   flex-direction: column;
   gap: var(--space-xxs);
   padding: var(--space-md);
-  min-height: 7.5rem;
+  min-height: 6.5rem;
   background: var(--color-surface-base);
   border: 1px solid var(--color-border-card);
   border-radius: var(--radius-lg);
@@ -54,15 +70,6 @@
     outline: 2px solid var(--color-accent-blue);
     outline-offset: 2px;
   }
-}
-
-.tileType {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-accent);
 }
 
 .tileTitle {
