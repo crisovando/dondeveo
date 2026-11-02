@@ -181,7 +181,7 @@ Mobile-first PWA, laid out for the phone where the decision happens, scaling up 
 - **App shell:** column flex, `min-height: 100svh`; `main` sits below a fixed 80px header (`margin-top: var(--header-height)`) with 2rem bottom padding.
 - **Gutters and rhythm:** 1.5rem page gutters; a 4/8/12/16/24/32px spacing scale (`xxs/xs/sm/md/lg/xl`); 2rem section gaps; cards breathe at 16px padding and 0.75rem internal gap.
 - **Hero:** mobile `height: calc(90svh - 80px)` (min 520px), desktop 85vh; overlay content bottom-anchored on mobile, center-anchored at 60px padding on desktop, capped at 600px max-width — like a movie title card.
-- **Detail page:** centered grid, `max-width: 1200px`, 3rem column gap; collapses from 12 columns (8/4 content/sidebar split) below 1024px. Right column stacks use 3rem spacing.
+- **Detail page:** centered grid, `max-width: 1200px`, 3rem column gap; collapses from 12 columns (8/4 content/sidebar split) below 1024px. Right column stacks use 3rem spacing. Below the grid, full-width poster rails close the page: Recomendados for every title, Temporadas for series.
 - **Responsive:** `768px` (typography scale-up, hero full-size treatments, hover states enabled) and `1024px` (12-column grid, hamburger hidden, install button hidden below 1023.98px). Fluid sizing is used only where it matters — the hero title `clamp()`.
 - **Navigation:** a floating bottom pill on every viewport, plus the four header links inline at `>= 1024px`.
 
