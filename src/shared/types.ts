@@ -70,6 +70,38 @@ export interface ProviderWithType {
   type: string;
 }
 
+export interface KeyCrew {
+  directors: string[];
+  writers: string[];
+  music: string[];
+  photography: string[];
+}
+
+export interface SeasonSummary {
+  number: number;
+  name: string;
+  episodeCount: number;
+  airDate: string | null;
+  poster: string | null;
+}
+
+export interface NetworkSummary {
+  name: string;
+  logoPath: string;
+}
+
+export interface NextEpisode {
+  name: string;
+  airDate: string | null;
+  seasonNumber: number;
+  episodeNumber: number;
+}
+
+export interface Trailer {
+  key: string;
+  name: string;
+}
+
 export interface DetailItem {
   id: number;
   title: string;
@@ -89,6 +121,21 @@ export interface DetailItem {
     cast: PersonCast[];
     crew: PersonCast[];
   };
+  tagline?: string | null;
+  releaseDate?: string | null;
+  status?: string;
+  originalTitle?: string | null;
+  voteCount?: number;
+  countryCodes?: string[];
+  languageCodes?: string[];
+  keyCrew?: KeyCrew;
+  networks?: NetworkSummary[];
+  seasonsCount?: number;
+  episodesCount?: number;
+  seasons?: SeasonSummary[];
+  nextEpisode?: NextEpisode;
+  recommendations?: AudioVisualDto[];
+  trailer?: Trailer | null;
 }
 
 export interface SearchData {

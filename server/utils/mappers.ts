@@ -19,6 +19,10 @@ import {
   ProductionCompany as ApiProductionCompany,
   ReleaseDateResult,
   ContentRatingResult,
+  RecommendationsResponse,
+  Season,
+  Video,
+  VideosResponse,
 } from "../types/tmdb-item-detail";
 import { Movie, TV, Person } from "../types/tmdb-common";
 import {
@@ -200,9 +204,81 @@ export function mapContentRating(item: MovieDetail | TvDetail): string {
   return specials[rawRating.trim()] || rawRating;
 }
 
+const KEY_CREW_JOBS = {
+  directors: ["Director"],
+  writers: ["Screenplay", "Writer"],
+  music: ["Original Music Composer"],
+  photography: ["Director of Photography"],
+};
+
+function mapKeyCrew(credits?: CreditsResponse): DetailItem["keyCrew"] {
+  if (!credits) return undefined;
+
+  const namesFor = (jobs: string[]) => {
+    const seen = new Set<string>();
+    return credits.crew
+      .filter((member) => jobs.includes(member.job))
+      .map((member) => member.name)
+      .filter((name) => {
+        if (seen.has(name)) return false;
+        seen.add(name);
+        return true;
+      });
+  };
+
+  const crew = {
+    directors: namesFor(KEY_CREW_JOBS.directors),
+    writers: namesFor(KEY_CREW_JOBS.writers),
+    music: namesFor(KEY_CREW_JOBS.music),
+    photography: namesFor(KEY_CREW_JOBS.photography),
+  };
+
+  return Object.values(crew).some((names) => names.length > 0) ? crew : undefined;
+}
+
+// Language fallback matters: a title without Spanish assets still has a trailer.
+function pickTrailer(videos?: VideosResponse): DetailItem["trailer"] {
+  const candidates = (videos?.results ?? []).filter(
+    (video: Video) =>
+      video.site === "YouTube" && (video.type === "Trailer" || video.type === "Teaser"),
+  );
+
+  if (candidates.length === 0) return null;
+
+  const score = (video: Video) =>
+    (video.type === "Trailer" ? 100 : 50) +
+    (video.iso_639_1?.startsWith("es") ? 20 : 0) +
+    (video.official ? 5 : 0);
+
+  const best = [...candidates].sort((a, b) => score(b) - score(a))[0];
+  return { key: best.key, name: best.name };
+}
+
+function mapRecommendations(recs?: RecommendationsResponse): DetailItem["recommendations"] {
+  const items = (recs?.results ?? []).slice(0, 20).map(mapToAudioVisualDto);
+  return items.length > 0 ? items : undefined;
+}
+
+function mapSeasons(seasons?: Season[]): DetailItem["seasons"] {
+  const items = (seasons ?? [])
+    .filter((season) => season.season_number > 0)
+    .sort((a, b) => a.season_number - b.season_number)
+    .map((season) => ({
+      number: season.season_number,
+      name: season.name,
+      episodeCount: season.episode_count,
+      airDate: season.air_date,
+      poster: season.poster_path,
+    }));
+
+  return items.length > 0 ? items : undefined;
+}
+
 export function mapBaseDetail(
   item: MovieDetail | TvDetail,
 ): Omit<DetailItem, "title" | "duration" | "mediaType"> {
+  const isMovie = "release_date" in item;
+
   return {
     id: item.id,
     poster: item.poster_path,
@@ -215,6 +291,16 @@ export function mapBaseDetail(
     credits: mapCredits(item.credits),
     review: mapReview(item.reviews?.results[0]),
     contentRating: mapContentRating(item),
+    tagline: item.tagline,
+    releaseDate: isMovie ? item.release_date : item.first_air_date,
+    status: item.status,
+    originalTitle: isMovie ? item.original_title : item.original_name,
+    voteCount: item.vote_count,
+    countryCodes: item.production_countries?.map((country) => country.iso_3166_1) ?? [],
+    languageCodes: item.spoken_languages?.map((language) => language.iso_639_1) ?? [],
+    keyCrew: mapKeyCrew(item.credits),
+    recommendations: mapRecommendations(item.recommendations),
+    trailer: pickTrailer(item.videos),
   };
 }
 
@@ -233,6 +319,21 @@ export function mapTvDetail(tv: TvDetail): DetailItem {
     title: tv.name,
     createdBy: tv.created_by?.map(mapPerson).filter((p): p is PersonShared => !!p),
     mediaType: "tv",
+    seasonsCount: tv.number_of_seasons,
+    episodesCount: tv.number_of_episodes,
+    networks: tv.networks?.map((network) => ({
+      name: network.name,
+      logoPath: network.logo_path ?? "",
+    })),
+    seasons: mapSeasons(tv.seasons),
+    nextEpisode: tv.next_episode_to_air
+      ? {
+          name: tv.next_episode_to_air.name,
+          airDate: tv.next_episode_to_air.air_date,
+          seasonNumber: tv.next_episode_to_air.season_number,
+          episodeNumber: tv.next_episode_to_air.episode_number,
+        }
+      : undefined,
   };
 }
 

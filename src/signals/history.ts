@@ -4,7 +4,11 @@ import type { DetailItem } from "../shared/types";
 const LOCAL_STORAGE_KEY = "dv_history";
 const CACHE_EXPIRATION_TIME = 4 * 7 * 24 * 60 * 60 * 1000;
 
-export type HistoryItem = DetailItem & { timestamp?: number };
+// Recommendations and seasons are page furniture, not history: keeping them would
+// multiply every stored entry by a few kilobytes.
+export type HistoryItem = Omit<DetailItem, "recommendations" | "seasons"> & {
+  timestamp?: number;
+};
 
 export const historySignal = signal<HistoryItem[] | null>(null);
 
@@ -45,13 +49,20 @@ const saveToLocalStorage = (data: HistoryItem[]) => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ data }));
 };
 
+function withoutPageFurniture(item: DetailItem): Omit<DetailItem, "recommendations" | "seasons"> {
+  const copy: DetailItem = { ...item };
+  delete copy.recommendations;
+  delete copy.seasons;
+  return copy;
+}
+
 export const addToHistory = (item: DetailItem) => {
   if (!historySignal.value) loadHistory();
 
   const history = historySignal.value || [];
   const filteredHistory = history.filter((h) => h.id !== item.id);
 
-  const newItem: HistoryItem = { ...item, timestamp: Date.now() };
+  const newItem: HistoryItem = { ...withoutPageFurniture(item), timestamp: Date.now() };
   const updatedHistory = [newItem, ...filteredHistory];
 
   historySignal.value = updatedHistory;
