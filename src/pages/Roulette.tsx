@@ -199,7 +199,9 @@ export function Roulette() {
                         y={labelY.toFixed(2)}
                         text-anchor="middle"
                         dominant-baseline="central"
-                        style={{ fill: showPosters ? POSTER_LABEL_FILL : SECTOR_LABEL_FILLS[fillIndex] }}
+                        style={{
+                          fill: showPosters ? POSTER_LABEL_FILL : SECTOR_LABEL_FILLS[fillIndex],
+                        }}
                       >
                         {index + 1}
                       </text>

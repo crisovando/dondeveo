@@ -78,7 +78,12 @@ export function TrailerModal({ videoKey, title, onClose }: TrailerModalProps) {
           <h2 id="trailer-title" class={styles.title}>
             Tráiler
           </h2>
-          <button type="button" class={styles.close} onClick={onClose} aria-label="Cerrar el tráiler">
+          <button
+            type="button"
+            class={styles.close}
+            onClick={onClose}
+            aria-label="Cerrar el tráiler"
+          >
             <X size={20} aria-hidden="true" />
           </button>
         </header>
