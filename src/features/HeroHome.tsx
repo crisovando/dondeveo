@@ -4,6 +4,7 @@ import { AudioVisualDto } from "@/shared/types";
 import { Hero } from "@/components/Hero";
 import { ButtonHero } from "@/components/ButtonHero";
 import { navigateToDetail } from "@/helpers/navigation";
+import { mediaTypeLabel } from "@/helpers/utils";
 import { useState, useEffect, useRef } from "preact/hooks";
 import { isFavorite, removeFromFavorites } from "@/signals/favorites";
 import { AddFavoriteModal } from "@/components/AddFavoriteModal";
@@ -12,12 +13,6 @@ import styles from "./HeroHome.module.css";
 
 interface HeroHomeProps {
   movies: AudioVisualDto[];
-}
-
-function mediaTypeLabel(mediaType: string) {
-  if (mediaType === "movie") return "Película";
-  if (mediaType === "tv") return "Serie";
-  return mediaType;
 }
 
 export function HeroHome({ movies }: HeroHomeProps) {

@@ -3,3 +3,40 @@
   width: 100%;
   height: 100%;
 }
+
+.attributes {
+  gap: 0.5rem;
+  margin-bottom: 0;
+}
+
+.fact {
+  display: inline-flex;
+  align-items: center;
+}
+
+.separator {
+  opacity: 0.4;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tagline {
+  max-width: 46ch;
+  margin: 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--color-accent);
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--color-text-bright);
+}
+
+@media (min-width: 768px) {
+  .tagline {
+    font-size: 1.0625rem;
+  }
+}

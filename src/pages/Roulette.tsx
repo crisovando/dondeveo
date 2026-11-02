@@ -4,7 +4,7 @@ import { Dices, Trash2 } from "lucide-preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { EmptyRow } from "@/components/EmptyRow";
 import { ImgTmdb } from "@/components/ImgTmdb";
-import { buildTmdbSrc } from "@/helpers/utils";
+import { buildTmdbSrc, mediaTypeLabel } from "@/helpers/utils";
 import {
   MAX_ROULETTE_ENTRIES,
   clearRoulette,
@@ -54,12 +54,6 @@ function sectorPath(startDeg: number, endDeg: number) {
   const largeArc = endDeg - startDeg > 180 ? 1 : 0;
 
   return `M ${VIEW_CENTER} ${VIEW_CENTER} L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${VIEW_RADIUS} ${VIEW_RADIUS} 0 ${largeArc} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
-}
-
-function mediaTypeLabel(mediaType: string) {
-  if (mediaType === "movie") return "Película";
-  if (mediaType === "tv") return "Serie";
-  return mediaType;
 }
 
 export function Roulette() {
