@@ -16,7 +16,7 @@ Primary user: the Argentine general public deciding what to watch. They are on t
 
 ## Positioning
 
-What a neighboring product could not truthfully copy: up-to-date availability for Argentine streaming platforms as the core truth of the product, delivered as a single focused answer ("dónde ver") within seconds — no login, no noise, no detours into trailers, ratings or editorial content. Favorites and history exist as local, no-account conveniences; they are not the positioning.
+What a neighboring product could not truthfully copy: up-to-date availability for Argentine streaming platforms as the core truth of the product, delivered as a single focused answer ("dónde ver") within seconds — no login, no noise. The availability answer owns the page: provider chips come first, everything else comes after. Trailers, ratings, reviews and crew data may appear as secondary context below that answer, but they never delay, replace or compete with the decision. This is not a film encyclopedia. Favorites and history exist as local, no-account conveniences; they are not the positioning.
 
 ## Operating Context
 
@@ -31,6 +31,7 @@ What a neighboring product could not truthfully copy: up-to-date availability fo
 ## Capabilities and Constraints
 
 - Search movies and series; detail pages with provider availability chips for the AR region.
+- Detail pages add secondary TMDB context below the availability answer: tagline, metadata sheet (release date, runtime or seasons and episodes, classification, status, score with vote count, country, language, network, studios), key crew, one review, a trailer and full-width recommendation and season rails. None of it is the product's promise; the provider chips are.
 - Explore by collection (family, kids, family comedy, classics, family series): server-side Discover with type, genre, year, rating, platform and order filters, paginated against a real total.
 - Home carousels (genre, trending, popular); favorites, history.
 - PWA: installable, offline shell + cached API, update prompt.
@@ -54,7 +55,7 @@ What a neighboring product could not truthfully copy: up-to-date availability fo
 
 ## Product Principles
 
-1. Answer the one question — "¿dónde lo veo?" — and trim everything that does not serve that decision.
+1. Answer the one question — "¿dónde lo veo?" — first; anything that competes with that answer gets trimmed, and secondary context lives below it.
 2. Availability truth for Argentine platforms is the product: freshness and correctness outrank breadth.
 3. Zero friction: no account, no login, decision in seconds.
 4. Mobile-first PWA: it should feel native on the phone where the decision happens.
