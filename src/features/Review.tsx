@@ -11,17 +11,23 @@ interface ReviewProps {
 export function Review({ review, author, rating }: ReviewProps) {
   if (!review) return null;
 
+  const hasRating = typeof rating === "number" && rating > 0;
+
   return (
     <CardWidget>
       <h3 class={styles.title}>Críticas</h3>
       <p class={styles.review}>{review}</p>
-      <div class={styles.reviewInfo}>
-        <span class={styles.author}>{author}</span>
-        <span class={styles.ratingGroup}>
-          <Star class={styles.icon} fill="yellow" size={16} />
-          <span class={styles.rating}>{rating}</span>
-        </span>
-      </div>
+      {(author || hasRating) && (
+        <div class={styles.reviewInfo}>
+          {author && <span class={styles.author}>{author}</span>}
+          {hasRating && (
+            <span class={styles.ratingGroup}>
+              <Star class={styles.icon} fill="currentColor" size={16} aria-hidden="true" />
+              <span class={styles.rating}>{rating}</span>
+            </span>
+          )}
+        </div>
+      )}
     </CardWidget>
   );
 }
