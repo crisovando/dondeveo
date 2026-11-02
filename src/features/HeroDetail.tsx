@@ -64,7 +64,6 @@ export function HeroDetail({ movie }: HeroDetailProps) {
   }
   if (movie.contentRating) facts.push(movie.contentRating);
   const genres = movie.genres?.map((genre) => genre.name).join(" / ");
-  if (genres) facts.push(genres);
 
   const hasStreamingProviders = (movie.providers?.length ?? 0) > 0;
 
@@ -91,6 +90,7 @@ export function HeroDetail({ movie }: HeroDetailProps) {
                 <span class={styles.fact}>{fact}</span>
               </>
             ))}
+            {genres && <span class={styles.genres}>{genres}</span>}
           </Hero.Attributes>
           <Hero.Title style={{ viewTransitionName: `title-${movie.id}` }}>{movie.title}</Hero.Title>
           {movie.tagline && <p class={styles.tagline}>{movie.tagline}</p>}

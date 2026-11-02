@@ -15,6 +15,15 @@ export function TrailerModal({ videoKey, title, onClose }: TrailerModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
 
     const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE);

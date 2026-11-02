@@ -24,6 +24,10 @@
   gap: 0.25rem;
 }
 
+.genres {
+  flex-basis: 100%;
+}
+
 .tagline {
   max-width: 46ch;
   margin: 0;
@@ -36,6 +40,16 @@
 }
 
 @media (min-width: 768px) {
+  .genres {
+    flex-basis: auto;
+  }
+
+  .genres::before {
+    content: "·";
+    margin-right: 0.5rem;
+    opacity: 0.4;
+  }
+
   .tagline {
     font-size: 1.0625rem;
   }
