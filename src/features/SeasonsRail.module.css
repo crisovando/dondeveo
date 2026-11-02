@@ -1,0 +1,45 @@
+.card {
+  flex: 0 0 120px;
+  min-width: 0;
+  display: block;
+  scroll-snap-align: start;
+}
+
+.poster {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-gray-1);
+}
+
+.posterFallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-gray-4);
+}
+
+.cardTitle {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex: 0 0 150px;
+  }
+}
