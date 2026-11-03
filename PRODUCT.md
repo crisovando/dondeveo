@@ -30,7 +30,7 @@ What a neighboring product could not truthfully copy: up-to-date availability fo
 
 ## Capabilities and Constraints
 
-- Search movies and series; detail pages with provider availability chips for the AR region.
+- Search movies and series; detail pages with provider availability chips for the AR region, broken down season by season for series when TMDB reports it (a season without season-level data keeps only the series answer).
 - Detail pages add secondary TMDB context below the availability answer: tagline, metadata sheet (release date, runtime or seasons and episodes, classification, status, score with vote count, country, language, network, studios), key crew, one review, a trailer and full-width recommendation and season rails. None of it is the product's promise; the provider chips are.
 - Explore by collection (family, kids, family comedy, classics, family series): server-side Discover with type, genre, year, rating, platform and order filters, paginated against a real total.
 - Home carousels (genre, trending, popular); favorites, history.

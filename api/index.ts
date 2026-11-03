@@ -8,6 +8,7 @@ import * as genresController from "../server/controllers/genres.controller";
 import * as detailController from "../server/controllers/detail.controller";
 import * as personController from "../server/controllers/person.controller";
 import * as providersController from "../server/controllers/providers.controller";
+import * as seasonsController from "../server/controllers/seasons.controller";
 import * as platformController from "../server/controllers/platform.controller";
 import * as ssrController from "../server/controllers/ssr.controller";
 
@@ -26,6 +27,7 @@ api.get("/detail/:type/:id", detailController.getDetail);
 api.get("/person/:id", personController.getPerson);
 api.get("/providers/:type/:id", providersController.getProviders);
 api.get("/providers/batch", providersController.getProvidersBatch);
+api.get("/seasons/:id/providers", seasonsController.getSeasonProviders);
 api.get("/platform/:providerId", platformController.getPlatform);
 
 // One app for both surfaces: /api/* keeps the exact same runtime behavior as

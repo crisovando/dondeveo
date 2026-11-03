@@ -227,6 +227,7 @@ Backdrop translucency is the depth partner: the nav drawer glass blurs at `24px 
 ### Chips
 
 - **Provider stack (medallions):** 22px circular logos, 2px ring in Surface Base, negative-overlap 0.35rem, up to 3 visible with a muted `+N` label in 0.7rem/600. Identity chips; there is no selected-state vocabulary — they annotate which platforms carry the title.
+- **Season stack:** the same medallion stack repeats inside each Temporadas card, under the episode/year line, so a series split across platforms reads season by season. A season without season-level data renders no stack at all — never an "unavailable" state — and the series answer above still stands.
 - **Hero badge:** full pill, Rojo Dondeveo background, 12px/600 white with 0.3px tracking. A status seal, not a control.
 
 ### Cards / Containers

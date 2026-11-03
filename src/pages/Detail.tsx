@@ -10,6 +10,7 @@ import { SeasonsRail } from "@/features/SeasonsRail";
 import { Synopsis } from "@/features/Synopsis";
 import { WatchProviders } from "@/features/WatchProviders";
 import { useDetailData } from "@/hooks/useDetailItem";
+import { useSeasonProviders } from "@/hooks/useSeasonProviders";
 import { navigateToDetail } from "@/helpers/navigation";
 import type { DetailItem } from "@/shared/types";
 import { transitionData } from "@/signals/transitionData";
@@ -53,6 +54,9 @@ export function Detail({ type, id }: DetailProps) {
 
   const hasData = !!finalData.id;
 
+  const seasonNumbers = finalData.seasons?.map((season) => season.number) ?? [];
+  const seasonProviders = useSeasonProviders(type === "tv" ? finalData.id : null, seasonNumbers);
+
   return (
     <div class="details">
       <BackButton from={preloaded.from} />
@@ -81,7 +85,7 @@ export function Detail({ type, id }: DetailProps) {
           onSelect={(item) => navigateToDetail(item, route)}
         />
 
-        <SeasonsRail seasons={finalData.seasons ?? []} />
+        <SeasonsRail seasons={finalData.seasons ?? []} providers={seasonProviders} />
       </div>
     </div>
   );

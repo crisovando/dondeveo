@@ -1,10 +1,13 @@
 import { ImgTmdb } from "@/components/ImgTmdb";
 import type { SeasonSummary } from "@/shared/types";
+import type { SeasonProviderMap } from "@/hooks/useSeasonProviders";
+import { CardProviders } from "./CardProviders";
 import { Rail } from "./Rail";
 import styles from "./SeasonsRail.module.css";
 
 interface SeasonsRailProps {
   seasons: SeasonSummary[];
+  providers?: SeasonProviderMap | null;
 }
 
 function seasonMeta(season: SeasonSummary): string {
@@ -17,7 +20,7 @@ function seasonMeta(season: SeasonSummary): string {
   return parts.join(" · ");
 }
 
-export function SeasonsRail({ seasons }: SeasonsRailProps) {
+export function SeasonsRail({ seasons, providers }: SeasonsRailProps) {
   if (seasons.length === 0) return null;
 
   return (
@@ -42,6 +45,8 @@ export function SeasonsRail({ seasons }: SeasonsRailProps) {
             </div>
             <h3 class={styles.cardTitle}>{season.name || `Temporada ${season.number}`}</h3>
             {meta && <p class={styles.meta}>{meta}</p>}
+            {/* No season-level data renders nothing: the series answer above still stands. */}
+            <CardProviders providers={providers?.[season.number] ?? []} />
           </article>
         );
       })}

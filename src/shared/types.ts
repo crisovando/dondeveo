@@ -85,6 +85,11 @@ export interface SeasonSummary {
   poster: string | null;
 }
 
+export interface SeasonProviders {
+  seasonNumber: number;
+  providers: ProviderWithType[] | null;
+}
+
 export interface NetworkSummary {
   name: string;
   logoPath: string;
